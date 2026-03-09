@@ -1,4 +1,4 @@
-const WA='5492213188614';
+const WA=window.WA_PHONE||'5492213188614';
 let cart=[];
 const heroMedia={
   all:'img/heroes/hero_general.webp.webp',
