@@ -21,7 +21,7 @@ Las diferencias entre catálogos se controlan via window.SITE_CONFIG en cada HTM
 - catalogo_cagnoli.html — catálogo Gastón Charni, sin Las Dinas
 - style.css — todos los estilos
 - products.js — datos de productos (array hardcodeado, ~103 productos, puede crecer)
-- app.js — toda la lógica JS. WA se lee de window.SITE_CONFIG.phone
+- app.js — toda la lógica JS. WA se lee de window.WA_PHONE || '5492213188614'
 - config.js — (pendiente) configuración centralizada por página
 
 ## Marcas y categorías
