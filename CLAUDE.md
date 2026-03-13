@@ -1,78 +1,85 @@
 # CHARNI Distribución — Catálogo Digital
 
-## Proyecto
-Catálogo web B2B para distribuidora de alimentos. Stack: HTML/CSS/JS vanilla, GitHub Pages.
-Repo: https://github.com/1charnidistribucion/charni-catalogo
-Live: https://1charnidistribucion.github.io/charni-catalogo/
+## Contexto del proyecto
+- **Site:** https://1charnidistribucion.github.io/charni-catalogo/
+- **Repo:** https://github.com/1charnidistribucion/charni-catalogo
+- **Stack:** HTML/JS vanilla, GitHub Pages
+- **Rama de trabajo:** dev (SIEMPRE trabajar acá, mergear a main cuando esté probado)
+- **Tag de seguridad:** v1.0-estable
 
 ## Los tres catálogos
-| Archivo | Operador | Teléfono | Las Dinas |
-|---------|----------|----------|-----------|
-| index.html | Gastón (vendedor) | 2213188614 | visible |
-| catalogo_gc.html | Gastón Charni (dueño) | 2494544945 | visible |
-| catalogo_cagnoli.html | Gastón Charni (dueño) | 2494544945 | oculta |
+| Archivo | Operador | Teléfono WA | Las Dinas |
+|---------|----------|-------------|-----------|
+| index.html | Gastón (vendedor) | 5492213188614 | visible |
+| catalogo_gc.html | Gastón Charni (dueño) | 5492494544945 | visible |
+| catalogo_cagnoli.html | Gastón Charni (dueño) | 5492494544945 | oculta |
 
-Los tres comparten style.css, products.js y app.js. Cambios en esos archivos impactan los tres.
-Las diferencias entre catálogos se controlan via window.SITE_CONFIG en cada HTML.
-
-## Archivos principales
-- index.html — catálogo principal
-- catalogo_gc.html — catálogo Gastón Charni, todas las marcas
-- catalogo_cagnoli.html — catálogo Gastón Charni, sin Las Dinas
-- style.css — todos los estilos
-- products.js — datos de productos (array hardcodeado, ~103 productos, puede crecer)
-- app.js — toda la lógica JS. WA se lee de window.WA_PHONE || '5492213188614'
-- config.js — (pendiente) configuración centralizada por página
+## Arquitectura de archivos
+- `index.html`, `catalogo_gc.html`, `catalogo_cagnoli.html` — un HTML por catálogo
+- `style.css` — estilos compartidos (impacta los 3 catálogos)
+- `products.js` — datos de productos (~103 items)
+- `app.js` — lógica JS. WA se lee de `window.WA_PHONE || '5492213188614'`
+- `config.js` — configuración centralizada. Orden de carga: products.js → config.js → override inline → app.js
+- `img/heroes/` — imágenes de hero
+- `img/heroes/hero_general.webp.webp` — hero "Todos" (doble extensión, así está en repo)
 
 ## Marcas y categorías
-**Don Atilio** — quesos artesanales
-- Duros, Semiduros, Blandos
-- Nota: Quesitos Saborizados son 3 variedades (Clásico, Orégano, Ahumado) en un solo card de 1kg
+- **Don Atilio:** Duros, Semiduros (Quesitos Saborizados = 3 variedades en 1 card), Blandos
+- **Cagnoli:** Salamines, Bastones 800g, Bastones Condimentados, ATM, Jamones y Cocidos, Alta Maduración
+- **Las Dinas:** Piezas Crudas, Piezas Cocidas, Embutidos Especiales, Ahumados en Frío, Ahumados en Caliente
+- **Lácteos Vidal:** Productos Lácteos
 
-**Cagnoli** — embutidos de Tandil (distribuidor oficial)
-- Salamines, Bastones 800g, Bastones Condimentados 800g, Línea Envasados ATM, Jamones y Cocidos, Alta Maduración
+## Heroes actuales (heroMedia en app.js)
+```javascript
+const heroMedia = {
+  all: 'img/heroes/hero_general.webp.webp',
+  donatilio: 'img/heroes/1HlQaS3OYSmdBeUMas_96dCEJzDbgY1x4.jpg',
+  cagnoli: ['img/heroes/1qBb1EtllIm_31Ieb3kxwa2HuIHsrTIPC.jpg',
+            'img/heroes/1pHMXQBFqnC-jaQFIgkkDlvvbUVOx_hsH.jpg',
+            'img/heroes/1OrN33PqJ7FALNkNf6Q5dEm8ffaLEgzVQ.jpg',
+            'img/heroes/1-48MhyKnYstoXG8zitW1PN9hKncSx1uG.jpg'],
+  lasdinas: ['img/heroes/1RYjiNC9ZPYuGAjL14MQzXC4dryj4-P1P.jpg',
+             'img/heroes/1NbdE92x51--hfyCR3_b8ItFCsBxXDQ38.jpg'],
+  vidal: 'img/heroes/1w0EDmpP3n-pWQCimwTothoY1RTMmqQx9.jpg'
+};
+```
 
-**Las Dinas** — chacinados de Tandil
-- Piezas Crudas, Piezas Cocidas, Embutidos Especiales, Ahumados en Frío, Ahumados en Caliente
+## Rediseño visual — PENDIENTE IMPLEMENTAR
+- Estética: moderno minimalista, fondo claro
+- Paleta: blanco/gris muy claro de base, acento bordo #8b1538, dorado #c9a961
+- Tipografía: reemplazar fuentes genéricas por algo refinado y legible
+- Cards: más limpias, imagen oval, tag de categoría, nombre, botones de acción
+- Filtros de marca sticky (Todos / Don Atilio / Cagnoli / Las Dinas / Vidal)
+- Tabs de subcategoría por marca horizontales y sticky
+- Aplicar a los 3 HTMLs y style.css
 
-**Lácteos Vidal** — lácteos
-- Productos Lácteos (Ricotta, Manteca, Mozzarella)
+## Sistema de pedido acumulado — PENDIENTE IMPLEMENTAR
+- Botón "+" en cada card para agregar al pedido
+- Barra flotante que aparece cuando hay productos, muestra cantidad y nombres
+- Panel de revisión con lista de productos y opción de eliminar
+- Vista previa del mensaje antes de enviar
+- Botón "Enviar pedido por WhatsApp" (verde #25D366)
 
-Los productos pueden aumentar en cualquier marca en cualquier momento.
+## Precios — estrategia definida, PENDIENTE IMPLEMENTAR
+- No mostrar precios públicamente por ahora
+- Estrategia futura: Google Sheets + URL con parámetro por cliente
+- Ejemplo: charni-catalogo.github.io/?cliente=supermercado_lopez
 
-## Imágenes
-- Heroes: img/heroes/ — NUNCA img/productos/
-- Productos: img/productos/
-- hero_general.webp.webp — hero para filtro "Todos" (doble extensión, así está en el repo)
-- Heroes de Cagnoli y Las Dinas son carruseles (arrays de imágenes)
+## Próxima sesión
+- Peso aproximado por unidad y unidades por caja en products.js
 
 ## Reglas de trabajo
-- SIEMPRE leer el contenido de un archivo antes de modificarlo
-- SIEMPRE verificar si tiene scripts inline o externos antes de editar
-- SIEMPRE trabajar en rama dev, mergear a main cuando esté probado y verificado
-- NUNCA inventar datos, teléfonos, nombres o rutas — preguntar si no se sabe
-- NUNCA tocar index.html cuando el cambio es solo para gc o cagnoli
-- Usar git add -f si Git no detecta cambios esperados
-- Usar git commit --allow-empty si el commit no registra cambios esperados
+- SIEMPRE leer este archivo antes de cualquier cambio
+- SIEMPRE trabajar en rama dev, mergear a main cuando esté probado
+- NUNCA inventar datos, teléfonos, nombres o rutas
+- Para conflictos de merge: `git checkout dev -- archivo.html`
+- Al iniciar sesión confirmar: catálogos existentes, teléfonos, rama activa
 
-## Estado actual
-- Heroes funcionando en los 3 catálogos ✅
-- Gradiente lateral en hero ✅
-- Texto separado del hero ✅
-- 3 catálogos con teléfonos correctos y Las Dinas controlada ✅
-- config.js pendiente de implementar
-- Navegación mobile pendiente
-- Rediseño visual con hero por categoría pendiente (requiere imágenes)
-- Hero general ("Todos") pendiente — imagen actual no representa todas las marcas
-
-## Ramas
-- main — producción
-- dev — desarrollo activo
-- v1.0-estable — tag del primer estado funcional
-
-## Pendientes priorizados
-1. config.js — centralizar teléfono y visibilidad de marcas
-2. Hero general — imagen que represente las 4 marcas
-3. Navegación mobile
-4. Rediseño hero por categoría (estilo Cagnoli)
-5. Datos de packaging en cards de productos
+## Comandos git frecuentes
+```powershell
+git checkout dev
+git checkout main
+git merge dev
+git push origin main
+git checkout dev -- archivo.html
+```
