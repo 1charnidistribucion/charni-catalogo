@@ -44,29 +44,41 @@ const heroMedia = {
 };
 ```
 
-## Rediseño visual — PENDIENTE IMPLEMENTAR
-- Estética: moderno minimalista, fondo claro
-- Paleta: blanco/gris muy claro de base, acento bordo #8b1538, dorado #c9a961
-- Tipografía: reemplazar fuentes genéricas por algo refinado y legible
-- Cards: más limpias, imagen oval, tag de categoría, nombre, botones de acción
+## Estado actual — post sesión 2
+
+### Implementado en dev (pendiente mergear a main cuando esté probado)
+- Layout rappi-style: scroll vertical + filas horizontales por categoría
 - Filtros de marca sticky (Todos / Don Atilio / Cagnoli / Las Dinas / Vidal)
-- Tabs de subcategoría por marca horizontales y sticky
-- Aplicar a los 3 HTMLs y style.css
+- Fondo general: #d9d2c8 (gris pronunciado cálido)
+- Carrito funcional con envío por WhatsApp
+- Commits: c79ab8c → 49862d7 → bad2bcd
 
-## Sistema de pedido acumulado — PENDIENTE IMPLEMENTAR
-- Botón "+" en cada card para agregar al pedido
-- Barra flotante que aparece cuando hay productos, muestra cantidad y nombres
-- Panel de revisión con lista de productos y opción de eliminar
-- Vista previa del mensaje antes de enviar
-- Botón "Enviar pedido por WhatsApp" (verde #25D366)
+### Próxima sesión — prioridad
+- Replicar cambios de index.html + app.js + style.css en catalogo_gc.html y catalogo_cagnoli.html
+- catalogo_cagnoli.html: Las Dinas oculta (ya era así antes)
 
-## Precios — estrategia definida, PENDIENTE IMPLEMENTAR
-- No mostrar precios públicamente por ahora
-- Estrategia futura: Google Sheets + URL con parámetro por cliente
-- Ejemplo: charni-catalogo.github.io/?cliente=supermercado_lopez
+## Backlog de mejoras
 
-## Próxima sesión
-- Peso aproximado por unidad y unidades por caja en products.js
+### Hero
+- Hero general: mantener Variante A con logo CHARNI Distribución
+- Hero por marca: foto fija + PNG del logo de cada marca superpuesto
+  - Logos PNG pendientes de conseguir (Don Atilio, Cagnoli, Las Dinas, Vidal)
+  - Fotos de fondo: usar las existentes en img/heroes/ (reemplazar en sesión futura)
+  - Cagnoli y Las Dinas: simplificar de rotante a foto fija cuando se implemente
+
+### Imágenes de producto
+- Cards con imagen oval: ampliar campo visual del contenedor (más ancho, más presencia)
+
+### Last Shot / Producto de la semana
+- Card destacada en pantalla inicio con producto rotable desde config.js
+- Versión futura: conectar a Google Sheets para rotación sin tocar código
+
+### Precios por cliente
+- No mostrar precios públicamente
+- Estrategia: Google Sheets + parámetro URL (?cliente=nombre)
+
+### Peso y unidades
+- Agregar peso aproximado por unidad y unidades por caja en products.js
 
 ## Reglas de trabajo
 - SIEMPRE leer este archivo antes de cualquier cambio
