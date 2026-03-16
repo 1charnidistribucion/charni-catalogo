@@ -3,7 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CHARNI Distribución - Catálogo Completo</title>
+<title>CHARNI Distribución - Catálogo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -29,100 +32,16 @@
 <h2>Catálogo de Productos</h2>
 <p>Embutidos y Quesos de Primera Calidad</p>
 </div>
-<div class="container">
-<div class="filters">
-<button class="filter-btn active" onclick="filterBrand('all')">Todos</button>
-<button class="filter-btn" onclick="filterBrand('donatilio')">Don Atilio</button>
-<button class="filter-btn" onclick="filterBrand('cagnoli')">Cagnoli</button>
-<button class="filter-btn" onclick="filterBrand('lasdinas')" style="display:none">Las Dinas</button>
-<button class="filter-btn" onclick="filterBrand('vidal')">Lácteos Vidal</button>
+<div class="filters-wrapper">
+<div class="filters-inner">
+<button class="filter-btn active" onclick="filterBrand('all', this)">Todos</button>
+<button class="filter-btn" onclick="filterBrand('donatilio', this)">Don Atilio</button>
+<button class="filter-btn" onclick="filterBrand('cagnoli', this)">Cagnoli</button>
+<button class="filter-btn" style="display:none" onclick="filterBrand('lasdinas', this)">Las Dinas</button>
+<button class="filter-btn" onclick="filterBrand('vidal', this)">Lácteos Vidal</button>
 </div>
 </div>
-<main class="container">
-<section class="brand-section" data-brand="donatilio">
-<div class="brand-header">
-<h2>DON ATILIO</h2>
-<p>Quesos Artesanales de Excelencia</p>
-</div>
-<div class="category">
-<h3 class="category-title">Quesos Duros</h3>
-<div class="products-grid" id="duros"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Quesos Semiduros</h3>
-<div class="products-grid" id="semiduros"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Quesos Blandos</h3>
-<div class="products-grid" id="blandos"></div>
-</div>
-</section>
-<section class="brand-section" data-brand="cagnoli">
-<div class="brand-header">
-<h2>CAGNOLI</h2>
-<p>Embutidos de Tradición y Calidad</p>
-</div>
-<div class="category">
-<h3 class="category-title">Salamines</h3>
-<div class="products-grid" id="salamines"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Bastones (800g)</h3>
-<div class="products-grid" id="bastones"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Bastones Condimentados (800g)</h3>
-<div class="products-grid" id="bastones-cond"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Línea Envasados ATM</h3>
-<div class="products-grid" id="atm"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Jamones y Cocidos</h3>
-<div class="products-grid" id="jamones"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Alta Maduración</h3>
-<div class="products-grid" id="alta-mad"></div>
-</div>
-</section>
-<section class="brand-section" data-brand="lasdinas" style="display:none">
-<div class="brand-header">
-<h2>LAS DINAS</h2>
-<p>Chacinados de Tandil con Vuelo</p>
-</div>
-<div class="category">
-<h3 class="category-title">Piezas Crudas</h3>
-<div class="products-grid" id="ld-crudas"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Piezas Cocidas</h3>
-<div class="products-grid" id="ld-cocidas"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Embutidos Especiales</h3>
-<div class="products-grid" id="ld-especiales"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Ahumados en Frío</h3>
-<div class="products-grid" id="ld-frio"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Ahumados en Caliente</h3>
-<div class="products-grid" id="ld-caliente"></div>
-</div>
-</section>
-<section class="brand-section" data-brand="vidal">
-<div class="brand-header">
-<h2>LÁCTEOS VIDAL</h2>
-<p>Productos Lácteos de Calidad</p>
-</div>
-<div class="category">
-<h3 class="category-title">Productos Lácteos</h3>
-<div class="products-grid" id="vidal-lacteos"></div>
-</div>
-</section>
+<main class="container" id="catalogo-main">
 </main>
 <div class="modal" id="cartModal">
 <div class="modal-content">
@@ -142,7 +61,10 @@
 </a>
 <script src="products.js"></script>
 <script src="config.js"></script>
-<script>window.WA_PHONE='5492494544945';</script>
+<script>
+window.WA_PHONE='5492494544945';
+window.HIDDEN_BRANDS=['lasdinas'];
+</script>
 <script src="app.js"></script>
 </body>
 </html>

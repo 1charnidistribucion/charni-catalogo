@@ -67,7 +67,8 @@ function playNextDinasImg(){
 function renderCatalogo(brand){
   const main=document.getElementById('catalogo-main');
   main.innerHTML='';
-  const marcas=brand==='all'?Object.keys(brandSections):[brand];
+  const hidden=window.HIDDEN_BRANDS||[];
+  const marcas=brand==='all'?Object.keys(brandSections).filter(m=>!hidden.includes(m)):[brand];
   marcas.forEach(marca=>{
     const secciones=brandSections[marca];
     secciones.forEach(sec=>{
