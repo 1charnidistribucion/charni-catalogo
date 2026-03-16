@@ -32,100 +32,60 @@
 <h2>Catálogo de Productos</h2>
 <p>Embutidos y Quesos de Primera Calidad</p>
 </div>
-<div class="filters-wrapper">
-<div class="filters-inner">
-<button class="filter-btn active" onclick="filterBrand('all')">Todos</button>
-<button class="filter-btn" onclick="filterBrand('donatilio')">Don Atilio</button>
-<button class="filter-btn" onclick="filterBrand('cagnoli')">Cagnoli</button>
-<button class="filter-btn" onclick="filterBrand('lasdinas')">Las Dinas</button>
-<button class="filter-btn" onclick="filterBrand('vidal')">Lácteos Vidal</button>
-</div>
-</div>
 <main class="container">
-<section class="brand-section" data-brand="donatilio">
-<div class="brand-header">
-<h2>DON ATILIO</h2>
-<p>Quesos Artesanales de Excelencia</p>
+
+<!-- PANTALLA 1: Grilla de marcas -->
+<div id="screen-marcas" class="screen-marcas">
+  <div class="marcas-grid">
+    <button class="marca-card" onclick="irACategorias('donatilio')">
+      <div class="marca-card-inner">
+        <div class="marca-initial" style="background:#fdf0e0;color:#8b5e1a">DA</div>
+        <div class="marca-card-name">Don Atilio</div>
+        <div class="marca-card-sub">Quesos</div>
+      </div>
+    </button>
+    <button class="marca-card" onclick="irACategorias('cagnoli')">
+      <div class="marca-card-inner">
+        <div class="marca-initial" style="background:#e8f0fd;color:#1a3a8b">CA</div>
+        <div class="marca-card-name">Cagnoli</div>
+        <div class="marca-card-sub">Fiambres</div>
+      </div>
+    </button>
+    <button class="marca-card" onclick="irACategorias('lasdinas')">
+      <div class="marca-card-inner">
+        <div class="marca-initial" style="background:#fdf5f7;color:#8b1538">LD</div>
+        <div class="marca-card-name">Las Dinas</div>
+        <div class="marca-card-sub">Artesanal · Tandil</div>
+      </div>
+    </button>
+    <button class="marca-card" onclick="irACategorias('vidal')">
+      <div class="marca-card-inner">
+        <div class="marca-initial" style="background:#edf7ed;color:#1a6b2a">VI</div>
+        <div class="marca-card-name">Lácteos Vidal</div>
+        <div class="marca-card-sub">Lácteos</div>
+      </div>
+    </button>
+  </div>
 </div>
-<div class="category">
-<h3 class="category-title">Quesos Duros</h3>
-<div class="products-grid" id="duros"></div>
+
+<!-- PANTALLA 2: Categorías de marca -->
+<div id="screen-categorias" class="screen-categorias hidden">
+  <div class="screen-header">
+    <button class="back-btn" onclick="volverAMarcas()">← Volver</button>
+    <span class="screen-header-title" id="categorias-titulo"></span>
+  </div>
+  <div class="categorias-grid" id="categorias-grid"></div>
 </div>
-<div class="category">
-<h3 class="category-title">Quesos Semiduros</h3>
-<div class="products-grid" id="semiduros"></div>
+
+<!-- PANTALLA 3: Productos -->
+<div id="screen-productos" class="hidden">
+  <div class="screen-header">
+    <button class="back-btn" onclick="volverACategorias()">← Volver</button>
+    <span class="screen-header-title" id="productos-titulo"></span>
+  </div>
+  <div class="products-grid" id="screen-productos-grid"></div>
 </div>
-<div class="category">
-<h3 class="category-title">Quesos Blandos</h3>
-<div class="products-grid" id="blandos"></div>
-</div>
-</section>
-<section class="brand-section" data-brand="cagnoli">
-<div class="brand-header">
-<h2>CAGNOLI</h2>
-<p>Embutidos de Tradición y Calidad</p>
-</div>
-<div class="category">
-<h3 class="category-title">Salamines</h3>
-<div class="products-grid" id="salamines"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Bastones (800g)</h3>
-<div class="products-grid" id="bastones"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Bastones Condimentados (800g)</h3>
-<div class="products-grid" id="bastones-cond"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Línea Envasados ATM</h3>
-<div class="products-grid" id="atm"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Jamones y Cocidos</h3>
-<div class="products-grid" id="jamones"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Alta Maduración</h3>
-<div class="products-grid" id="alta-mad"></div>
-</div>
-</section>
-<section class="brand-section" data-brand="lasdinas">
-<div class="brand-header">
-<h2>LAS DINAS</h2>
-<p>Chacinados de Tandil con Vuelo</p>
-</div>
-<div class="category">
-<h3 class="category-title">Piezas Crudas</h3>
-<div class="products-grid" id="ld-crudas"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Piezas Cocidas</h3>
-<div class="products-grid" id="ld-cocidas"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Embutidos Especiales</h3>
-<div class="products-grid" id="ld-especiales"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Ahumados en Frío</h3>
-<div class="products-grid" id="ld-frio"></div>
-</div>
-<div class="category">
-<h3 class="category-title">Ahumados en Caliente</h3>
-<div class="products-grid" id="ld-caliente"></div>
-</div>
-</section>
-<section class="brand-section" data-brand="vidal">
-<div class="brand-header">
-<h2>LÁCTEOS VIDAL</h2>
-<p>Productos Lácteos de Calidad</p>
-</div>
-<div class="category">
-<h3 class="category-title">Productos Lácteos</h3>
-<div class="products-grid" id="vidal-lacteos"></div>
-</div>
-</section>
+
 </main>
 <div class="modal" id="cartModal">
 <div class="modal-content">
