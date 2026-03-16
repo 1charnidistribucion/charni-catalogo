@@ -32,60 +32,16 @@
 <h2>Catálogo de Productos</h2>
 <p>Embutidos y Quesos de Primera Calidad</p>
 </div>
-<main class="container">
-
-<!-- PANTALLA 1: Grilla de marcas -->
-<div id="screen-marcas" class="screen-marcas">
-  <div class="marcas-grid">
-    <button class="marca-card" onclick="irACategorias('donatilio')">
-      <div class="marca-card-inner">
-        <div class="marca-initial" style="background:#fdf0e0;color:#8b5e1a">DA</div>
-        <div class="marca-card-name">Don Atilio</div>
-        <div class="marca-card-sub">Quesos</div>
-      </div>
-    </button>
-    <button class="marca-card" onclick="irACategorias('cagnoli')">
-      <div class="marca-card-inner">
-        <div class="marca-initial" style="background:#e8f0fd;color:#1a3a8b">CA</div>
-        <div class="marca-card-name">Cagnoli</div>
-        <div class="marca-card-sub">Fiambres</div>
-      </div>
-    </button>
-    <button class="marca-card" onclick="irACategorias('lasdinas')">
-      <div class="marca-card-inner">
-        <div class="marca-initial" style="background:#fdf5f7;color:#8b1538">LD</div>
-        <div class="marca-card-name">Las Dinas</div>
-        <div class="marca-card-sub">Artesanal · Tandil</div>
-      </div>
-    </button>
-    <button class="marca-card" onclick="irACategorias('vidal')">
-      <div class="marca-card-inner">
-        <div class="marca-initial" style="background:#edf7ed;color:#1a6b2a">VI</div>
-        <div class="marca-card-name">Lácteos Vidal</div>
-        <div class="marca-card-sub">Lácteos</div>
-      </div>
-    </button>
-  </div>
+<div class="filters-wrapper">
+<div class="filters-inner">
+<button class="filter-btn active" onclick="filterBrand('all', this)">Todos</button>
+<button class="filter-btn" onclick="filterBrand('donatilio', this)">Don Atilio</button>
+<button class="filter-btn" onclick="filterBrand('cagnoli', this)">Cagnoli</button>
+<button class="filter-btn" onclick="filterBrand('lasdinas', this)">Las Dinas</button>
+<button class="filter-btn" onclick="filterBrand('vidal', this)">Lácteos Vidal</button>
 </div>
-
-<!-- PANTALLA 2: Categorías de marca -->
-<div id="screen-categorias" class="screen-categorias hidden">
-  <div class="screen-header">
-    <button class="back-btn" onclick="volverAMarcas()">← Volver</button>
-    <span class="screen-header-title" id="categorias-titulo"></span>
-  </div>
-  <div class="categorias-grid" id="categorias-grid"></div>
 </div>
-
-<!-- PANTALLA 3: Productos -->
-<div id="screen-productos" class="hidden">
-  <div class="screen-header">
-    <button class="back-btn" onclick="volverACategorias()">← Volver</button>
-    <span class="screen-header-title" id="productos-titulo"></span>
-  </div>
-  <div class="products-grid" id="screen-productos-grid"></div>
-</div>
-
+<main class="container" id="catalogo-main">
 </main>
 <div class="modal" id="cartModal">
 <div class="modal-content">
