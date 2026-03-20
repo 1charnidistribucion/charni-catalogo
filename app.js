@@ -85,7 +85,7 @@ function renderCatalogo(brand){
       row.className='cat-row';
       prods.forEach(p=>{
         const card=document.createElement('div');
-        card.className='cat-card';
+        card.className='cat-card cat-card--'+marca;
         const pname=p.name.replace(/'/g,"\\'");
         let imgHtml;
         if(p.img){
