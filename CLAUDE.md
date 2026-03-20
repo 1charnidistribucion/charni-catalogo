@@ -87,6 +87,9 @@ const heroMedia = {
 - Para conflictos de merge: `git checkout dev -- archivo.html`
 - Al iniciar sesión confirmar: catálogos existentes, teléfonos, rama activa
 
+## Estilo de trabajo
+- Cuando se pida ver un archivo: ejecutar `cat -n archivo | cat` y pegar el output completo en el chat, nunca resumir ni colapsar
+
 ## Comandos git frecuentes
 ```powershell
 git checkout dev
