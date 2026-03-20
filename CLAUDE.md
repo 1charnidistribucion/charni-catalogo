@@ -80,6 +80,11 @@ const heroMedia = {
 ### Peso y unidades
 - Agregar peso aproximado por unidad y unidades por caja en products.js
 
+### Cards Don Atilio — próxima sesión
+- Las imágenes son horizontales en cards verticales → producto se ve pequeño
+- Opciones a explorar: cards más anchas para Don Atilio, o crop cuadrado de las fotos, o layout diferente para quesos
+- No tocar hasta tener una propuesta visual aprobada
+
 ## Reglas de trabajo
 - SIEMPRE leer este archivo antes de cualquier cambio
 - SIEMPRE trabajar en rama dev, mergear a main cuando esté probado
