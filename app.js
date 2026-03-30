@@ -97,7 +97,7 @@ function renderCatalogo(brand){
         let precioHtml='';
         if(showPrices&&p.precio){
           const unidad=p.cat==='Envasado ATM'?'/u':'/kg';
-          const fmt=n=>'+Math.round(n).toLocaleString('es-AR');
+          const fmt=n=>`$${Math.round(n).toLocaleString('es-AR')}`;
           if(p.precioOferta){
             precioHtml=`<div class="cat-precio-lista">${fmt(p.precio)}${unidad}</div><div class="cat-precio-oferta">${fmt(p.precioOferta)}${unidad}</div>`;
           }else{
