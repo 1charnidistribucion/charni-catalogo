@@ -67,6 +67,7 @@ function playNextDinasImg(){
 function renderCatalogo(brand){
   const main=document.getElementById('catalogo-main');
   main.innerHTML='';
+  const showPrices=window.SHOW_PRICES===true;
   const hidden=window.HIDDEN_BRANDS||[];
   const marcas=brand==='all'?Object.keys(brandSections).filter(m=>!hidden.includes(m)):[brand];
   marcas.forEach(marca=>{
@@ -86,14 +87,32 @@ function renderCatalogo(brand){
       prods.forEach(p=>{
         const card=document.createElement('div');
         card.className='cat-card cat-card--'+marca;
-        const pname=p.name.replace(/'/g,"\\'");
+        const pname=p.name.replace(/'/g,"\'");
         let imgHtml;
         if(p.img){
-          imgHtml=`<div class="cat-card-img"><img src="${baseUrl}${p.img}.jpg" alt="${p.name}" loading="lazy"></div>`;
+          imgHtml=`<div class="cat-card-img">${p.descuento&&showPrices?`<div class="cat-badge">${p.descuento}</div>`:''}<img src="${baseUrl}${p.img}.jpg" alt="${p.name}" loading="lazy"></div>`;
         }else{
           imgHtml=`<div class="cat-card-img cat-card-img-empty"><span>Próx.</span></div>`;
         }
-        card.innerHTML=`${imgHtml}<div class="cat-card-info"><div class="cat-card-name">${p.name}</div><button class="cat-card-btn" onclick="addToCart('${pname}')">+ Agregar</button></div>`;
+        let precioHtml='';
+        if(showPrices&&p.precio){
+          const unidad=p.cat==='Envasado ATM'?'/u':'/kg';
+          const fmt=n=>'+Math.round(n).toLocaleString('es-AR');
+          if(p.precioOferta){
+            precioHtml=`<div class="cat-precio-lista">${fmt(p.precio)}${unidad}</div><div class="cat-precio-oferta">${fmt(p.precioOferta)}${unidad}</div>`;
+          }else{
+            precioHtml=`<div class="cat-precio-oferta">${fmt(p.precio)}${unidad}</div>`;
+          }
+        }
+        let detalleHtml='';
+        if(p.peso||p.unidades){
+          const partes=[];
+          if(p.peso)partes.push(p.peso);
+          if(p.unidades)partes.push(p.unidades);
+          detalleHtml=`<div class="cat-detalle">${partes.join(' · ')}</div>`;
+        }
+        let notaHtml=p.notaVenta&&showPrices?`<div class="cat-nota">⚠️ ${p.notaVenta}</div>`:'';
+        card.innerHTML=`${imgHtml}<div class="cat-card-info"><div class="cat-card-name">${p.name}</div>${detalleHtml}${precioHtml}${notaHtml}<button class="cat-card-btn" onclick="addToCart('${pname}')">+ Agregar</button></div>`;
         row.appendChild(card);
       });
       secDiv.appendChild(row);
@@ -101,7 +120,6 @@ function renderCatalogo(brand){
     });
   });
 }
-
 function filterBrand(brand,btn){
   currentBrand=brand;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));

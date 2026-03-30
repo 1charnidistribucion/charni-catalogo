@@ -570,6 +570,43 @@ body{
 }
 .cat-card-btn:hover{background:var(--bordo-claro)}
 
+/* ── PRECIOS Y DETALLES ── */
+.cat-badge{
+  position:absolute;top:8px;left:8px;
+  background:var(--bordo);
+  color:#fff;
+  font-size:9px;font-weight:700;
+  padding:3px 8px;
+  border-radius:6px;
+  z-index:2;
+}
+.cat-detalle{
+  font-size:9px;
+  color:var(--texto-muy-suave);
+  margin-bottom:4px;
+  line-height:1.4;
+}
+.cat-precio-lista{
+  font-size:9px;
+  color:var(--texto-muy-suave);
+  text-decoration:line-through;
+  margin-bottom:1px;
+}
+.cat-precio-oferta{
+  font-size:14px;font-weight:700;
+  color:var(--bordo);
+  margin-bottom:4px;
+}
+.cat-nota{
+  font-size:9px;
+  color:#856404;
+  background:#fff3cd;
+  border-radius:4px;
+  padding:3px 6px;
+  margin-bottom:6px;
+  line-height:1.4;
+}
+
 /* ── CARDS POR MARCA ── */
 .cat-card--donatilio .cat-card-img{
   height:150px;
