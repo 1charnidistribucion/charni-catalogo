@@ -1,5 +1,10 @@
 # CHARNI Distribución — Catálogo Digital
 
+## ⚠️ INSTRUCCIÓN CRÍTICA — LEER ANTES DE CUALQUIER ACCIÓN
+NUNCA resumir outputs de archivos. SIEMPRE mostrar el contenido completo.
+Para ver archivos usar SIEMPRE: `type "$TEMP\charni-catalogo\archivo"` en Windows.
+Pegar el output completo en el chat sin colapsar ni resumir bajo ninguna circunstancia.
+
 ## Contexto del proyecto
 - **Site:** https://1charnidistribucion.github.io/charni-catalogo/
 - **Repo:** https://github.com/1charnidistribucion/charni-catalogo
