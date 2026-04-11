@@ -99,6 +99,7 @@ const heroMedia = {
 
 ## Estilo de trabajo
 - Cuando se pida ver un archivo: ejecutar `cat -n archivo | cat` y pegar el output completo en el chat, nunca resumir ni colapsar
+- En Windows: el Write tool escribe en C:\tmp, no en $TEMP. Para scripts Node.js usar siempre process.env.TEMP para la ruta real. Ejemplo: fs.writeFileSync(process.env.TEMP+'/charni-catalogo/products.js', data)
 
 ## Comandos git frecuentes
 ```powershell
