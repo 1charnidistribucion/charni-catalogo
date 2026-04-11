@@ -2,8 +2,9 @@
 
 ## ⚠️ INSTRUCCIÓN CRÍTICA — LEER ANTES DE CUALQUIER ACCIÓN
 NUNCA resumir outputs de archivos. SIEMPRE mostrar el contenido completo.
-Para ver archivos usar SIEMPRE: `type "$TEMP\charni-catalogo\archivo"` en Windows.
+Para ver archivos en Windows usar: cat -n "$TEMP/charni-catalogo/archivo" | cat
 Pegar el output completo en el chat sin colapsar ni resumir bajo ninguna circunstancia.
+Para escribir archivos JS/HTML con caracteres especiales en Windows, usar Node.js con fs.writeFileSync y process.env.TEMP para la ruta. NUNCA heredoc ni printf con comillas simples.
 
 ## Contexto del proyecto
 - **Site:** https://1charnidistribucion.github.io/charni-catalogo/
@@ -13,99 +14,89 @@ Pegar el output completo en el chat sin colapsar ni resumir bajo ninguna circuns
 - **Tag de seguridad:** v1.0-estable
 
 ## Los tres catálogos
-| Archivo | Operador | Teléfono WA | Las Dinas |
-|---------|----------|-------------|-----------|
-| index.html | Gastón (vendedor) | 5492213188614 | visible |
-| catalogo_gc.html | Gastón Charni (dueño) | 5492494544945 | visible |
-| catalogo_cagnoli.html | Gastón Charni (dueño) | 5492494544945 | oculta |
+| Archivo | Operador | Teléfono WA | Precios | Las Dinas |
+|---------|----------|-------------|---------|----------|
+| index.html | Gastón (vendedor) | 5492213188614 | Sí (SHOW_PRICES=true) | visible |
+| catalogo_gc.html | Gastón Charni (dueño) | 5492494544945 | No | visible |
+| catalogo_cagnoli.html | Gastón Charni (dueño) | 5492494544945 | No | oculta |
 
 ## Arquitectura de archivos
-- `index.html`, `catalogo_gc.html`, `catalogo_cagnoli.html` — un HTML por catálogo
-- `style.css` — estilos compartidos (impacta los 3 catálogos)
-- `products.js` — datos de productos (~103 items)
-- `app.js` — lógica JS. WA se lee de `window.WA_PHONE || '5492213188614'`
-- `config.js` — configuración centralizada. Orden de carga: products.js → config.js → override inline → app.js
-- `img/heroes/` — imágenes de hero
-- `img/heroes/hero_general.webp.webp` — hero "Todos" (doble extensión, así está en repo)
+- index.html, catalogo_gc.html, catalogo_cagnoli.html — un HTML por catálogo
+- style.css — estilos compartidos (impacta los 3 catálogos)
+- products.js — datos de productos (~103 items) con campos: name, cat, img, oval, desc, precio, precioOferta, descuento, peso, unidades, notaVenta
+- app.js — lógica JS. WA se lee de window.WA_PHONE || 5492213188614
+- config.js — configuración centralizada. Orden de carga: products.js → config.js → override inline → app.js
+- img/heroes/ — imágenes de hero
+- img/productos/ — imágenes de productos (IDs de Google Drive)
 
 ## Marcas y categorías
-- **Don Atilio:** Duros, Semiduros (Quesitos Saborizados = 3 variedades en 1 card), Blandos
-- **Cagnoli:** Salamines, Bastones 800g, Bastones Condimentados, ATM, Jamones y Cocidos, Alta Maduración
-- **Las Dinas:** Piezas Crudas, Piezas Cocidas, Embutidos Especiales, Ahumados en Frío, Ahumados en Caliente
-- **Lácteos Vidal:** Productos Lácteos
+- Don Atilio: duros, semiduros, blandos
+- Cagnoli: salamines, bastones, bastones-cond, atm, jamones, alta-mad
+- Las Dinas: ld-crudas, ld-cocidas, ld-especiales, ld-frio, ld-caliente
+- Lácteos Vidal: vidal-lacteos
 
-## Heroes actuales (heroMedia en app.js)
-```javascript
-const heroMedia = {
-  all: 'img/heroes/hero_general.webp.webp',
-  donatilio: 'img/heroes/1HlQaS3OYSmdBeUMas_96dCEJzDbgY1x4.jpg',
-  cagnoli: ['img/heroes/1qBb1EtllIm_31Ieb3kxwa2HuIHsrTIPC.jpg',
-            'img/heroes/1pHMXQBFqnC-jaQFIgkkDlvvbUVOx_hsH.jpg',
-            'img/heroes/1OrN33PqJ7FALNkNf6Q5dEm8ffaLEgzVQ.jpg',
-            'img/heroes/1-48MhyKnYstoXG8zitW1PN9hKncSx1uG.jpg'],
-  lasdinas: ['img/heroes/1RYjiNC9ZPYuGAjL14MQzXC4dryj4-P1P.jpg',
-             'img/heroes/1NbdE92x51--hfyCR3_b8ItFCsBxXDQ38.jpg'],
-  vidal: 'img/heroes/1w0EDmpP3n-pWQCimwTothoY1RTMmqQx9.jpg'
-};
-```
+## Diseño implementado
+- Layout estilo Rappi/PedidosYa: scroll vertical + filas horizontales por categoría
+- Fondo: #d9d2c8 (gris pronunciado cálido)
+- Paleta: bordo #8b1538, dorado #c9a961
+- Tipografía: Playfair Display (títulos) + Inter (cuerpo)
+- Filtros de marca sticky en el header
+- Cards por marca con tratamiento distinto:
+  - Don Atilio: object-fit contain, fondo #f5f0e8, altura 150px
+  - Cagnoli: object-fit contain, fondo #eef1f8, altura 150px
+  - Las Dinas: object-fit cover, fondo #1a1008, altura 160px
+  - Vidal: object-fit contain, fondo #f5f0e8, altura 150px
+- Clase CSS por marca: .cat-card--donatilio, .cat-card--cagnoli, etc.
 
-## Estado actual — post sesión 2
+## Lógica de precios
+- window.SHOW_PRICES=true solo en index.html
+- Campos: precio (lista), precioOferta (con descuento), descuento (texto badge)
+- Precios Don Atilio y Cagnoli: por kg. ATM: por unidad
+- Las Dinas: precio de lista + notaVenta 10% OFF pago efectivo (sin calcular)
+- Badge aparece sobre la foto cuando hay descuento y SHOW_PRICES=true
 
-### Implementado en dev (pendiente mergear a main cuando esté probado)
-- Layout rappi-style: scroll vertical + filas horizontales por categoría
-- Filtros de marca sticky (Todos / Don Atilio / Cagnoli / Las Dinas / Vidal)
-- Fondo general: #d9d2c8 (gris pronunciado cálido)
-- Carrito funcional con envío por WhatsApp
-- Commits: c79ab8c → 49862d7 → bad2bcd
+## Estado actual
+- OK Layout rappi-style en los 3 catálogos
+- OK Precios, descuentos, peso, unidades en cards (solo index.html los muestra)
+- OK Las Dinas con precios 2026 y nota efectivo
+- OK Carrito funcional con envío por WhatsApp
+- PENDIENTE micro-feedback en botón Agregar
+- PENDIENTE mejora general UX/UI
 
-### Próxima sesión — prioridad
-- Replicar cambios de index.html + app.js + style.css en catalogo_gc.html y catalogo_cagnoli.html
-- catalogo_cagnoli.html: Las Dinas oculta (ya era así antes)
+## Backlog
+### Alta prioridad
+- Micro-feedback botón Agregar: verde + tilde 1 segundo al tocar
+- Mejora UX/UI general — sesión dedicada
 
-## Backlog de mejoras
+### Media prioridad
+- Cards Don Atilio: explorar crop cuadrado o layout alternativo
+- Precios por cliente: Google Sheets + parámetro URL
+- Last Shot: producto de la semana desde config.js
 
-### Hero
-- Hero general: mantener Variante A con logo CHARNI Distribución
-- Hero por marca: foto fija + PNG del logo de cada marca superpuesto
-  - Logos PNG pendientes de conseguir (Don Atilio, Cagnoli, Las Dinas, Vidal)
-  - Fotos de fondo: usar las existentes en img/heroes/ (reemplazar en sesión futura)
-  - Cagnoli y Las Dinas: simplificar de rotante a foto fija cuando se implemente
+### Baja prioridad
+- Heroes por marca con logo PNG superpuesto (logos pendientes)
+- Catálogos dinámicos con base de datos de clientes
 
-### Imágenes de producto
-- Cards con imagen oval: ampliar campo visual del contenedor (más ancho, más presencia)
-
-### Last Shot / Producto de la semana
-- Card destacada en pantalla inicio con producto rotable desde config.js
-- Versión futura: conectar a Google Sheets para rotación sin tocar código
-
-### Precios por cliente
-- No mostrar precios públicamente
-- Estrategia: Google Sheets + parámetro URL (?cliente=nombre)
-
-### Peso y unidades
-- Agregar peso aproximado por unidad y unidades por caja en products.js
-
-### Cards Don Atilio — próxima sesión
-- Las imágenes son horizontales en cards verticales → producto se ve pequeño
-- Opciones a explorar: cards más anchas para Don Atilio, o crop cuadrado de las fotos, o layout diferente para quesos
-- No tocar hasta tener una propuesta visual aprobada
+## Reglas de negocio
+- Ofertas semanales: editar campo oferta en products.js, push
+- Cagnoli: Las Dinas oculta via window.HIDDEN_BRANDS=[lasdinas]
+- Precios: NUNCA mostrar en catalogo_gc.html ni catalogo_cagnoli.html
 
 ## Reglas de trabajo
-- SIEMPRE leer este archivo antes de cualquier cambio
-- SIEMPRE trabajar en rama dev, mergear a main cuando esté probado
+- SIEMPRE rama dev, mergear a main cuando esté probado
 - NUNCA inventar datos, teléfonos, nombres o rutas
-- Para conflictos de merge: `git checkout dev -- archivo.html`
-- Al iniciar sesión confirmar: catálogos existentes, teléfonos, rama activa
-
-## Estilo de trabajo
-- Cuando se pida ver un archivo: ejecutar `cat -n archivo | cat` y pegar el output completo en el chat, nunca resumir ni colapsar
-- En Windows: el Write tool escribe en C:\tmp, no en $TEMP. Para scripts Node.js usar siempre process.env.TEMP para la ruta real. Ejemplo: fs.writeFileSync(process.env.TEMP+'/charni-catalogo/products.js', data)
+- Leer archivo completo antes de modificar
+- En Windows: process.env.TEMP es la ruta real, no /tmp
+- Para escribir archivos con caracteres especiales: Node.js con fs.writeFileSync
+- NUNCA resumir outputs — siempre cat -n archivo | cat completo
 
 ## Comandos git frecuentes
-```powershell
 git checkout dev
-git checkout main
-git merge dev
-git push origin main
-git checkout dev -- archivo.html
-```
+git pull origin dev
+git add archivo && git commit -m mensaje && git push origin dev
+
+## Cómo iniciar sesión nueva
+1. Clonar o pull del repo en TEMP
+2. Leer este CLAUDE.md
+3. Confirmar rama activa y último commit
+4. Arrancar con backlog alta prioridad
