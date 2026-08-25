@@ -114,15 +114,20 @@ En products.js el campo `img` contiene solo el nombre sin extensión ni ruta.
 - Lógica de precios en cards: precio lista tachado + precio oferta + badge descuento
 - SHOW_PRICES = true en index.html, false en los otros dos catálogos
 - Precios cargados en products.js para Don Atilio, Vidal y Cagnoli (commit 7f13e67)
+- **(2026-08-25 03:00)** 26 productos nuevos cargados en `products.js` + fotos en `img/productos/` (sin commitear todavía, pendiente que Code revise y commitee):
+  - Vidal (`vidal-lacteos`): Port Salut Sin Sal, Port Salut, Queso Sardo, Queso Provolone, Fontina, Tybo Vidal, Crema de Leche ($11.500/L), Provoleta Parrillera (producto nuevo, no estaba en el backlog: 4kg aprox, $21.300/kg)
+  - Don Atilio (`semiduros`): Cheddar Estilo Inglés, Gouda Pistacho, Gouda Ajo — cargados SIN foto ni precio propio (falta definir precio)
+  - Cagnoli (`salamines`): Chorizo Seco (producto nuevo, no estaba en el backlog: familia salamines, 700g tira x5u, $30.000/kg)
+  - Cagnoli (`jamones`): Mortadela Bocha, Lomo Finas Hierbas, Bondiola Cagnoli
+  - Cagnoli — 3 categorías NUEVAS agregadas a `brandSections.cagnoli` en `app.js`: `feteados`, `congelados`, `envasados` (con sus 3+3+3 productos respectivos). `Chorizo Fresco Puro Cerdo` y `Panceta Ahumada Cocida` quedaron cargados sin foto todavía.
+  - Fix en `app.js`: la unidad de precio (`/u` vs `/kg`) ahora se decide por `sec.id` (agrega `feteados`,`congelados`,`envasados` a la lista de "/u"), antes solo miraba `cat==='Envasado ATM'`
+  - Fotos de reemplazo (mismo nombre de archivo existente, sin cambios en products.js): Manteca Primera, Jamón Crudo Est. 12 meses, Longaniza a la Calabresa, Salamín Ahumado a Tres Leñas — estas dos últimas las identifiqué yo por contexto sin pedir confirmación explícita del usuario antes de aplicarlas, revisar que estén bien.
+  - Caveat conocido: "Crema de Leche" muestra "$11.500/kg" en la UI aunque el precio es por litro (tiene nota "Precio por litro" pero la unidad mostrada está mal) — requiere tocar la lógica de unidades de precio, ligado a la auditoría del carrito de más abajo.
 
 ## Pendiente implementar
 ### Productos nuevos (cards a agregar)
-- Vidal: Fontina, Tybo Vidal, Crema de Leche
-- Don Atilio: Cheddar Estilo Inglés, Gouda Pistacho, Gouda Ajo
-- Cagnoli Feteados: Jamón Cocido Natural, Salame Tandilero Tipo Milán, Bondiola, Jamón Cocido, Panceta Ahumada Cocida
-- Cagnoli Envasados: Leberwurst, Mortadela, Mortadela con Pistacho
-- Cagnoli Jamones: Mortadela Bocha, Lomo Finas Hierbas, Bondiola Cagnoli
-- Cagnoli Congelados: Bondiolitas de Cerdo, Lomitos de Cerdo, Chorizo Fresco
+- Don Atilio: precio de Cheddar Estilo Inglés, Gouda Pistacho, Gouda Ajo (¿mismo precio que "Gouda (todos)"?)
+- Fotos que faltan: Cheddar Estilo Inglés, Gouda Pistacho, Gouda Ajo (Don Atilio), Panceta Ahumada Cocida y Chorizo Fresco Puro Cerdo (Cagnoli)
 
 ### Navegación y UX
 - Subcategorías por marca como tabs horizontales sticky
@@ -132,10 +137,22 @@ En products.js el campo `img` contiene solo el nombre sin extensión ni ruta.
 
 ### Fotos
 - Convención: `marca_producto.jpg` en `img/productos/`
-- Pendiente: subir fotos de productos nuevos cuando estén disponibles
+- Carpeta `a_subir/` (gitignored) para fotos crudas sin curar antes de pasarlas a `img/productos/`
 
 ### Precios por cliente (futuro)
 - Google Sheets + URL con parámetro: `?cliente=nombre`
+
+## Auditoría carrito — pendiente (2026-08-24)
+Revisión técnica de `index.html` + `app.js` orientada al objetivo: que el carrito sirva para cerrar la venta con el comerciante por WhatsApp, no solo consultar. Nada de esto está aplicado todavía, queda como backlog priorizado:
+
+1. El carrito no calcula ni muestra el total — ya hay `precio`/`precioOferta` por producto pero `renderCart()` no los usa. Es el gap más importante para el objetivo de cerrar venta.
+2. Los productos se identifican por `name` (string), no por un ID único — riesgo de colisión si dos productos de marcas distintas comparten nombre exacto (ya hay casos parecidos entre Cagnoli y Las Dinas). Además nombres con `/` pueden romper el `onclick`.
+3. La cantidad en el carrito solo sube de a 1 (no hay input numérico ni botón restar) — lento para pedidos mayoristas.
+4. No se respetan en el carrito los mínimos/unidades de venta (`notaVenta`, ej. "solo x caja cerrada de 10u") — se ven en la card pero se pierden al agregar.
+5. El carrito no persiste (variable en memoria) — se pierde el pedido si se recarga o cierra la pestaña sin enviar.
+6. El mensaje de WhatsApp pide "¿me pasás el total?" pero si `SHOW_PRICES=true` el comerciante ya vio los precios — convendría mandar el detalle con precios/total y cerrar como confirmación de pedido, no como consulta.
+
+Orden sugerido: 1 → 2 → 3, porque el total y el ID único son la base para lo demás. Decisión pendiente del usuario sobre cuándo encarar esto (se está priorizando primero cargar productos/fotos nuevas).
 
 ## Estilo de trabajo — LEER ANTES DE ARRANCAR
 - Respuestas cortas y directas
