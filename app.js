@@ -24,7 +24,10 @@ const brandSections={
     {id:'bastones-cond',title:'Bastones Condimentados'},
     {id:'atm',title:'Línea Envasados ATM'},
     {id:'jamones',title:'Jamones y Cocidos'},
-    {id:'alta-mad',title:'Alta Maduración'}
+    {id:'alta-mad',title:'Alta Maduración'},
+    {id:'feteados',title:'Feteados'},
+    {id:'congelados',title:'Congelados y Para Cocción'},
+    {id:'envasados',title:'Línea Envasados Cagnoli'}
   ],
   lasdinas:[
     {id:'ld-crudas',title:'Piezas Crudas'},
@@ -90,13 +93,13 @@ function renderCatalogo(brand){
         const pname=p.name.replace(/'/g,"\'");
         let imgHtml;
         if(p.img){
-          imgHtml=`<div class="cat-card-img">${p.descuento&&showPrices?`<div class="cat-badge">${p.descuento}</div>`:''}<img src="${baseUrl}${p.img}.jpg" alt="${p.name}" loading="lazy"></div>`;
+          imgHtml=`<div class="cat-card-img">${p.descuento&&showPrices?`<div class="cat-badge">${p.descuento}</div>`:''}<img src="${baseUrl}${p.img}.${p.ext||'jpg'}" alt="${p.name}" loading="lazy"></div>`;
         }else{
           imgHtml=`<div class="cat-card-img cat-card-img-empty"><span>Próx.</span></div>`;
         }
         let precioHtml='';
         if(showPrices&&p.precio){
-          const unidad=p.cat==='Envasado ATM'?'/u':'/kg';
+          const unidad=['atm','feteados','congelados','envasados'].includes(sec.id)?'/u':'/kg';
           const fmt=n=>`$${Math.round(n).toLocaleString('es-AR')}`;
           if(p.precioOferta){
             precioHtml=`<div class="cat-precio-lista">${fmt(p.precio)}${unidad}</div><div class="cat-precio-oferta">${fmt(p.precioOferta)}${unidad}</div>`;
