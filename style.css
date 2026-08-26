@@ -513,6 +513,32 @@ body{
   scrollbar-width:none;
 }
 .cat-row::-webkit-scrollbar{display:none}
+.cat-row-wrap{position:relative}
+.cat-scroll-btn{
+  position:absolute;
+  top:40%;
+  transform:translateY(-50%);
+  width:36px;height:36px;
+  border-radius:50%;
+  border:none;
+  background:rgba(0,0,0,0.55);
+  color:#fff;
+  font-size:20px;
+  line-height:1;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  z-index:5;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.2s,background 0.2s;
+}
+.cat-row-wrap.has-overflow:hover .cat-scroll-btn:not(.cat-scroll-btn--hidden){opacity:1;pointer-events:auto}
+.cat-scroll-btn:hover{background:rgba(0,0,0,0.75)}
+.cat-scroll-left{left:4px}
+.cat-scroll-right{right:4px}
+@media(max-width:768px){
+  .cat-scroll-btn{display:none}
+}
 .cat-card{
   background:var(--card);
   border-radius:12px;

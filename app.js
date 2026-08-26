@@ -85,6 +85,8 @@ function renderCatalogo(brand){
       header.className='cat-seccion-header';
       header.innerHTML=`<span class="cat-seccion-titulo">${sec.title}</span><span class="cat-seccion-marca">${brandNames[marca]}</span>`;
       secDiv.appendChild(header);
+      const rowWrap=document.createElement('div');
+      rowWrap.className='cat-row-wrap';
       const row=document.createElement('div');
       row.className='cat-row';
       prods.forEach(p=>{
@@ -120,9 +122,45 @@ function renderCatalogo(brand){
         card.innerHTML=`${imgHtml}<div class="cat-card-info"><div class="cat-card-name">${p.name}</div>${detalleHtml}${precioHtml}${notaHtml}<button class="cat-card-btn" onclick="addToCart('${pname}')">+ Agregar</button></div>`;
         row.appendChild(card);
       });
-      secDiv.appendChild(row);
+      rowWrap.appendChild(row);
+      const btnLeft=document.createElement('button');
+      btnLeft.className='cat-scroll-btn cat-scroll-left';
+      btnLeft.setAttribute('aria-label','Anterior');
+      btnLeft.textContent='‹';
+      const btnRight=document.createElement('button');
+      btnRight.className='cat-scroll-btn cat-scroll-right';
+      btnRight.setAttribute('aria-label','Siguiente');
+      btnRight.textContent='›';
+      rowWrap.appendChild(btnLeft);
+      rowWrap.appendChild(btnRight);
+      secDiv.appendChild(rowWrap);
       main.appendChild(secDiv);
     });
+  });
+  initRowScrolling();
+}
+
+function initRowScrolling(){
+  document.querySelectorAll('.cat-row-wrap').forEach(wrap=>{
+    const row=wrap.querySelector('.cat-row');
+    const btnL=wrap.querySelector('.cat-scroll-left');
+    const btnR=wrap.querySelector('.cat-scroll-right');
+    function update(){
+      const overflow=row.scrollWidth>row.clientWidth+4;
+      wrap.classList.toggle('has-overflow',overflow);
+      btnL.classList.toggle('cat-scroll-btn--hidden',row.scrollLeft<=4);
+      btnR.classList.toggle('cat-scroll-btn--hidden',row.scrollLeft+row.clientWidth>=row.scrollWidth-4);
+    }
+    row.addEventListener('wheel',e=>{
+      if(row.scrollWidth<=row.clientWidth)return;
+      e.preventDefault();
+      row.scrollLeft+=e.deltaY;
+    },{passive:false});
+    row.addEventListener('scroll',update);
+    btnL.addEventListener('click',()=>row.scrollBy({left:-400,behavior:'smooth'}));
+    btnR.addEventListener('click',()=>row.scrollBy({left:400,behavior:'smooth'}));
+    window.addEventListener('resize',update);
+    update();
   });
 }
 function filterBrand(brand,btn){
