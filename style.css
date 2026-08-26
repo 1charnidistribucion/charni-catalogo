@@ -597,6 +597,11 @@ body{
   color:var(--bordo);
   margin-bottom:4px;
 }
+.cat-precio-pendiente{
+  font-size:11px;font-weight:600;font-style:italic;
+  color:var(--texto-muy-suave);
+  margin-bottom:4px;
+}
 .cat-nota{
   font-size:9px;
   color:#856404;

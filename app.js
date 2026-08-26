@@ -25,9 +25,8 @@ const brandSections={
     {id:'atm',title:'Línea Envasados ATM'},
     {id:'jamones',title:'Jamones y Cocidos'},
     {id:'alta-mad',title:'Alta Maduración'},
-    {id:'feteados',title:'Feteados'},
-    {id:'congelados',title:'Congelados y Para Cocción'},
-    {id:'envasados',title:'Línea Envasados Cagnoli'}
+    {id:['feteados','envasados'],title:'Feteados y Envasados'},
+    {id:'congelados',title:'Congelados y Para Cocción ❄️'}
   ],
   lasdinas:[
     {id:'ld-crudas',title:'Piezas Crudas'},
@@ -76,7 +75,8 @@ function renderCatalogo(brand){
   marcas.forEach(marca=>{
     const secciones=brandSections[marca];
     secciones.forEach(sec=>{
-      const prods=products[sec.id];
+      const secIds=Array.isArray(sec.id)?sec.id:[sec.id];
+      const prods=secIds.flatMap(id=>products[id]||[]);
       if(!prods||prods.length===0)return;
       const secDiv=document.createElement('div');
       secDiv.className='cat-seccion';
@@ -99,13 +99,15 @@ function renderCatalogo(brand){
         }
         let precioHtml='';
         if(showPrices&&p.precio){
-          const unidad=['atm','feteados','congelados','envasados'].includes(sec.id)?'/u':'/kg';
+          const unidad=secIds.some(id=>['atm','feteados','congelados','envasados'].includes(id))?'/u':'/kg';
           const fmt=n=>`$${Math.round(n).toLocaleString('es-AR')}`;
           if(p.precioOferta){
             precioHtml=`<div class="cat-precio-lista">${fmt(p.precio)}${unidad}</div><div class="cat-precio-oferta">${fmt(p.precioOferta)}${unidad}</div>`;
           }else{
             precioHtml=`<div class="cat-precio-oferta">${fmt(p.precio)}${unidad}</div>`;
           }
+        }else if(showPrices){
+          precioHtml=`<div class="cat-precio-pendiente">Próximamente a ingresar</div>`;
         }
         let detalleHtml='';
         if(p.peso||p.unidades){
