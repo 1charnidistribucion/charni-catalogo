@@ -614,25 +614,25 @@ body{
 
 /* ── CARDS POR MARCA ── */
 .cat-card--donatilio .cat-card-img{
-  height:150px;
-  background:#f5f0e8;
+  height:172px;
+  background:#e8ddc9;
 }
 .cat-card--donatilio .cat-card-img img{
   object-fit:contain;
-  padding:8px;
+  padding:5px;
 }
 
 .cat-card--cagnoli .cat-card-img{
-  height:150px;
-  background:#eef1f8;
+  height:172px;
+  background:#dde2ee;
 }
 .cat-card--cagnoli .cat-card-img img{
   object-fit:contain;
-  padding:6px;
+  padding:4px;
 }
 
 .cat-card--lasdinas .cat-card-img{
-  height:160px;
+  height:180px;
   background:#1a1008;
 }
 .cat-card--lasdinas .cat-card-img img{
@@ -641,12 +641,12 @@ body{
 }
 
 .cat-card--vidal .cat-card-img{
-  height:150px;
-  background:#f5f0e8;
+  height:172px;
+  background:#e8ddc9;
 }
 .cat-card--vidal .cat-card-img img{
   object-fit:contain;
-  padding:8px;
+  padding:5px;
 }
 
 /* ── RESPONSIVE ── */
