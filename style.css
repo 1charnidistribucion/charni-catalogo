@@ -518,7 +518,7 @@ body{
   border-radius:12px;
   border:1px solid var(--borde-sutil);
   flex-shrink:0;
-  width:140px;
+  width:190px;
   overflow:hidden;
   box-shadow:0 2px 8px var(--sombra);
   transition:all 0.2s;
@@ -529,7 +529,7 @@ body{
   border-color:var(--bordo);
 }
 .cat-card-img{
-  width:140px;height:110px;
+  width:190px;height:290px;
   overflow:hidden;
   background:var(--fondo);
   display:flex;align-items:center;justify-content:center;
@@ -614,25 +614,25 @@ body{
 
 /* ── CARDS POR MARCA ── */
 .cat-card--donatilio .cat-card-img{
-  height:172px;
+  height:290px;
   background:#e8ddc9;
 }
 .cat-card--donatilio .cat-card-img img{
   object-fit:contain;
-  padding:5px;
+  padding:6px;
 }
 
 .cat-card--cagnoli .cat-card-img{
-  height:172px;
+  height:290px;
   background:#dde2ee;
 }
 .cat-card--cagnoli .cat-card-img img{
   object-fit:contain;
-  padding:4px;
+  padding:5px;
 }
 
 .cat-card--lasdinas .cat-card-img{
-  height:180px;
+  height:290px;
   background:#1a1008;
 }
 .cat-card--lasdinas .cat-card-img img{
@@ -641,17 +641,21 @@ body{
 }
 
 .cat-card--vidal .cat-card-img{
-  height:172px;
+  height:290px;
   background:#e8ddc9;
 }
 .cat-card--vidal .cat-card-img img{
   object-fit:contain;
-  padding:5px;
+  padding:6px;
 }
 
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
-  .cat-card{width:130px}
-  .cat-card-img{width:130px;height:100px}
+  .cat-card{width:145px}
+  .cat-card-img{width:145px;height:210px}
+  .cat-card--donatilio .cat-card-img,
+  .cat-card--cagnoli .cat-card-img,
+  .cat-card--lasdinas .cat-card-img,
+  .cat-card--vidal .cat-card-img{height:210px}
   .cat-seccion-titulo{font-size:12px}
 }
