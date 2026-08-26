@@ -93,7 +93,8 @@ function renderCatalogo(brand){
         const pname=p.name.replace(/'/g,"\'");
         let imgHtml;
         if(p.img){
-          imgHtml=`<div class="cat-card-img">${p.descuento&&showPrices?`<div class="cat-badge">${p.descuento}</div>`:''}<img src="${baseUrl}${p.img}.${p.ext||'jpg'}" alt="${p.name}" loading="lazy"></div>`;
+          const imgBoxClass='cat-card-img'+(p.wide?' cat-card-img-wide':'');
+          imgHtml=`<div class="${imgBoxClass}">${p.descuento&&showPrices?`<div class="cat-badge">${p.descuento}</div>`:''}<img src="${baseUrl}${p.img}.${p.ext||'jpg'}" alt="${p.name}" loading="lazy"></div>`;
         }else{
           imgHtml=`<div class="cat-card-img cat-card-img-empty"><span>Próx.</span></div>`;
         }
@@ -158,5 +159,5 @@ function sendWhatsApp(){
 function openCart(){document.getElementById('cartModal').classList.add('show')}
 function closeCart(){document.getElementById('cartModal').classList.remove('show')}
 
-renderCatalogo('all');
-updateHero('all');
+renderCatalogo('cagnoli');
+updateHero('cagnoli');
