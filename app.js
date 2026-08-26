@@ -144,16 +144,16 @@ function updateCart(){document.getElementById('cartCount').textContent=cart.redu
 function renderCart(){
   const container=document.getElementById('cartItems');
   const actions=document.getElementById('cartActions');
-  if(cart.length===0){container.innerHTML='<div class="cart-empty">Tu carrito está vacío<br>Agregá productos para hacer tu pedido</div>';actions.style.display='none'}
+  if(cart.length===0){container.innerHTML='<div class="cart-empty">Tu consulta está vacía<br>Agregá productos para consultar precio y disponibilidad</div>';actions.style.display='none'}
   else{container.innerHTML=cart.map((item,idx)=>`<div class="cart-item"><div class="cart-item-info"><div class="cart-item-name">${item.name}</div><div class="cart-item-qty">Cantidad: ${item.qty}</div></div><button class="cart-item-remove" onclick="removeFromCart(${idx})">✕</button></div>`).join('');actions.style.display='flex'}
 }
 function removeFromCart(idx){cart.splice(idx,1);updateCart()}
-function clearCart(){if(confirm('¿Vaciar el carrito?')){cart=[];updateCart()}}
+function clearCart(){if(confirm('¿Vaciar la consulta?')){cart=[];updateCart()}}
 function sendWhatsApp(){
   if(cart.length===0)return;
-  let msg='Hola! Quiero hacer un pedido:\n\n';
+  let msg='Hola! Quiero consultar por estos productos:\n\n';
   cart.forEach(i=>msg+=`• ${i.name} x ${i.qty}\n`);
-  msg+='\n¿Me pasás el total?';
+  msg+='\n¿Me confirmás precio y disponibilidad?';
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank');
 }
 function openCart(){document.getElementById('cartModal').classList.add('show')}
