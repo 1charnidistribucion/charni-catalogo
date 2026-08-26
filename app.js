@@ -1,5 +1,9 @@
 const WA=window.WA_PHONE||'5492213188614';
 let cart=[];
+try{
+  const savedCart=localStorage.getItem('charni_cart');
+  if(savedCart)cart=JSON.parse(savedCart);
+}catch(e){}
 const heroMedia={
   all:'img/heroes/hero_general.webp.webp',
   donatilio:'img/heroes/1HlQaS3OYSmdBeUMas_96dCEJzDbgY1x4.jpg',
@@ -8,6 +12,7 @@ const heroMedia={
   vidal:'img/heroes/1w0EDmpP3n-pWQCimwTothoY1RTMmqQx9.jpg'
 };
 let currentBrand='all';
+let searchTerm='';
 let cagnoliImgIndex=0;
 let dinasImgIndex=0;
 let imgInterval=null;
@@ -41,6 +46,9 @@ const brandSections={
 };
 
 const brandNames={donatilio:'Don Atilio',cagnoli:'Cagnoli',lasdinas:'Las Dinas',vidal:'Lácteos Vidal'};
+function normalizeText(s){
+  return (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+}
 const baseUrl='https://1charnidistribucion.github.io/charni-catalogo/img/productos/';
 
 function updateHero(brand){
@@ -72,12 +80,16 @@ function renderCatalogo(brand){
   const showPrices=window.SHOW_PRICES===true;
   const hidden=window.HIDDEN_BRANDS||[];
   const marcas=brand==='all'?Object.keys(brandSections).filter(m=>!hidden.includes(m)):[brand];
+  const term=normalizeText(searchTerm.trim());
+  let totalRendered=0;
   marcas.forEach(marca=>{
     const secciones=brandSections[marca];
     secciones.forEach(sec=>{
       const secIds=Array.isArray(sec.id)?sec.id:[sec.id];
-      const prods=secIds.flatMap(id=>products[id]||[]);
+      let prods=secIds.flatMap(id=>products[id]||[]);
+      if(term)prods=prods.filter(p=>normalizeText(p.name).includes(term));
       if(!prods||prods.length===0)return;
+      totalRendered+=prods.length;
       const secDiv=document.createElement('div');
       secDiv.className='cat-seccion';
       secDiv.dataset.brand=marca;
@@ -110,6 +122,7 @@ function renderCatalogo(brand){
         }else if(showPrices){
           precioHtml=`<div class="cat-precio-pendiente">Próximamente a ingresar</div>`;
         }
+        let descHtml=p.desc?`<div class="cat-desc">${p.desc}</div>`:'';
         let detalleHtml='';
         if(p.peso||p.unidades){
           const partes=[];
@@ -118,14 +131,80 @@ function renderCatalogo(brand){
           detalleHtml=`<div class="cat-detalle">${partes.join(' · ')}</div>`;
         }
         let notaHtml=p.notaVenta&&showPrices?`<div class="cat-nota">⚠️ ${p.notaVenta}</div>`:'';
-        card.innerHTML=`${imgHtml}<div class="cat-card-info"><div class="cat-card-name">${p.name}</div>${detalleHtml}${precioHtml}${notaHtml}<button class="cat-card-btn" onclick="addToCart('${pname}')">+ Agregar</button></div>`;
+        card.innerHTML=`${imgHtml}<div class="cat-card-info"><div class="cat-card-name">${p.name}</div>${descHtml}${detalleHtml}${precioHtml}${notaHtml}<button class="cat-card-btn" onclick="handleAddClick(this,'${pname}')">+ Agregar</button></div>`;
         row.appendChild(card);
       });
       secDiv.appendChild(row);
       main.appendChild(secDiv);
     });
   });
+  if(term&&totalRendered===0){
+    main.innerHTML=`<div class="cat-sin-resultados">No encontramos productos que coincidan con "<strong>${searchTerm}</strong>".<br>Probá con otra palabra o borrá la búsqueda.</div>`;
+  }
+  buildQuickNav();
+  initScrollReveal();
 }
+
+function buildQuickNav(){
+  const nav=document.getElementById('quickNav');
+  if(!nav)return;
+  const headers=[...document.querySelectorAll('.cat-seccion-titulo')];
+  if(headers.length<=1){nav.innerHTML='';nav.classList.remove('show');return;}
+  nav.classList.add('show');
+  nav.innerHTML=headers.map((h,i)=>{
+    const id='sec-'+i;
+    h.closest('.cat-seccion').id=id;
+    return `<button class="quicknav-pill" onclick="scrollToSection('${id}')">${h.textContent}</button>`;
+  }).join('');
+}
+
+function scrollToSection(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  const y=el.getBoundingClientRect().top+window.scrollY-150;
+  window.scrollTo({top:y,behavior:'smooth'});
+}
+
+let revealPending=[];
+let revealListenerAttached=false;
+function checkRevealPending(){
+  if(!revealPending.length)return;
+  const vh=window.innerHeight||document.documentElement.clientHeight;
+  revealPending=revealPending.filter(c=>{
+    if(!c.isConnected)return false;
+    const r=c.getBoundingClientRect();
+    if(r.top<vh+150&&r.bottom>-150){
+      c.classList.add('reveal-visible');
+      return false;
+    }
+    return true;
+  });
+}
+function initScrollReveal(){
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  const cards=[...document.querySelectorAll('.cat-card:not(.reveal-init)')];
+  if(!cards.length)return;
+  cards.forEach(c=>c.classList.add('reveal','reveal-init'));
+  revealPending.push(...cards);
+  checkRevealPending();
+  if(!revealListenerAttached){
+    revealListenerAttached=true;
+    let ticking=false;
+    const onScroll=()=>{
+      if(ticking)return;
+      ticking=true;
+      requestAnimationFrame(()=>{checkRevealPending();ticking=false;});
+    };
+    window.addEventListener('scroll',onScroll,{passive:true});
+    window.addEventListener('resize',onScroll);
+  }
+}
+
+function onSearchInput(value){
+  searchTerm=value;
+  renderCatalogo(currentBrand);
+}
+
 function filterBrand(brand,btn){
   currentBrand=brand;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
@@ -135,18 +214,78 @@ function filterBrand(brand,btn){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+function findProductByName(name){
+  for(const key in products){
+    const found=products[key].find(p=>p.name===name);
+    if(found)return found;
+  }
+  return null;
+}
+
+function handleAddClick(btn,prod){
+  addToCart(prod);
+  const original=btn.textContent;
+  btn.textContent='✓ Agregado';
+  btn.classList.add('added');
+  btn.disabled=true;
+  setTimeout(()=>{btn.textContent=original;btn.classList.remove('added');btn.disabled=false},900);
+  bumpCartBadge();
+}
+
+function bumpCartBadge(){
+  const badge=document.getElementById('cartCount');
+  if(!badge)return;
+  badge.classList.remove('bump');
+  void badge.offsetWidth;
+  badge.classList.add('bump');
+}
+
 function addToCart(prod){
   const existing=cart.find(i=>i.name===prod);
   if(existing){existing.qty++}else{cart.push({name:prod,qty:1})}
   updateCart();
 }
-function updateCart(){document.getElementById('cartCount').textContent=cart.reduce((sum,i)=>sum+i.qty,0);renderCart()}
+function saveCart(){
+  try{localStorage.setItem('charni_cart',JSON.stringify(cart));}catch(e){}
+}
+function updateCart(){
+  saveCart();
+  document.getElementById('cartCount').textContent=cart.reduce((sum,i)=>sum+i.qty,0);
+  renderCart();
+}
 function renderCart(){
   const container=document.getElementById('cartItems');
   const actions=document.getElementById('cartActions');
-  if(cart.length===0){container.innerHTML='<div class="cart-empty">Tu consulta está vacía<br>Agregá productos para consultar precio y disponibilidad</div>';actions.style.display='none'}
-  else{container.innerHTML=cart.map((item,idx)=>`<div class="cart-item"><div class="cart-item-info"><div class="cart-item-name">${item.name}</div><div class="cart-item-qty">Cantidad: ${item.qty}</div></div><button class="cart-item-remove" onclick="removeFromCart(${idx})">✕</button></div>`).join('');actions.style.display='flex'}
+  const subtotalEl=document.getElementById('cartSubtotal');
+  if(cart.length===0){
+    container.innerHTML='<div class="cart-empty">Tu consulta está vacía<br>Agregá productos para consultar precio y disponibilidad</div>';
+    actions.style.display='none';
+    if(subtotalEl)subtotalEl.innerHTML='';
+    return;
+  }
+  container.innerHTML=cart.map((item,idx)=>`<div class="cart-item"><div class="cart-item-info"><div class="cart-item-name">${item.name}</div><div class="cart-item-qty-controls"><button class="qty-btn" onclick="decQty(${idx})" aria-label="Restar unidad">−</button><span class="qty-value">${item.qty}</span><button class="qty-btn" onclick="incQty(${idx})" aria-label="Sumar unidad">+</button></div></div><button class="cart-item-remove" onclick="removeFromCart(${idx})">✕</button></div>`).join('');
+  actions.style.display='flex';
+  if(subtotalEl){
+    if(window.SHOW_PRICES===true){
+      let subtotal=0,hasUnknown=false;
+      cart.forEach(item=>{
+        const p=findProductByName(item.name);
+        const price=p?(p.precioOferta||p.precio):null;
+        if(price){subtotal+=price*item.qty}else{hasUnknown=true}
+      });
+      if(subtotal>0){
+        const fmt=n=>`$${Math.round(n).toLocaleString('es-AR')}`;
+        subtotalEl.innerHTML=`<div class="cart-subtotal">Estimado: ${fmt(subtotal)}${hasUnknown?' + productos a confirmar':''}<span class="cart-subtotal-note">a confirmar con tu vendedor</span></div>`;
+      }else{
+        subtotalEl.innerHTML=`<div class="cart-subtotal">Precio a confirmar con tu vendedor</div>`;
+      }
+    }else{
+      subtotalEl.innerHTML='';
+    }
+  }
 }
+function incQty(idx){cart[idx].qty++;updateCart()}
+function decQty(idx){cart[idx].qty--;if(cart[idx].qty<=0){cart.splice(idx,1)}updateCart()}
 function removeFromCart(idx){cart.splice(idx,1);updateCart()}
 function clearCart(){if(confirm('¿Vaciar la consulta?')){cart=[];updateCart()}}
 function sendWhatsApp(){
@@ -161,3 +300,4 @@ function closeCart(){document.getElementById('cartModal').classList.remove('show
 
 renderCatalogo('cagnoli');
 updateHero('cagnoli');
+updateCart();

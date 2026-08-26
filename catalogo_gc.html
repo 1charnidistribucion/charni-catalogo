@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CHARNI Distribución - Catálogo Completo</title>
+<title>CHARNI Distribución - Catálogo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -40,7 +40,11 @@
 <button class="filter-btn" onclick="filterBrand('lasdinas', this)">Las Dinas</button>
 <button class="filter-btn" onclick="filterBrand('vidal', this)">Lácteos Vidal</button>
 </div>
+<div class="search-inner">
+<input type="search" id="searchBox" class="search-box" placeholder="Buscar producto..." oninput="onSearchInput(this.value)">
 </div>
+</div>
+<div class="cat-quicknav" id="quickNav"></div>
 <main class="container" id="catalogo-main">
 </main>
 <div class="modal" id="cartModal">
@@ -51,6 +55,7 @@
 </div>
 <div class="cart-notice">📩 Esto no confirma tu pedido: al enviarlo por WhatsApp, iniciás el contacto directo con tu vendedor para coordinar precio y disponibilidad.</div>
 <div id="cartItems"></div>
+<div id="cartSubtotal"></div>
 <div class="cart-actions" id="cartActions" style="display:none">
 <button class="btn-send" onclick="sendWhatsApp()">📱 Enviar por WhatsApp</button>
 <button class="btn-clear" onclick="clearCart()">🗑️ Vaciar</button>

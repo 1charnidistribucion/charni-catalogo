@@ -671,3 +671,131 @@ body{
 @media(max-width:768px){
   .cat-card-img.cat-card-img-wide{height:115px;}
 }
+
+/* ── BUSCADOR ── */
+.search-inner{
+  max-width:1400px;margin:12px auto 0;padding:0 24px;
+  display:flex;justify-content:center;
+}
+.search-box{
+  width:100%;max-width:420px;
+  padding:10px 18px;
+  border-radius:24px;
+  border:1.5px solid var(--borde-sutil);
+  background:var(--fondo-alt);
+  color:var(--texto);
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+  transition:border-color 0.2s, box-shadow 0.2s;
+}
+.search-box:focus{
+  outline:none;
+  border-color:var(--bordo);
+  box-shadow:0 0 0 3px rgba(139,21,56,0.12);
+}
+.search-box::placeholder{color:var(--texto-muy-suave)}
+
+/* ── ACCESOS RAPIDOS ENTRE CATEGORIAS ── */
+.cat-quicknav{
+  display:none;
+  gap:8px;
+  overflow-x:auto;
+  max-width:1400px;margin:0 auto;
+  padding:12px 24px 4px;
+  scrollbar-width:none;
+}
+.cat-quicknav::-webkit-scrollbar{display:none}
+.cat-quicknav.show{display:flex}
+.quicknav-pill{
+  flex:none;
+  padding:6px 15px;
+  border-radius:16px;
+  background:var(--fondo-alt);
+  border:1px solid var(--borde-sutil);
+  color:var(--texto-suave);
+  font-family:'Inter',sans-serif;
+  font-size:12.5px;font-weight:600;
+  white-space:nowrap;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.quicknav-pill:hover{border-color:var(--bordo);color:var(--bordo);background:#fff}
+
+/* ── DESCRIPCION OPCIONAL EN CARD ── */
+.cat-desc{
+  font-size:10.5px;
+  color:var(--texto-suave);
+  line-height:1.4;
+  margin-bottom:6px;
+}
+
+/* ── SIN RESULTADOS DE BUSQUEDA ── */
+.cat-sin-resultados{
+  text-align:center;
+  padding:64px 24px;
+  color:var(--texto-suave);
+  font-size:15px;
+  line-height:1.6;
+}
+
+/* ── FEEDBACK AL AGREGAR ── */
+.cat-card-btn.added{background:#2f7a44}
+.cart-count.bump{animation:cartBump 0.4s ease}
+@keyframes cartBump{
+  0%{transform:scale(1)}
+  35%{transform:scale(1.45)}
+  100%{transform:scale(1)}
+}
+@media(prefers-reduced-motion: reduce){
+  .cart-count.bump{animation:none}
+}
+
+/* ── APARICION SUAVE DE CARDS AL SCROLLEAR ── */
+.cat-card.reveal{
+  opacity:0;
+  transform:translateY(14px) scale(0.97);
+  transition:opacity 0.5s ease, transform 0.5s ease;
+}
+.cat-card.reveal.reveal-visible{
+  opacity:1;
+  transform:translateY(0) scale(1);
+}
+
+/* ── STEPPER DE CANTIDAD EN LA CONSULTA ── */
+.cart-item-qty-controls{
+  display:flex;align-items:center;gap:10px;
+  margin-top:4px;
+}
+.qty-btn{
+  width:24px;height:24px;
+  border-radius:50%;
+  border:1.5px solid var(--bordo);
+  background:#fff;
+  color:var(--bordo);
+  font-size:15px;font-weight:700;
+  line-height:1;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.2s;
+}
+.qty-btn:hover{background:var(--bordo);color:#fff}
+.qty-value{
+  font-size:14px;font-weight:600;
+  color:var(--texto);
+  min-width:16px;text-align:center;
+}
+
+/* ── ESTIMADO DE TOTAL EN LA CONSULTA ── */
+.cart-subtotal{
+  margin-top:14px;
+  padding:10px 14px;
+  background:var(--fondo);
+  border-radius:10px;
+  font-size:13.5px;font-weight:600;
+  color:var(--texto);
+  display:flex;flex-direction:column;gap:2px;
+}
+.cart-subtotal-note{
+  font-size:11px;font-weight:500;font-style:italic;
+  color:var(--texto-muy-suave);
+}
