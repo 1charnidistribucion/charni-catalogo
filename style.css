@@ -666,11 +666,7 @@ body{
   .cat-seccion-titulo{font-size:12px}
 }
 
-.cat-card-img.cat-card-img-wide{height:150px;}
 .cat-card-img.cat-card-img-wide img{object-fit:contain;padding:6px;}
-@media(max-width:768px){
-  .cat-card-img.cat-card-img-wide{height:115px;}
-}
 
 /* ── BUSCADOR ── */
 .search-inner{
