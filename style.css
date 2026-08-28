@@ -122,7 +122,7 @@ body{
 .hero-bg.fade-out{opacity:0}
 .hero-overlay{
   position:absolute;top:0;left:0;width:100%;height:100%;
-  background:rgba(28,28,28,0.18);
+  background:rgba(51,47,42,0.4);
   z-index:1;
 }
 .hero-content{position:relative;z-index:3}
@@ -182,9 +182,9 @@ body{
 }
 .filter-btn{
   padding:9px 26px;
-  background:var(--fondo-alt);
-  border:1.5px solid var(--borde-sutil);
-  color:var(--texto-suave);
+  background:#F2F1EC;
+  border:1.5px solid #DCDAD1;
+  color:#585858;
   border-radius:30px;
   cursor:pointer;
   font-family:'Inter',sans-serif;
@@ -194,17 +194,17 @@ body{
   white-space:nowrap;
 }
 .filter-btn:hover{
-  border-color:var(--bordo);
-  color:var(--bordo);
+  border-color:#56821F;
+  color:#56821F;
   background:#fff;
   transform:translateY(-2px);
-  box-shadow:0 4px 14px var(--sombra-hover);
+  box-shadow:0 4px 14px rgba(86,130,31,0.18);
 }
 .filter-btn.active{
-  background:var(--bordo);
+  background:#56821F;
   color:#fff;
-  border-color:var(--bordo);
-  box-shadow:0 4px 14px rgba(139,21,56,0.28);
+  border-color:#56821F;
+  box-shadow:0 4px 14px rgba(86,130,31,0.28);
 }
 
 /* ── LAYOUT ── */
@@ -751,16 +751,16 @@ body{
   flex:none;
   padding:6px 15px;
   border-radius:16px;
-  background:var(--fondo-alt);
-  border:1px solid var(--borde-sutil);
-  color:var(--texto-suave);
+  background:#F2F1EC;
+  border:1px solid #DCDAD1;
+  color:#585858;
   font-family:'Inter',sans-serif;
   font-size:12.5px;font-weight:600;
   white-space:nowrap;
   cursor:pointer;
   transition:all 0.2s;
 }
-.quicknav-pill:hover{border-color:var(--bordo);color:var(--bordo);background:#fff}
+.quicknav-pill:hover{border-color:#56821F;color:#56821F;background:#fff}
 
 /* ── DESCRIPCION OPCIONAL EN CARD ── */
 .cat-desc{
