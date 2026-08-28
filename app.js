@@ -91,7 +91,7 @@ function renderCatalogo(brand){
       if(!prods||prods.length===0)return;
       totalRendered+=prods.length;
       const secDiv=document.createElement('div');
-      secDiv.className='cat-seccion';
+      secDiv.className='cat-seccion cat-seccion--'+marca;
       secDiv.dataset.brand=marca;
       const header=document.createElement('div');
       header.className='cat-seccion-header';

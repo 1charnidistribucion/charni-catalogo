@@ -655,6 +655,32 @@ body{
   height:220px;
 }
 
+/* ── PALETA DE PRUEBA CAGNOLI (inspirada en US Foods) ── */
+.cat-seccion--cagnoli{
+  background:#F8F6EB;
+  padding:20px 20px 28px;
+  border-radius:14px;
+}
+.cat-seccion--cagnoli .cat-seccion-marca{
+  color:#56821F;
+  border-color:#56821F;
+}
+.cat-card--cagnoli.cat-card:hover{
+  border-color:#56821F;
+}
+.cat-card--cagnoli .cat-card-btn{
+  background:#56821F;
+}
+.cat-card--cagnoli .cat-card-btn:hover{
+  background:#395A11;
+}
+.cat-card--cagnoli .cat-badge{
+  background:#CF4520;
+}
+.cat-card--cagnoli .cat-precio-oferta{
+  color:#CF4520;
+}
+
 .cat-card--lasdinas .cat-card-img{
   height:290px;
   background:#1a1008;
