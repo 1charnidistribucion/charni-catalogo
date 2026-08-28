@@ -539,6 +539,17 @@ body{
   overflow:hidden;
   background:var(--fondo);
   display:flex;align-items:center;justify-content:center;
+  position:relative;
+}
+.cat-tag{
+  position:absolute;top:8px;right:8px;
+  color:#fff;
+  font-size:9px;font-weight:700;
+  padding:3px 8px;
+  border-radius:6px;
+  z-index:2;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
 }
 .cat-card-img img{
   width:100%;height:100%;
@@ -640,6 +651,9 @@ body{
   object-fit:contain;
   padding:5px;
 }
+.cat-card--cagnoli .cat-card-img.cat-card-img-wide{
+  height:220px;
+}
 
 .cat-card--lasdinas .cat-card-img{
   height:290px;
@@ -667,6 +681,7 @@ body{
   .cat-card--lasdinas .cat-card-img,
   .cat-card--vidal .cat-card-img{height:210px}
   .cat-card--donatilio .cat-card-img{height:168px}
+  .cat-card--cagnoli .cat-card-img.cat-card-img-wide{height:159px}
   .cat-seccion-titulo{font-size:12px}
 }
 

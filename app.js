@@ -106,7 +106,8 @@ function renderCatalogo(brand){
         let imgHtml;
         if(p.img){
           const imgBoxClass='cat-card-img'+(p.wide?' cat-card-img-wide':'');
-          imgHtml=`<div class="${imgBoxClass}">${p.descuento&&showPrices?`<div class="cat-badge">${p.descuento}</div>`:''}<img src="${baseUrl}${p.img}.${p.ext||'jpg'}" alt="${p.name}" loading="lazy"></div>`;
+          const tagHtml=p.tagText?`<div class="cat-tag" style="background:${p.tagColor||'#8b1538'}">${p.tagText}</div>`:'';
+          imgHtml=`<div class="${imgBoxClass}">${p.descuento&&showPrices?`<div class="cat-badge">${p.descuento}</div>`:''}${tagHtml}<img src="${baseUrl}${p.img}.${p.ext||'jpg'}" alt="${p.name}" loading="lazy"></div>`;
         }else{
           imgHtml=`<div class="cat-card-img cat-card-img-empty"><span>Próx.</span></div>`;
         }
@@ -131,7 +132,8 @@ function renderCatalogo(brand){
           detalleHtml=`<div class="cat-detalle">${partes.join(' · ')}</div>`;
         }
         let notaHtml=p.notaVenta&&showPrices?`<div class="cat-nota">⚠️ ${p.notaVenta}</div>`:'';
-        card.innerHTML=`${imgHtml}<div class="cat-card-info"><div class="cat-card-name">${p.name}</div>${descHtml}${detalleHtml}${precioHtml}${notaHtml}<button class="cat-card-btn" onclick="handleAddClick(this,'${pname}')">+ Agregar</button></div>`;
+        const btnLabel=(showPrices&&!p.precio)?'Consulte por pedido':'+ Agregar';
+        card.innerHTML=`${imgHtml}<div class="cat-card-info"><div class="cat-card-name">${p.name}</div>${descHtml}${detalleHtml}${precioHtml}${notaHtml}<button class="cat-card-btn" onclick="handleAddClick(this,'${pname}')">${btnLabel}</button></div>`;
         row.appendChild(card);
       });
       secDiv.appendChild(row);
