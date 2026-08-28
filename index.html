@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CHARNI Distribución - Catálogo Completo</title>
+<title>CH Distribución - Catálogo Completo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -13,9 +13,8 @@
 <header class="header">
 <div class="header-content">
 <div class="logo-container">
-<div class="logo-icon">CH</div>
+<img src="img/marcas/ch_distribucion.png" alt="CH Distribución" class="logo-ch-img">
 <div class="logo-text">
-<h1>CHARNI DISTRIBUCIÓN</h1>
 <p>Calidad Premium</p>
 </div>
 </div>
@@ -32,13 +31,22 @@
 <h2>Catálogo de Productos</h2>
 <p>Embutidos y Quesos de Primera Calidad</p>
 </div>
+<div class="marcas-aliadas">
+<div class="marcas-aliadas-label">Nuestras Marcas Aliadas</div>
+<div class="marcas-row">
+<button class="marca-chip claro" onclick="filterBrandFromChip('donatilio')"><img src="img/marcas/don_atilio.png" alt="Don Atilio"></button>
+<button class="marca-chip transparente grande" onclick="filterBrandFromChip('cagnoli')"><img src="img/marcas/cagnoli.png" alt="Cagnoli"></button>
+<button class="marca-chip claro" onclick="filterBrandFromChip('vidal')"><img src="img/marcas/vidal.png" alt="Lácteos Vidal"></button>
+<button class="marca-chip oscuro" onclick="filterBrandFromChip('lasdinas')"><img src="img/marcas/lasdinas.png" alt="Las Dinas"></button>
+</div>
+</div>
 <div class="filters-wrapper">
 <div class="filters-inner">
-<button class="filter-btn" onclick="filterBrand('all', this)">Todos</button>
-<button class="filter-btn" onclick="filterBrand('donatilio', this)">Don Atilio</button>
-<button class="filter-btn active" onclick="filterBrand('cagnoli', this)">Cagnoli</button>
-<button class="filter-btn" onclick="filterBrand('lasdinas', this)">Las Dinas</button>
-<button class="filter-btn" onclick="filterBrand('vidal', this)">Lácteos Vidal</button>
+<button class="filter-btn" data-brand="all" onclick="filterBrand('all', this)">Todos</button>
+<button class="filter-btn" data-brand="donatilio" onclick="filterBrand('donatilio', this)">Don Atilio</button>
+<button class="filter-btn active" data-brand="cagnoli" onclick="filterBrand('cagnoli', this)">Cagnoli</button>
+<button class="filter-btn" data-brand="lasdinas" onclick="filterBrand('lasdinas', this)">Las Dinas</button>
+<button class="filter-btn" data-brand="vidal" onclick="filterBrand('vidal', this)">Lácteos Vidal</button>
 </div>
 <div class="search-inner">
 <input type="search" id="searchBox" class="search-box" placeholder="Buscar producto..." oninput="onSearchInput(this.value)">

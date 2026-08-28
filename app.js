@@ -216,6 +216,13 @@ function filterBrand(brand,btn){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+function filterBrandFromChip(brand){
+  const btn=document.querySelector('.filter-btn[data-brand="'+brand+'"]');
+  if(btn){filterBrand(brand,btn)}else{currentBrand=brand;renderCatalogo(brand);updateHero(brand)}
+  const target=document.querySelector('.filters-wrapper');
+  if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
 function findProductByName(name){
   for(const key in products){
     const found=products[key].find(p=>p.name===name);

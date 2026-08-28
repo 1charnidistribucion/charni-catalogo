@@ -46,15 +46,9 @@ body{
   flex-wrap:wrap;
 }
 .logo-container{display:flex;align-items:center;gap:14px}
-.logo-icon{
-  width:48px;height:48px;
-  background:linear-gradient(135deg,var(--bordo),var(--bordo-claro));
-  border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Playfair Display',serif;
-  font-size:18px;font-weight:700;
-  color:#fff;
-  letter-spacing:0.5px;
+.logo-ch-img{
+  height:48px;
+  width:auto;
   flex-shrink:0;
 }
 .logo-text h1{
@@ -156,6 +150,40 @@ body{
   font-size:15px;
   margin-top:6px;
 }
+
+/* ── MARCAS ALIADAS ── */
+.marcas-aliadas{
+  background:#F8F6EB;
+  padding:22px 24px;
+  border-top:1px solid #e6e2d3;
+  border-bottom:1px solid #e6e2d3;
+}
+.marcas-aliadas-label{
+  text-align:center;
+  font-size:11px;font-weight:700;letter-spacing:2px;
+  color:#585858;text-transform:uppercase;
+  margin-bottom:16px;
+}
+.marcas-row{
+  display:flex;justify-content:center;align-items:center;gap:22px;flex-wrap:wrap;
+  max-width:1400px;margin:0 auto;
+}
+.marca-chip{
+  display:flex;align-items:center;justify-content:center;
+  height:64px;padding:8px 20px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  transition:all 0.22s;
+}
+.marca-chip.claro{background:#ffffff;box-shadow:0 1px 4px rgba(0,0,0,0.06);border:1px solid #ececec}
+.marca-chip.claro:hover{box-shadow:0 5px 16px rgba(0,0,0,0.12);transform:translateY(-2px)}
+.marca-chip.oscuro{background:#332F2A}
+.marca-chip.oscuro:hover{background:#241f1a;transform:translateY(-2px)}
+.marca-chip.transparente{background:transparent}
+.marca-chip.transparente:hover{transform:translateY(-2px)}
+.marca-chip img{max-height:44px;max-width:150px;object-fit:contain;pointer-events:none}
+.marca-chip.grande img{max-height:52px}
 
 /* ── FILTERS — sticky ── */
 .filters-wrapper{
