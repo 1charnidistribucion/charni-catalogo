@@ -108,7 +108,7 @@ function renderCatalogo(brand){
         let imgHtml;
         if(p.img){
           const imgBoxClass='cat-card-img'+(p.wide?' cat-card-img-wide':'');
-          const tagHtml=p.tagText?`<div class="cat-tag" style="background:${p.tagColor||'#8b1538'}">${p.tagText}</div>`:'';
+          const tagHtml=p.tagText?`<div class="cat-tag" style="background:${p.tagColor||'#CF4520'}">${p.tagText}</div>`:'';
           imgHtml=`<div class="${imgBoxClass}">${p.descuento&&showPrices?`<div class="cat-badge">${p.descuento}</div>`:''}${tagHtml}<img src="${baseUrl}${p.img}.${p.ext||'jpg'}" alt="${p.name}" loading="lazy"></div>`;
         }else{
           imgHtml=`<div class="cat-card-img cat-card-img-empty"><span>Próx.</span></div>`;
@@ -209,20 +209,18 @@ function onSearchInput(value){
   renderCatalogo(currentBrand);
 }
 
-function filterBrand(brand,btn){
-  currentBrand=brand;
-  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderCatalogo(brand);
-  updateHero(brand);
-  window.scrollTo({top:0,behavior:'smooth'});
+function setActiveChip(brand){
+  document.querySelectorAll('.marca-chip').forEach(c=>{
+    c.classList.toggle('active',c.dataset.brand===brand);
+  });
 }
 
 function filterBrandFromChip(brand){
-  const btn=document.querySelector('.filter-btn[data-brand="'+brand+'"]');
-  if(btn){filterBrand(brand,btn)}else{currentBrand=brand;renderCatalogo(brand);updateHero(brand)}
-  const target=document.querySelector('.filters-wrapper');
-  if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+  currentBrand=brand;
+  setActiveChip(brand);
+  renderCatalogo(brand);
+  updateHero(brand);
+  window.scrollTo({top:0,behavior:'smooth'});
 }
 
 function findProductByName(name){
@@ -311,4 +309,5 @@ function closeCart(){document.getElementById('cartModal').classList.remove('show
 
 renderCatalogo('cagnoli');
 updateHero('cagnoli');
+setActiveChip('cagnoli');
 updateCart();
