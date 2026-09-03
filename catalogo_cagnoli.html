@@ -6,17 +6,16 @@
 <title>CHARNI Distribución - Catálogo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header class="header">
 <div class="header-content">
 <div class="logo-container">
-<div class="logo-icon">CH</div>
+<img src="img/marcas/ch_distribucion_isotipo.png" alt="CH Distribución" class="logo-ch-img">
 <div class="logo-text">
 <h1>CHARNI DISTRIBUCIÓN</h1>
-<p>Calidad Premium</p>
 </div>
 </div>
 <button class="cart-btn" onclick="openCart()">
@@ -26,20 +25,21 @@
 </header>
 <section class="hero" id="hero">
 <div class="hero-bg" id="heroBg"></div>
+<video class="hero-bg" id="heroVideo" autoplay muted loop playsinline preload="metadata" poster="img/heroes/cagnoli_poster.jpg">
+<source src="img/heroes/cagnoli.mp4" type="video/mp4">
+</video>
 <div class="hero-overlay"></div>
 </section>
-<div class="hero-title">
-<h2>Catálogo de Productos</h2>
-<p>Embutidos y Quesos de Primera Calidad</p>
+<div class="marcas-aliadas">
+<div class="marcas-aliadas-label">Nuestras Marcas Aliadas</div>
+<div class="marcas-aliadas-hint">Tocá un logo para ver solo sus productos</div>
+<div class="marcas-row">
+<button class="marca-chip claro" data-brand="donatilio" onclick="filterBrandFromChip('donatilio')"><img src="img/marcas/don_atilio.png" alt="Don Atilio"></button>
+<button class="marca-chip transparente grande" data-brand="cagnoli" onclick="filterBrandFromChip('cagnoli')"><img src="img/marcas/cagnoli.png" alt="Cagnoli"></button>
+<button class="marca-chip claro" data-brand="vidal" onclick="filterBrandFromChip('vidal')"><img src="img/marcas/vidal.png" alt="Lácteos Vidal"></button>
+</div>
 </div>
 <div class="filters-wrapper">
-<div class="filters-inner">
-<button class="filter-btn" onclick="filterBrand('all', this)">Todos</button>
-<button class="filter-btn" onclick="filterBrand('donatilio', this)">Don Atilio</button>
-<button class="filter-btn active" onclick="filterBrand('cagnoli', this)">Cagnoli</button>
-<button class="filter-btn" style="display:none" onclick="filterBrand('lasdinas', this)">Las Dinas</button>
-<button class="filter-btn" onclick="filterBrand('vidal', this)">Lácteos Vidal</button>
-</div>
 <div class="search-inner">
 <input type="search" id="searchBox" class="search-box" placeholder="Buscar producto..." oninput="onSearchInput(this.value)">
 </div>
