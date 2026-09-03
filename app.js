@@ -6,14 +6,12 @@ try{
 }catch(e){}
 const heroMedia={
   all:'img/heroes/hero_general.webp.webp',
-  donatilio:'img/heroes/1HlQaS3OYSmdBeUMas_96dCEJzDbgY1x4.jpg',
-  cagnoli:['img/heroes/1qBb1EtllIm_31Ieb3kxwa2HuIHsrTIPC.jpg','img/heroes/1pHMXQBFqnC-jaQFIgkkDlvvbUVOx_hsH.jpg','img/heroes/1OrN33PqJ7FALNkNf6Q5dEm8ffaLEgzVQ.jpg','img/heroes/1-48MhyKnYstoXG8zitW1PN9hKncSx1uG.jpg'],
+  donatilio:'img/heroes/don_atilio.jpg',
   lasdinas:['img/heroes/1RYjiNC9ZPYuGAjL14MQzXC4dryj4-P1P.jpg','img/heroes/1NbdE92x51--hfyCR3_b8ItHCsBxXDQ38.jpg'],
   vidal:'img/heroes/1w0EDmpP3n-pWQCimwTothoY1RTMmqQx9.jpg'
 };
 let currentBrand='all';
 let searchTerm='';
-let cagnoliImgIndex=0;
 let dinasImgIndex=0;
 let imgInterval=null;
 
@@ -53,19 +51,23 @@ const baseUrl='https://1charnidistribucion.github.io/charni-catalogo/img/product
 
 function updateHero(brand){
   const heroBg=document.getElementById('heroBg');
+  const heroVideo=document.getElementById('heroVideo');
   currentBrand=brand;
   if(imgInterval){clearInterval(imgInterval);imgInterval=null}
-  if(brand==='cagnoli'&&heroMedia.cagnoli.length>0){playNextCagnoliImg();imgInterval=setInterval(playNextCagnoliImg,5000)}
-  else if(brand==='lasdinas'&&heroMedia.lasdinas.length>0){playNextDinasImg();imgInterval=setInterval(playNextDinasImg,5000)}
+  if(brand==='cagnoli'){
+    heroBg.style.opacity='0';
+    if(heroVideo){
+      heroVideo.style.opacity='1';
+      heroVideo.currentTime=0;
+      heroVideo.play().catch(()=>{});
+    }
+    return;
+  }
+  if(heroVideo){heroVideo.style.opacity='0';heroVideo.pause()}
+  if(brand==='lasdinas'&&heroMedia.lasdinas.length>0){playNextDinasImg();imgInterval=setInterval(playNextDinasImg,5000)}
   else if(brand==='donatilio'){heroBg.style.backgroundImage=`url('${heroMedia.donatilio}')`;heroBg.style.opacity='1'}
   else if(brand==='vidal'){heroBg.style.backgroundImage=`url('${heroMedia.vidal}')`;heroBg.style.opacity='1'}
   else{heroBg.style.backgroundImage="url('img/heroes/hero_general.webp.webp')";heroBg.style.opacity='1'}
-}
-
-function playNextCagnoliImg(){
-  const heroBg=document.getElementById('heroBg');
-  heroBg.classList.add('fade-out');
-  setTimeout(()=>{heroBg.style.backgroundImage=`url('${heroMedia.cagnoli[cagnoliImgIndex]}')`;heroBg.style.opacity='1';heroBg.classList.remove('fade-out');cagnoliImgIndex=(cagnoliImgIndex+1)%heroMedia.cagnoli.length},500)
 }
 
 function playNextDinasImg(){
