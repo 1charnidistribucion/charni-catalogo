@@ -39,7 +39,10 @@ const brandSections={
     {id:'ld-caliente',title:'Ahumados en Caliente'}
   ],
   vidal:[
-    {id:'vidal-lacteos',title:'Productos Lácteos'}
+    {id:'vidal-duros',title:'Quesos Duros'},
+    {id:'vidal-semiduros',title:'Quesos Semiduros'},
+    {id:'vidal-blandos',title:'Quesos Blandos'},
+    {id:'vidal-lacteos-otros',title:'Lácteos'}
   ]
 };
 
