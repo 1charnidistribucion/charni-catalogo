@@ -91,6 +91,87 @@ body{
   font-family:'Inter',sans-serif;
 }
 
+/* ── HEADER CONTEXTUAL / COMPACTO AL SCROLLEAR ──────────────────────
+   Cuando "Nuestras Marcas Aliadas" sale de pantalla, el header (que ya
+   es sticky) muestra una segunda franja debajo con las marcas (chips
+   chicos), el buscador y los pills de categoría — y el botón Consultas
+   se reduce a ícono+badge para liberar lugar. Es una franja superpuesta
+   (position:absolute) que no empuja el resto del contenido: no se anima
+   ni el alto ni el ancho, solo opacity/transform (mismo criterio de
+   performance que .cart-count.bump). ── */
+.cart-btn-label{margin:0 2px}
+.header.header-compacto .cart-btn-label{display:none}
+.header.header-compacto .cart-btn{padding:9px 14px;gap:2px}
+.header.header-compacto .logo-text{display:none}
+
+.header-compact-row{
+  position:absolute;
+  top:100%;left:0;right:0;
+  max-width:1400px;margin:0 auto;
+  background:var(--fondo-alt);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  padding:8px 24px 10px;
+  opacity:0;
+  transform:translateY(-6px);
+  pointer-events:none;
+  transition:opacity 0.22s ease, transform 0.22s ease;
+  box-shadow:0 6px 14px var(--sombra);
+  border-bottom-left-radius:14px;
+  border-bottom-right-radius:14px;
+  z-index:999;
+}
+.header.header-compacto .header-compact-row{
+  opacity:1;
+  transform:translateY(0);
+  pointer-events:auto;
+}
+@media(prefers-reduced-motion: reduce){
+  .header-compact-row{transition:none}
+}
+
+/* Chips de marca dentro de la franja compacta: mismo componente, versión chica */
+.marcas-row-compact{
+  display:flex;gap:6px;flex-wrap:nowrap;
+  overflow-x:auto;scrollbar-width:none;
+  flex-shrink:0;
+}
+.marcas-row-compact::-webkit-scrollbar{display:none}
+.marcas-row-compact .marca-chip{
+  height:32px;padding:4px 10px;border-radius:8px;
+  outline-width:2px;outline-offset:2px;
+}
+.marcas-row-compact .marca-chip img{max-height:18px;max-width:64px}
+
+/* Buscador dentro de la franja compacta (más angosto en desktop) */
+.header-compact-row #searchBox{flex-shrink:0;width:170px;margin:0}
+
+/* Pills de categoría dentro de la franja compacta: la lógica de .show
+   (buildQuickNav en app.js) no se toca — esto solo ajusta tamaño/margen
+   cuando el propio elemento ya decidió mostrarse. */
+.header-compact-row .cat-quicknav{
+  margin:0;padding:2px 0 0;
+  flex:1 1 220px;min-width:120px;
+}
+
+@media(max-width:768px){
+  .header-compact-row .cat-quicknav{flex-basis:100%;order:3}
+  /* En mobile el buscador se reduce a una lupa que se expande al tocarla */
+  .header-compact-row #searchBox{
+    width:38px;
+    padding:8px 8px 8px 34px;
+    background:var(--fondo-alt) no-repeat 8px center/16px 16px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23585858' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+    cursor:pointer;
+    transition:width 0.22s ease;
+  }
+  .header-compact-row #searchBox:focus{
+    width:160px;
+    cursor:text;
+  }
+}
+
 /* ── HERO ── */
 .hero{
   height:380px;
@@ -170,11 +251,9 @@ body{
   transform:translateY(-2px);
 }
 
-/* ── FILTERS — sticky (solo buscador) ── */
+/* ── FILTERS (el buscador ya no es sticky por sí solo: cuando hace falta
+   "pegarlo", pasa a vivir dentro del header compacto — ver más abajo) ── */
 .filters-wrapper{
-  position:sticky;
-  top:80px;
-  z-index:900;
   background:var(--fondo);
   padding:14px 0;
   border-bottom:1px solid var(--borde-sutil);
@@ -308,7 +387,6 @@ body{
 @media(max-width:768px){
   .hero{height:260px}
   .logo-text h1{font-size:15px}
-  .filters-wrapper{top:72px}
 }
 
 /* ── CATÁLOGO RAPPI-STYLE ── */

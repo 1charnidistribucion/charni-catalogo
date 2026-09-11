@@ -511,7 +511,71 @@ function sendWhatsApp(){
 function openCart(){document.getElementById('cartModal').classList.add('show')}
 function closeCart(){document.getElementById('cartModal').classList.remove('show')}
 
+// ── Header contextual / compacto al scrollear ───────────────────────
+// Cuando ".marcas-aliadas" sale de pantalla, el buscador, las marcas
+// (como chips chicos) y los pills de categoría se mudan dentro del
+// header (que ya es sticky) y el botón Consultas se reduce a
+// ícono+badge. Al volver arriba, todo vuelve a su lugar original.
+// Un solo IntersectionObserver decide el estado; buildQuickNav() y su
+// clase ".show" siguen mandando sobre si los pills se muestran o no —
+// esto solo cambia dónde y cómo se ven cuando ya decidieron mostrarse.
+let headerCompacto=false;
+function moveIntoCompactHeader(){
+  const row=document.getElementById('headerCompactRow');
+  if(!row)return;
+  const marcasRow=document.querySelector('.marcas-row');
+  const searchBox=document.getElementById('searchBox');
+  const quickNav=document.getElementById('quickNav');
+  if(marcasRow){marcasRow.classList.add('marcas-row-compact');row.appendChild(marcasRow);}
+  if(searchBox)row.appendChild(searchBox);
+  if(quickNav)row.appendChild(quickNav);
+}
+function restoreFromCompactHeader(){
+  const marcasAliadas=document.querySelector('.marcas-aliadas');
+  const searchInner=document.querySelector('.search-inner');
+  const mainEl=document.getElementById('catalogo-main');
+  const marcasRow=document.querySelector('.marcas-row');
+  const searchBox=document.getElementById('searchBox');
+  const quickNav=document.getElementById('quickNav');
+  if(marcasRow&&marcasAliadas){marcasRow.classList.remove('marcas-row-compact');marcasAliadas.appendChild(marcasRow);}
+  if(searchBox&&searchInner)searchInner.appendChild(searchBox);
+  if(quickNav&&mainEl&&mainEl.parentNode)mainEl.parentNode.insertBefore(quickNav,mainEl);
+}
+function enterHeaderCompacto(){
+  if(headerCompacto)return;
+  headerCompacto=true;
+  moveIntoCompactHeader();
+  const header=document.querySelector('.header');
+  if(header)header.classList.add('header-compacto');
+}
+function exitHeaderCompacto(){
+  if(!headerCompacto)return;
+  headerCompacto=false;
+  restoreFromCompactHeader();
+  const header=document.querySelector('.header');
+  if(header)header.classList.remove('header-compacto');
+}
+function initHeaderCompactObserver(){
+  const marcasAliadas=document.querySelector('.marcas-aliadas');
+  if(!marcasAliadas||!('IntersectionObserver' in window))return;
+  let primeraObservacion=true;
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(primeraObservacion&&window.scrollY===0){
+        // carga inicial arriba de todo: nunca arrancar en modo compacto
+      }else if(entry.isIntersecting){
+        exitHeaderCompacto();
+      }else{
+        enterHeaderCompacto();
+      }
+    });
+    primeraObservacion=false;
+  },{threshold:0});
+  obs.observe(marcasAliadas);
+}
+
 renderCatalogo('cagnoli');
 updateHero('cagnoli');
 setActiveChip('cagnoli');
 updateCart();
+initHeaderCompactObserver();
