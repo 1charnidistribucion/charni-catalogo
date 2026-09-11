@@ -125,18 +125,53 @@ function renderCardDynamic(p,forma,unidadSuffix,showPrices,pnameEscaped){
   if(forma&&forma.cantidadVariable){
     html+=`<div class="cat-nota-variable">${NOTA_CANTIDAD_VARIABLE}</div>`;
   }else{
-    let btnLabel;
-    if(showPrices&&!p.precio){
-      btnLabel='Consulte por pedido';
-    }else if(forma&&forma.nombre){
-      btnLabel=`+ Agregar ${forma.nombre}`;
-    }else{
-      btnLabel='+ Agregar';
-    }
     const formaAttr=forma?forma.nombre.replace(/'/g,"\\'"):'';
-    html+=`<button class="cat-card-btn" onclick="handleAddClick(this,'${pnameEscaped}','${formaAttr}')">${btnLabel}</button>`;
+    const currentQty=getCartQty(p.name,forma?forma.nombre:null);
+    if(currentQty>0){
+      html+=`<div class="cat-card-stepper"><button type="button" class="cat-step-btn" onclick="handleCardStepDec(this,'${pnameEscaped}','${formaAttr}')" aria-label="Restar unidad">−</button><span class="cat-step-value">${currentQty}</span><button type="button" class="cat-step-btn" onclick="handleCardStepInc(this,'${pnameEscaped}','${formaAttr}')" aria-label="Sumar unidad">+</button></div>`;
+    }else{
+      let btnLabel;
+      if(showPrices&&!p.precio){
+        btnLabel='Consulte por pedido';
+      }else if(forma&&forma.nombre){
+        btnLabel=`+ Agregar ${forma.nombre}`;
+      }else{
+        btnLabel='+ Agregar';
+      }
+      html+=`<button class="cat-card-btn" onclick="handleAddClick(this,'${pnameEscaped}','${formaAttr}')">${btnLabel}</button>`;
+    }
   }
   return html;
+}
+
+// Cantidad actual en la consulta para un producto+forma puntual (0 si no está agregado).
+function getCartQty(prodName,formaNombre){
+  const fNombre=formaNombre||null;
+  const item=cart.find(i=>i.name===prodName&&(i.formaNombre||null)===fNombre);
+  return item?item.qty:0;
+}
+
+// Vuelve a dibujar el bloque dinámico (precio/niveles/botón o stepper) de cada card
+// visible en pantalla, respetando la forma que cada una tenga seleccionada. Se llama
+// cada vez que cambia el carrito (agregar, sumar, restar, nivel, vaciar) para que las
+// cards siempre reflejen el estado real de la consulta, sin importar desde dónde se
+// haya originado el cambio (la propia card, el modal de consulta, o un botón de nivel).
+function refreshCardButtons(){
+  const showPrices=window.SHOW_PRICES===true;
+  document.querySelectorAll('.cat-card').forEach(card=>{
+    const pname=card.dataset.pname;
+    if(!pname)return;
+    const p=findProductByName(pname);
+    if(!p)return;
+    const idx=parseInt(card.dataset.formaIdx,10)||0;
+    const forma=(p.formas||[])[idx]||null;
+    const unidadSuffix=card.dataset.unidadSuffix||'/kg';
+    const dynEl=card.querySelector('.cat-card-dynamic');
+    if(dynEl){
+      const pnameEscaped=pname.replace(/'/g,"\\'");
+      dynEl.innerHTML=renderCardDynamic(p,forma,unidadSuffix,showPrices,pnameEscaped);
+    }
+  });
 }
 
 function onFormaSelect(evt,pname){
@@ -210,6 +245,7 @@ function renderCatalogo(brand){
         const dynamicHtml=renderCardDynamic(p,formaSel,unidadSuffix,showPrices,pname);
         card.dataset.formaIdx=String(defaultFormaIdx);
         card.dataset.unidadSuffix=unidadSuffix;
+        card.dataset.pname=p.name;
         card.innerHTML=`${imgHtml}<div class="cat-card-info"><div class="cat-card-name">${p.name}</div>${descHtml}${detalleHtml}${selectorHtml}<div class="cat-card-dynamic">${dynamicHtml}</div></div>`;
         row.appendChild(card);
       });
@@ -315,12 +351,29 @@ function handleAddClick(btn,prod,formaNombre){
     if(f&&typeof f.cantidad==='number')formaCantidad=f.cantidad;
   }
   addToCart(prod,fNombre,formaCantidad);
-  const original=btn.textContent;
-  btn.textContent='✓ Agregado';
-  btn.classList.add('added');
-  btn.disabled=true;
-  setTimeout(()=>{btn.textContent=original;btn.classList.remove('added');btn.disabled=false},900);
   bumpCartBadge();
+}
+
+// Stepper +/− directo en la card (reemplaza al botón "+ Agregar" una vez que el
+// producto+forma ya está en la consulta, igual que en apps de delivery tipo PedidosYa).
+function handleCardStepInc(btn,prod,formaNombre){
+  const p=findProductByName(prod);
+  let formaCantidad=1;
+  const fNombre=formaNombre||null;
+  if(fNombre&&p&&p.formas){
+    const f=p.formas.find(x=>x.nombre===fNombre);
+    if(f&&typeof f.cantidad==='number')formaCantidad=f.cantidad;
+  }
+  addToCart(prod,fNombre,formaCantidad);
+  bumpCartBadge();
+}
+function handleCardStepDec(btn,prod,formaNombre){
+  const fNombre=formaNombre||null;
+  const idx=cart.findIndex(i=>i.name===prod&&(i.formaNombre||null)===fNombre);
+  if(idx===-1)return;
+  cart[idx].qty--;
+  if(cart[idx].qty<=0)cart.splice(idx,1);
+  updateCart();
 }
 
 // Botón de "nivel" (compra por volumen, ej. "Desde 6u: -5%"): al tocarlo, lleva
@@ -379,6 +432,7 @@ function updateCart(){
   saveCart();
   document.getElementById('cartCount').textContent=cart.reduce((sum,i)=>sum+i.qty*(i.formaCantidad||1),0);
   renderCart();
+  refreshCardButtons();
 }
 function renderCart(){
   const container=document.getElementById('cartItems');

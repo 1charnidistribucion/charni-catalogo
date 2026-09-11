@@ -412,6 +412,42 @@ body{
 }
 .cat-card-btn:hover{background:var(--verde-oscuro)}
 
+/* ── STEPPER +/− EN LA CARD (reemplaza el botón una vez agregado) ── */
+.cat-card-stepper{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--verde);
+  border-radius:8px;
+  padding:4px 6px;
+  animation:stepperPop 0.22s ease;
+}
+.cat-step-btn{
+  width:24px;height:24px;flex-shrink:0;
+  border-radius:6px;
+  border:none;
+  background:rgba(255,255,255,0.18);
+  color:#fff;
+  font-size:15px;font-weight:700;
+  line-height:1;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.2s;
+}
+.cat-step-btn:hover{background:rgba(255,255,255,0.32)}
+.cat-step-value{
+  flex:1;text-align:center;
+  color:#fff;
+  font-family:'Oswald',sans-serif;
+  font-size:13px;font-weight:700;
+}
+@keyframes stepperPop{
+  0%{transform:scale(0.9)}
+  60%{transform:scale(1.04)}
+  100%{transform:scale(1)}
+}
+@media(prefers-reduced-motion: reduce){
+  .cat-card-stepper{animation:none}
+}
+
 /* ── SELECTOR DE FORMA (Caja / Por unidad / etc.) ── */
 .forma-selector{
   display:flex;gap:6px;flex-wrap:wrap;
