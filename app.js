@@ -47,8 +47,14 @@ const brandSections={
 };
 
 const brandNames={donatilio:'Don Atilio',cagnoli:'Cagnoli',lasdinas:'Las Dinas',vidal:'Lácteos Vidal'};
+
+// Texto mostrado en vez del botón "Agregar" cuando la forma elegida tiene cantidadVariable:true
+// (hoy ningún producto cargado usa esto — queda listo para cuando aparezca el primer caso real).
+// Es un solo string: se puede ajustar libremente sin tocar el resto de la lógica.
+const NOTA_CANTIDAD_VARIABLE='Cantidad de la caja variable — consultanos';
+
 function normalizeText(s){
-  return (s||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  return (s||'').toString().normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
 }
 const baseUrl='https://1charnidistribucion.github.io/charni-catalogo/img/productos/';
 
@@ -77,6 +83,67 @@ function playNextDinasImg(){
   const heroBg=document.getElementById('heroBg');
   heroBg.classList.add('fade-out');
   setTimeout(()=>{if(currentBrand!=='lasdinas')return;heroBg.style.backgroundImage=`url('${heroMedia.lasdinas[dinasImgIndex]}')`;heroBg.style.opacity='1';heroBg.classList.remove('fade-out');dinasImgIndex=(dinasImgIndex+1)%heroMedia.lasdinas.length},500)
+}
+
+// ── Precio/niveles/selector de forma ──────────────────────────────
+function fmtPrecio(n){return `$${Math.round(n).toLocaleString('es-AR')}`}
+
+function renderFormaSelector(p,selectedIdx,pnameEscaped){
+  if(!p.formas||p.formas.length<=1)return '';
+  return `<div class="forma-selector">${p.formas.map((f,i)=>`<button type="button" class="forma-pill${i===selectedIdx?' active':''}" data-idx="${i}" onclick="onFormaSelect(event,'${pnameEscaped}')">${f.nombre}</button>`).join('')}</div>`;
+}
+
+function renderCardDynamic(p,forma,unidadSuffix,showPrices,pnameEscaped){
+  let html='';
+  if(showPrices&&p.precio){
+    let listaVal=p.precio,ofertaVal=null;
+    if(forma&&typeof forma.descuento==='number'){
+      ofertaVal=Math.round(p.precio*(1-forma.descuento/100));
+    }else if(p.precioOferta){
+      ofertaVal=p.precioOferta;
+    }
+    if(ofertaVal){
+      html+=`<div class="cat-precio-lista">${fmtPrecio(listaVal)}${unidadSuffix}</div><div class="cat-precio-oferta">${fmtPrecio(ofertaVal)}${unidadSuffix}</div>`;
+    }else{
+      html+=`<div class="cat-precio-oferta">${fmtPrecio(listaVal)}${unidadSuffix}</div>`;
+    }
+  }else if(showPrices){
+    html+=`<div class="cat-precio-pendiente">Próximamente a ingresar</div>`;
+  }
+  if(showPrices&&p.niveles&&p.niveles.length){
+    const partes=p.niveles.map(n=>n.modo==='consultar'?`Desde ${n.desde}u: consultar oferta`:`Desde ${n.desde}u: -${n.descuento}%`);
+    html+=`<div class="cat-niveles">${partes.join(' · ')}</div>`;
+  }
+  if(p.notaVenta&&showPrices){
+    html+=`<div class="cat-nota">⚠️ ${p.notaVenta}</div>`;
+  }
+  if(forma&&forma.cantidadVariable){
+    html+=`<div class="cat-nota-variable">${NOTA_CANTIDAD_VARIABLE}</div>`;
+  }else{
+    const btnLabel=(showPrices&&!p.precio)?'Consulte por pedido':'+ Agregar';
+    const formaAttr=forma?forma.nombre.replace(/'/g,"\\'"):'';
+    html+=`<button class="cat-card-btn" onclick="handleAddClick(this,'${pnameEscaped}','${formaAttr}')">${btnLabel}</button>`;
+  }
+  return html;
+}
+
+function onFormaSelect(evt,pname){
+  const btn=evt.currentTarget;
+  const card=btn.closest('.cat-card');
+  if(!card)return;
+  const idx=parseInt(btn.dataset.idx,10);
+  card.querySelectorAll('.forma-pill').forEach(b=>b.classList.toggle('active',b===btn));
+  const p=findProductByName(pname);
+  if(!p)return;
+  const forma=(p.formas||[])[idx]||null;
+  card.dataset.formaIdx=String(idx);
+  const unidadSuffix=card.dataset.unidadSuffix||'/kg';
+  const showPrices=window.SHOW_PRICES===true;
+  const dynEl=card.querySelector('.cat-card-dynamic');
+  if(dynEl){
+    const pnameEscaped=pname.replace(/'/g,"\\'");
+    dynEl.innerHTML=renderCardDynamic(p,forma,unidadSuffix,showPrices,pnameEscaped);
+  }
 }
 
 function renderCatalogo(brand){
@@ -116,18 +183,6 @@ function renderCatalogo(brand){
         }else{
           imgHtml=`<div class="cat-card-img cat-card-img-empty"><span>Próx.</span></div>`;
         }
-        let precioHtml='';
-        if(showPrices&&p.precio){
-          const unidad=secIds.some(id=>['atm','feteados','congelados','envasados'].includes(id))?'/u':'/kg';
-          const fmt=n=>`$${Math.round(n).toLocaleString('es-AR')}`;
-          if(p.precioOferta){
-            precioHtml=`<div class="cat-precio-lista">${fmt(p.precio)}${unidad}</div><div class="cat-precio-oferta">${fmt(p.precioOferta)}${unidad}</div>`;
-          }else{
-            precioHtml=`<div class="cat-precio-oferta">${fmt(p.precio)}${unidad}</div>`;
-          }
-        }else if(showPrices){
-          precioHtml=`<div class="cat-precio-pendiente">Próximamente a ingresar</div>`;
-        }
         let descHtml=p.desc?`<div class="cat-desc">${p.desc}</div>`:'';
         let detalleHtml='';
         if(p.peso||p.unidades){
@@ -136,9 +191,14 @@ function renderCatalogo(brand){
           if(p.unidades)partes.push(p.unidades);
           detalleHtml=`<div class="cat-detalle">${partes.join(' · ')}</div>`;
         }
-        let notaHtml=p.notaVenta&&showPrices?`<div class="cat-nota">⚠️ ${p.notaVenta}</div>`:'';
-        const btnLabel=(showPrices&&!p.precio)?'Consulte por pedido':'+ Agregar';
-        card.innerHTML=`${imgHtml}<div class="cat-card-info"><div class="cat-card-name">${p.name}</div>${descHtml}${detalleHtml}${precioHtml}${notaHtml}<button class="cat-card-btn" onclick="handleAddClick(this,'${pname}')">${btnLabel}</button></div>`;
+        const unidadSuffix=secIds.some(id=>['atm','feteados','congelados','envasados'].includes(id))?'/u':'/kg';
+        const defaultFormaIdx=0;
+        const formaSel=p.formas&&p.formas.length?p.formas[defaultFormaIdx]:null;
+        const selectorHtml=renderFormaSelector(p,defaultFormaIdx,pname);
+        const dynamicHtml=renderCardDynamic(p,formaSel,unidadSuffix,showPrices,pname);
+        card.dataset.formaIdx=String(defaultFormaIdx);
+        card.dataset.unidadSuffix=unidadSuffix;
+        card.innerHTML=`${imgHtml}<div class="cat-card-info"><div class="cat-card-name">${p.name}</div>${descHtml}${detalleHtml}${selectorHtml}<div class="cat-card-dynamic">${dynamicHtml}</div></div>`;
         row.appendChild(card);
       });
       secDiv.appendChild(row);
@@ -234,8 +294,15 @@ function findProductByName(name){
   return null;
 }
 
-function handleAddClick(btn,prod){
-  addToCart(prod);
+function handleAddClick(btn,prod,formaNombre){
+  const p=findProductByName(prod);
+  let formaCantidad=1;
+  const fNombre=formaNombre||null;
+  if(fNombre&&p&&p.formas){
+    const f=p.formas.find(x=>x.nombre===fNombre);
+    if(f&&typeof f.cantidad==='number')formaCantidad=f.cantidad;
+  }
+  addToCart(prod,fNombre,formaCantidad);
   const original=btn.textContent;
   btn.textContent='✓ Agregado';
   btn.classList.add('added');
@@ -252,9 +319,26 @@ function bumpCartBadge(){
   badge.classList.add('bump');
 }
 
-function addToCart(prod){
-  const existing=cart.find(i=>i.name===prod);
-  if(existing){existing.qty++}else{cart.push({name:prod,qty:1})}
+// Una forma se considera "trivial" cuando no aporta información nueva al pedido:
+// es la única opción del producto, no tiene descuento propio, no es un pack (cantidad 1)
+// y no es de cantidad variable. En ese caso no se muestra "— Nombre de forma" en la
+// consulta ni en el mensaje de WhatsApp, para no ensuciar los productos que solo
+// tienen "Por unidad" cargado. Si hay más de una forma (selector real) o la forma
+// es un pack/tiene descuento propio, siempre se muestra.
+function formaEsTrivial(p,formaNombre){
+  if(!formaNombre)return true;
+  if(!p||!p.formas)return true;
+  if(p.formas.length>1)return false;
+  const f=p.formas.find(x=>x.nombre===formaNombre);
+  if(!f)return true;
+  return f.cantidad===1&&f.descuento==null&&!f.cantidadVariable;
+}
+
+function addToCart(prod,formaNombre,formaCantidad){
+  const fNombre=formaNombre||null;
+  const fCantidad=formaCantidad||1;
+  const existing=cart.find(i=>i.name===prod&&(i.formaNombre||null)===fNombre);
+  if(existing){existing.qty++}else{cart.push({name:prod,formaNombre:fNombre,formaCantidad:fCantidad,qty:1})}
   updateCart();
 }
 function saveCart(){
@@ -275,14 +359,30 @@ function renderCart(){
     if(subtotalEl)subtotalEl.innerHTML='';
     return;
   }
-  container.innerHTML=cart.map((item,idx)=>`<div class="cart-item"><div class="cart-item-info"><div class="cart-item-name">${item.name}</div><div class="cart-item-qty-controls"><button class="qty-btn" onclick="decQty(${idx})" aria-label="Restar unidad">−</button><span class="qty-value">${item.qty}</span><button class="qty-btn" onclick="incQty(${idx})" aria-label="Sumar unidad">+</button></div></div><button class="cart-item-remove" onclick="removeFromCart(${idx})">✕</button></div>`).join('');
+  container.innerHTML=cart.map((item,idx)=>{
+    const forma=item.formaNombre||null;
+    const fCantidad=item.formaCantidad||1;
+    const p=findProductByName(item.name);
+    const trivial=formaEsTrivial(p,forma);
+    const nameLine=(forma&&!trivial)?`${item.name} <span class="cart-item-forma">— ${forma}</span>`:item.name;
+    const qtyLabel=(forma&&!trivial&&fCantidad>1)?`${item.qty} x ${forma} (${item.qty*fCantidad}u)`:`${item.qty}`;
+    return `<div class="cart-item"><div class="cart-item-info"><div class="cart-item-name">${nameLine}</div><div class="cart-item-qty-controls"><button class="qty-btn" onclick="decQty(${idx})" aria-label="Restar unidad">−</button><span class="qty-value">${qtyLabel}</span><button class="qty-btn" onclick="incQty(${idx})" aria-label="Sumar unidad">+</button></div></div><button class="cart-item-remove" onclick="removeFromCart(${idx})">✕</button></div>`;
+  }).join('');
   actions.style.display='flex';
   if(subtotalEl){
     if(window.SHOW_PRICES===true){
       let subtotal=0,hasUnknown=false;
       cart.forEach(item=>{
         const p=findProductByName(item.name);
-        const price=p?(p.precioOferta||p.precio):null;
+        let price=null;
+        if(p&&p.precio){
+          const forma=item.formaNombre?(p.formas||[]).find(f=>f.nombre===item.formaNombre):null;
+          if(forma&&typeof forma.descuento==='number'){
+            price=Math.round(p.precio*(1-forma.descuento/100));
+          }else{
+            price=p.precioOferta||p.precio;
+          }
+        }
         if(price){subtotal+=price*item.qty}else{hasUnknown=true}
       });
       if(subtotal>0){
@@ -303,7 +403,22 @@ function clearCart(){if(confirm('¿Vaciar la consulta?')){cart=[];updateCart()}}
 function sendWhatsApp(){
   if(cart.length===0)return;
   let msg='Hola! Quiero consultar por estos productos:\n\n';
-  cart.forEach(i=>msg+=`• ${i.name} x ${i.qty}\n`);
+  cart.forEach(i=>{
+    const forma=i.formaNombre||null;
+    const p=findProductByName(i.name);
+    const trivial=formaEsTrivial(p,forma);
+    if(forma&&!trivial){
+      const fCantidad=i.formaCantidad||1;
+      const unidadMedida=(p&&p.unidadMedida)||'unidades';
+      if(fCantidad>1){
+        msg+=`• ${i.name} — ${forma} x${fCantidad}u — ${i.qty} x ${forma} (${i.qty*fCantidad} ${unidadMedida})\n`;
+      }else{
+        msg+=`• ${i.name} — ${forma} x ${i.qty}\n`;
+      }
+    }else{
+      msg+=`• ${i.name} x ${i.qty}\n`;
+    }
+  });
   msg+='\n¿Me confirmás precio y disponibilidad?';
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank');
 }
