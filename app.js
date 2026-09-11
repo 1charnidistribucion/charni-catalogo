@@ -111,8 +111,13 @@ function renderCardDynamic(p,forma,unidadSuffix,showPrices,pnameEscaped){
     html+=`<div class="cat-precio-pendiente">Próximamente a ingresar</div>`;
   }
   if(showPrices&&p.niveles&&p.niveles.length){
-    const partes=p.niveles.map(n=>n.modo==='consultar'?`Desde ${n.desde}u: consultar oferta`:`Desde ${n.desde}u: -${n.descuento}%`);
-    html+=`<div class="cat-niveles">${partes.join(' · ')}</div>`;
+    const fCantForNiveles=forma&&typeof forma.cantidad==='number'?forma.cantidad:1;
+    const formaAttrNivel=forma?forma.nombre.replace(/'/g,"\\'"):'';
+    const botones=p.niveles.map(n=>{
+      const label=n.modo==='consultar'?`Desde ${n.desde}u: consultar oferta`:`Desde ${n.desde}u: -${n.descuento}%`;
+      return `<button type="button" class="cat-nivel-btn" onclick="handleNivelClick(this,'${pnameEscaped}','${formaAttrNivel}',${n.desde},${fCantForNiveles})">🔥 ${label}</button>`;
+    });
+    html+=`<div class="cat-niveles">${botones.join('')}</div>`;
   }
   if(p.notaVenta&&showPrices){
     html+=`<div class="cat-nota">⚠️ ${p.notaVenta}</div>`;
@@ -120,7 +125,14 @@ function renderCardDynamic(p,forma,unidadSuffix,showPrices,pnameEscaped){
   if(forma&&forma.cantidadVariable){
     html+=`<div class="cat-nota-variable">${NOTA_CANTIDAD_VARIABLE}</div>`;
   }else{
-    const btnLabel=(showPrices&&!p.precio)?'Consulte por pedido':'+ Agregar';
+    let btnLabel;
+    if(showPrices&&!p.precio){
+      btnLabel='Consulte por pedido';
+    }else if(forma&&forma.nombre){
+      btnLabel=`+ Agregar ${forma.nombre}`;
+    }else{
+      btnLabel='+ Agregar';
+    }
     const formaAttr=forma?forma.nombre.replace(/'/g,"\\'"):'';
     html+=`<button class="cat-card-btn" onclick="handleAddClick(this,'${pnameEscaped}','${formaAttr}')">${btnLabel}</button>`;
   }
@@ -311,6 +323,25 @@ function handleAddClick(btn,prod,formaNombre){
   bumpCartBadge();
 }
 
+// Botón de "nivel" (compra por volumen, ej. "Desde 6u: -5%"): al tocarlo, lleva
+// la cantidad de ese producto+forma en la consulta HASTA el umbral del nivel.
+// Si ya tenía menos, la sube al umbral. Si ya tenía más (o igual), no la baja ni la resetea.
+function handleNivelClick(btn,prod,formaNombre,desde,formaCantidad){
+  const fNombre=formaNombre||null;
+  const fCantidad=formaCantidad||1;
+  const targetQty=Math.max(1,Math.ceil(desde/fCantidad));
+  const existing=cart.find(i=>i.name===prod&&(i.formaNombre||null)===fNombre);
+  if(existing){
+    if(existing.qty<targetQty)existing.qty=targetQty;
+  }else{
+    cart.push({name:prod,formaNombre:fNombre,formaCantidad:fCantidad,qty:targetQty});
+  }
+  updateCart();
+  bumpCartBadge();
+  btn.classList.add('applied');
+  setTimeout(()=>{btn.classList.remove('applied')},900);
+}
+
 function bumpCartBadge(){
   const badge=document.getElementById('cartCount');
   if(!badge)return;
@@ -346,7 +377,7 @@ function saveCart(){
 }
 function updateCart(){
   saveCart();
-  document.getElementById('cartCount').textContent=cart.reduce((sum,i)=>sum+i.qty,0);
+  document.getElementById('cartCount').textContent=cart.reduce((sum,i)=>sum+i.qty*(i.formaCantidad||1),0);
   renderCart();
 }
 function renderCart(){
@@ -383,7 +414,8 @@ function renderCart(){
             price=p.precioOferta||p.precio;
           }
         }
-        if(price){subtotal+=price*item.qty}else{hasUnknown=true}
+        const totalUnidades=item.qty*(item.formaCantidad||1);
+        if(price){subtotal+=price*totalUnidades}else{hasUnknown=true}
       });
       if(subtotal>0){
         const fmt=n=>`$${Math.round(n).toLocaleString('es-AR')}`;

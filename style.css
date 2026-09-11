@@ -437,12 +437,39 @@ body{
   color:#fff;
 }
 
-/* ── NIVELES DE DESCUENTO POR VOLUMEN ── */
+/* ── NIVELES DE DESCUENTO POR VOLUMEN (compra por volumen) ── */
 .cat-niveles{
-  font-size:9px;
-  color:var(--texto-suave);
-  margin-bottom:4px;
-  line-height:1.4;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  margin-bottom:6px;
+}
+.cat-nivel-btn{
+  width:100%;
+  background:linear-gradient(135deg,var(--naranja),#e8632f);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  padding:6px 8px;
+  font-family:'Inter',sans-serif;
+  font-size:10px;font-weight:700;
+  text-align:center;
+  line-height:1.3;
+  cursor:pointer;
+  animation:nivelPulse 1.8s ease-in-out infinite;
+  transition:transform 0.15s;
+}
+.cat-nivel-btn:hover{transform:translateY(-1px)}
+.cat-nivel-btn.applied{
+  animation:none;
+  background:var(--verde);
+}
+@keyframes nivelPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(207,69,32,0.45)}
+  50%{box-shadow:0 0 0 6px rgba(207,69,32,0)}
+}
+@media(prefers-reduced-motion: reduce){
+  .cat-nivel-btn{animation:none}
 }
 
 /* ── NOTA DE CANTIDAD VARIABLE (reemplaza al botón Agregar) ── */
