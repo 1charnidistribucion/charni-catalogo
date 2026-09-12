@@ -512,7 +512,19 @@ function renderCart() {
 function incQty(idx) { cart[idx].qty++; updateCart() }
 function decQty(idx) { cart[idx].qty--; if (cart[idx].qty <= 0) { cart.splice(idx, 1) } updateCart() }
 function removeFromCart(idx) { cart.splice(idx, 1); updateCart() }
-function clearCart() { if (confirm('¿Vaciar la consulta?')) { cart = []; updateCart() } }
+function clearCart(){
+  const sub=document.getElementById('confirmVaciarSub');
+  if(sub)sub.textContent=`Se van a borrar los ${cart.length} producto${cart.length===1?'':'s'} que agregaste.`;
+  document.getElementById('confirmVaciarModal').classList.add('show');
+}
+function closeConfirmVaciar(){
+  document.getElementById('confirmVaciarModal').classList.remove('show');
+}
+function confirmVaciar(){
+  cart=[];
+  updateCart();
+  closeConfirmVaciar();
+}
 function sendWhatsApp(){
   if(cart.length===0)return;
   let msg='Hola! Quiero consultar por estos productos:\n\n';

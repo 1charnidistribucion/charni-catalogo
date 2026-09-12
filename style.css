@@ -891,3 +891,13 @@ body{
   font-size:11px;font-weight:500;font-style:italic;
   color:var(--texto-muy-suave);
 }
+
+/* ── MODAL CONFIRMAR VACIAR ── */
+.confirm-modal-content{max-width:380px;text-align:center;position:relative}
+.confirm-modal-title{font-family:'Oswald',sans-serif;font-weight:700;font-size:20px;color:var(--texto);margin-bottom:8px}
+.confirm-modal-sub{font-size:14px;color:var(--texto-suave);margin-bottom:24px;line-height:1.5}
+.confirm-modal-actions{display:flex;gap:10px}
+.btn-cancelar{flex:1;background:#E8F0E0;color:var(--verde-oscuro);border:none;padding:14px;border-radius:28px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;transition:all 0.22s}
+.btn-cancelar:hover{background:#DAE8CC}
+.btn-vaciar-confirm{flex:1;background:#F5D9DE;color:var(--bordo);border:none;padding:14px;border-radius:28px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;transition:all 0.22s}
+.btn-vaciar-confirm:hover{background:var(--bordo);color:#fff}
