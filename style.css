@@ -81,6 +81,11 @@ body{
   transform:translateY(-1px);
   box-shadow:0 5px 18px rgba(86,130,31,0.35);
 }
+/* Ícono de carrito propio (SVG), no emoji: se ve igual en todos los
+   sistemas/navegadores y permite controlar tamaño y trazo. */
+.cart-btn-icon{display:inline-flex;flex-shrink:0}
+.cart-btn-icon svg{display:block;width:22px;height:22px}
+.header.header-compacto .cart-btn-icon svg{width:20px;height:20px}
 .cart-count{
   background:var(--naranja);
   color:#fff;
@@ -134,6 +139,15 @@ body{
   .header-compact-row{transition:none}
 }
 
+/* Agrupa marcas+buscador en su propia fila interna SIN wrap: así, si no
+   entran los dos en el ancho disponible (mobile con el buscador ya
+   expandido), es #marcasRowCompact el que se comprime/scrollea — nunca
+   el buscador salta a una segunda línea tapando o descuadrando todo. */
+#compactTopRow{
+  display:flex;align-items:center;gap:8px;
+  flex:1 1 auto;min-width:0;
+}
+
 /* Chips de marca de la franja compacta: elementos propios y siempre
    presentes en el DOM (nunca se mudan) — comparten clase .marca-chip
    con los del hero para que setActiveChip() los sincronice sin código
@@ -155,16 +169,27 @@ body{
 
 @media(max-width:768px){
   .header-compact-row .cat-quicknav-wrap{flex-basis:100%;order:3}
-  /* En mobile el buscador se reduce a una lupa que se expande al tocarla */
+  /* En mobile las marcas y el buscador comparten la primera fila: el
+     buscador vive como una lupa chica que, al usarse, se expande y
+     empuja/comprime la fila de marcas (que ya scrollea horizontal) en
+     vez de tapar nada o forzar un salto de línea. */
+  #marcasRowCompact{flex-shrink:1;min-width:46px}
   #searchBoxCompact{
-    width:36px;
-    padding:7px 7px 7px 30px;
-    background:var(--fondo-alt) no-repeat 7px center/14px 14px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23585858' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+    /* Colapsada: el ícono va centrado y SIN padding lateral fijo — un
+       padding a los costados no puede ser más chico que el propio
+       ícono+su aire, así que terminaba fijando un ancho mínimo mayor
+       al declarado. Sin ese padding, el ancho real es el que se pide. */
+    -webkit-appearance:none;appearance:none;
+    width:26px;
+    padding:0;
+    background:var(--fondo-alt) no-repeat center/13px 13px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23585858' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
     cursor:pointer;
-    transition:width 0.22s ease;
+    transition:width 0.22s ease, padding 0.22s ease;
   }
   #searchBoxCompact:focus{
-    width:150px;
+    width:140px;
+    padding:7px 14px;
+    background-image:none;
     cursor:text;
   }
 }

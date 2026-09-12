@@ -19,16 +19,18 @@
 </div>
 </div>
 <button class="cart-btn" onclick="openCart()">
-<span class="cart-btn-icon">🛒</span><span class="cart-btn-label"> Consultas</span> <span class="cart-count" id="cartCount">0</span>
+<span class="cart-btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></span><span class="cart-btn-label"> Consultas</span> <span class="cart-count" id="cartCount">0</span>
 </button>
 </div>
 <div class="header-compact-row" id="headerCompactRow">
+<div id="compactTopRow">
 <div id="marcasRowCompact">
 <button class="marca-chip compacta claro" data-brand="donatilio" onclick="filterBrandFromChip('donatilio')"><img src="img/marcas/don_atilio.png" alt="Don Atilio"></button>
 <button class="marca-chip compacta transparente grande" data-brand="cagnoli" onclick="filterBrandFromChip('cagnoli')"><img src="img/marcas/cagnoli.png" alt="Cagnoli"></button>
 <button class="marca-chip compacta claro" data-brand="vidal" onclick="filterBrandFromChip('vidal')"><img src="img/marcas/vidal.png" alt="Lácteos Vidal"></button>
 </div>
 <input type="search" id="searchBoxCompact" class="search-box" placeholder="Buscar producto..." oninput="onSearchInputCompact(this.value)">
+</div>
 </div>
 </header>
 <section class="hero" id="hero">
