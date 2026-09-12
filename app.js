@@ -358,7 +358,6 @@ function filterBrandFromChip(brand){
   currentBrand=brand;
   setActiveChip(brand);
   renderCatalogo(brand);
-  updateHero(brand);
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -594,8 +593,8 @@ function initHeaderCompactObserver(){
   obs.observe(marcasAliadas);
 }
 
-renderCatalogo('cagnoli');
-updateHero('cagnoli');
-setActiveChip('cagnoli');
+renderCatalogo('all');
+updateHero('all');
+setActiveChip('all');
 updateCart();
 initHeaderCompactObserver();
