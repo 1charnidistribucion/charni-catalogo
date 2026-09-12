@@ -513,27 +513,28 @@ function incQty(idx) { cart[idx].qty++; updateCart() }
 function decQty(idx) { cart[idx].qty--; if (cart[idx].qty <= 0) { cart.splice(idx, 1) } updateCart() }
 function removeFromCart(idx) { cart.splice(idx, 1); updateCart() }
 function clearCart() { if (confirm('¿Vaciar la consulta?')) { cart = []; updateCart() } }
-function sendWhatsApp() {
-  if (cart.length === 0) return;
-  let msg = 'Hola! Quiero consultar por estos productos:\n\n';
-  cart.forEach(i => {
-    const forma = i.formaNombre || null;
-    const p = findProductByName(i.name);
-    const trivial = formaEsTrivial(p, forma);
-    if (forma && !trivial) {
-      const fCantidad = i.formaCantidad || 1;
-      const unidadMedida = (p && p.unidadMedida) || 'unidades';
-      if (fCantidad > 1) {
-        msg += `• ${i.name} — ${forma} x${fCantidad}u — ${i.qty} x ${forma} (${i.qty * fCantidad} ${unidadMedida})\n`;
-      } else {
-        msg += `• ${i.name} — ${forma} x ${i.qty}\n`;
+function sendWhatsApp(){
+  if(cart.length===0)return;
+  let msg='Hola! Quiero consultar por estos productos:\n\n';
+  cart.forEach((i,idx)=>{
+    const n=idx+1;
+    const forma=i.formaNombre||null;
+    const p=findProductByName(i.name);
+    const trivial=formaEsTrivial(p,forma);
+    if(forma&&!trivial){
+      const fCantidad=i.formaCantidad||1;
+      const unidadMedida=(p&&p.unidadMedida)||'unidades';
+      if(fCantidad>1){
+        msg+=`${n}. ${i.name} — ${forma} x${fCantidad}u — ${i.qty} x ${forma} (${i.qty*fCantidad} ${unidadMedida})\n`;
+      }else{
+        msg+=`${n}. ${i.name} — ${forma} x ${i.qty}\n`;
       }
-    } else {
-      msg += `• ${i.name} x ${i.qty}\n`;
+    }else{
+      msg+=`${n}. ${i.name} x ${i.qty}\n`;
     }
   });
-  msg += '\n¿Me confirmás precio y disponibilidad?';
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, '_blank');
+  msg+='\n¿Me confirmás precio y disponibilidad?';
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank');
 }
 function openCart() { document.getElementById('cartModal').classList.add('show') }
 function closeCart() { document.getElementById('cartModal').classList.remove('show') }
