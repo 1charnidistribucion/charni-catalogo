@@ -22,7 +22,15 @@
 <span class="cart-btn-icon">🛒</span><span class="cart-btn-label"> Consultas</span> <span class="cart-count" id="cartCount">0</span>
 </button>
 </div>
-<div class="header-compact-row" id="headerCompactRow"></div>
+<div class="header-compact-row" id="headerCompactRow">
+<div id="marcasRowCompact">
+<button class="marca-chip compacta claro" data-brand="donatilio" onclick="filterBrandFromChip('donatilio')"><img src="img/marcas/don_atilio.png" alt="Don Atilio"></button>
+<button class="marca-chip compacta transparente grande" data-brand="cagnoli" onclick="filterBrandFromChip('cagnoli')"><img src="img/marcas/cagnoli.png" alt="Cagnoli"></button>
+<button class="marca-chip compacta claro" data-brand="vidal" onclick="filterBrandFromChip('vidal')"><img src="img/marcas/vidal.png" alt="Lácteos Vidal"></button>
+<button class="marca-chip compacta oscuro" data-brand="lasdinas" onclick="filterBrandFromChip('lasdinas')"><img src="img/marcas/lasdinas.png" alt="Las Dinas"></button>
+</div>
+<input type="search" id="searchBoxCompact" class="search-box" placeholder="Buscar producto..." oninput="onSearchInputCompact(this.value)">
+</div>
 </header>
 <section class="hero" id="hero">
 <div class="hero-bg" id="heroBg"></div>
@@ -46,7 +54,11 @@
 <input type="search" id="searchBox" class="search-box" placeholder="Buscar producto..." oninput="onSearchInput(this.value)">
 </div>
 </div>
+<div class="cat-quicknav-wrap" id="quickNavWrap">
+<button type="button" class="quicknav-arrow quicknav-prev" onclick="scrollQuickNav(-1)" aria-label="Categorías anteriores">‹</button>
 <div class="cat-quicknav" id="quickNav"></div>
+<button type="button" class="quicknav-arrow quicknav-next" onclick="scrollQuickNav(1)" aria-label="Categorías siguientes">›</button>
+</div>
 <main class="container" id="catalogo-main">
 </main>
 <div class="modal" id="cartModal">

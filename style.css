@@ -91,17 +91,19 @@ body{
   font-family:'Inter',sans-serif;
 }
 
-/* ── HEADER CONTEXTUAL / COMPACTO AL SCROLLEAR ──────────────────────
+/* ── HEADER CONTEXTUAL / COMPACTO AL SCROLLEAR (v2) ──────────────────
    Cuando "Nuestras Marcas Aliadas" sale de pantalla, el header (que ya
    es sticky) muestra una segunda franja debajo con las marcas (chips
-   chicos), el buscador y los pills de categoría — y el botón Consultas
-   se reduce a ícono+badge para liberar lugar. Es una franja superpuesta
-   (position:absolute) que no empuja el resto del contenido: no se anima
-   ni el alto ni el ancho, solo opacity/transform (mismo criterio de
-   performance que .cart-count.bump). ── */
+   chicos, versión propia — no son las mismas del hero reubicadas), un
+   buscador propio (sincronizado con el principal) y los pills de
+   categoría — y el botón Consultas se reduce a ícono+badge. Nada se
+   reparenta salvo el "wrap" de categorías (ver más abajo), así que la
+   franja entera solo anima opacity/transform: nunca hay un elemento
+   real cambiando de tamaño en medio de la transición, que es lo que
+   antes se sentía "poco fluido". ── */
 .cart-btn-label{margin:0 2px}
 .header.header-compacto .cart-btn-label{display:none}
-.header.header-compacto .cart-btn{padding:9px 14px;gap:2px}
+.header.header-compacto .cart-btn{padding:8px 12px;gap:2px}
 .header.header-compacto .logo-text{display:none}
 
 .header-compact-row{
@@ -111,16 +113,16 @@ body{
   background:var(--fondo-alt);
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:8px;
   flex-wrap:wrap;
-  padding:8px 24px 10px;
+  padding:6px 16px 7px;
   opacity:0;
-  transform:translateY(-6px);
+  transform:translateY(-4px);
   pointer-events:none;
-  transition:opacity 0.22s ease, transform 0.22s ease;
+  transition:opacity 0.18s ease-out, transform 0.18s ease-out;
   box-shadow:0 6px 14px var(--sombra);
-  border-bottom-left-radius:14px;
-  border-bottom-right-radius:14px;
+  border-bottom-left-radius:12px;
+  border-bottom-right-radius:12px;
   z-index:999;
 }
 .header.header-compacto .header-compact-row{
@@ -132,42 +134,37 @@ body{
   .header-compact-row{transition:none}
 }
 
-/* Chips de marca dentro de la franja compacta: mismo componente, versión chica */
-.marcas-row-compact{
-  display:flex;gap:6px;flex-wrap:nowrap;
+/* Chips de marca de la franja compacta: elementos propios y siempre
+   presentes en el DOM (nunca se mudan) — comparten clase .marca-chip
+   con los del hero para que setActiveChip() los sincronice sin código
+   extra, más el modificador .compacta para el tamaño chico. */
+#marcasRowCompact{
+  display:flex;gap:5px;flex-wrap:nowrap;
   overflow-x:auto;scrollbar-width:none;
   flex-shrink:0;
 }
-.marcas-row-compact::-webkit-scrollbar{display:none}
-.marcas-row-compact .marca-chip{
-  height:32px;padding:4px 10px;border-radius:8px;
+#marcasRowCompact::-webkit-scrollbar{display:none}
+.marca-chip.compacta{
+  height:26px;padding:3px 8px;border-radius:7px;
   outline-width:2px;outline-offset:2px;
 }
-.marcas-row-compact .marca-chip img{max-height:18px;max-width:64px}
+.marca-chip.compacta img{max-height:14px;max-width:50px}
 
-/* Buscador dentro de la franja compacta (más angosto en desktop) */
-.header-compact-row #searchBox{flex-shrink:0;width:170px;margin:0}
-
-/* Pills de categoría dentro de la franja compacta: la lógica de .show
-   (buildQuickNav en app.js) no se toca — esto solo ajusta tamaño/margen
-   cuando el propio elemento ya decidió mostrarse. */
-.header-compact-row .cat-quicknav{
-  margin:0;padding:2px 0 0;
-  flex:1 1 220px;min-width:120px;
-}
+/* Buscador propio de la franja compacta (sincronizado con #searchBox) */
+#searchBoxCompact{flex-shrink:0;width:150px;margin:0;padding:7px 14px;font-size:12.5px}
 
 @media(max-width:768px){
-  .header-compact-row .cat-quicknav{flex-basis:100%;order:3}
+  .header-compact-row .cat-quicknav-wrap{flex-basis:100%;order:3}
   /* En mobile el buscador se reduce a una lupa que se expande al tocarla */
-  .header-compact-row #searchBox{
-    width:38px;
-    padding:8px 8px 8px 34px;
-    background:var(--fondo-alt) no-repeat 8px center/16px 16px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23585858' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+  #searchBoxCompact{
+    width:36px;
+    padding:7px 7px 7px 30px;
+    background:var(--fondo-alt) no-repeat 7px center/14px 14px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23585858' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
     cursor:pointer;
     transition:width 0.22s ease;
   }
-  .header-compact-row #searchBox:focus{
-    width:160px;
+  #searchBoxCompact:focus{
+    width:150px;
     cursor:text;
   }
 }
@@ -729,13 +726,48 @@ body{
 }
 .search-box::placeholder{color:var(--texto-muy-suave)}
 
-/* ── ACCESOS RAPIDOS ENTRE CATEGORIAS ── */
+/* ── ACCESOS RAPIDOS ENTRE CATEGORIAS ──────────────────────────────
+   #quickNavWrap es lo que se muda al header compacto (nunca el <div>
+   #quickNav suelto) — así el propio buildQuickNav()/.show no necesita
+   saber nada sobre dónde vive. En desktop (hover:hover + pointer:fine)
+   aparecen flechas propias para desplazar; en touch quedan ausentes y
+   el scroll es 100% swipe nativo del navegador — son dos interacciones
+   con código genuinamente separado, no una sola pensada para mobile. */
+.cat-quicknav-wrap{
+  display:none;
+  align-items:center;
+  gap:6px;
+  max-width:1400px;margin:0 auto;
+  padding:12px 24px 4px;
+}
+.cat-quicknav-wrap.show{display:flex}
+.header-compact-row .cat-quicknav-wrap{
+  margin:0;padding:2px 0 0;
+  flex:1 1 220px;min-width:120px;
+}
+.quicknav-arrow{display:none}
+@media (hover:hover) and (pointer:fine){
+  .quicknav-arrow{
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    width:24px;height:24px;
+    border-radius:50%;
+    border:1px solid #DCDAD1;
+    background:#fff;
+    color:#585858;
+    font-size:15px;
+    line-height:1;
+    cursor:pointer;
+    transition:all 0.2s;
+  }
+  .quicknav-arrow:hover{border-color:var(--verde);color:var(--verde)}
+  .quicknav-arrow:active{transform:scale(0.92)}
+}
 .cat-quicknav{
   display:none;
   gap:8px;
   overflow-x:auto;
-  max-width:1400px;margin:0 auto;
-  padding:12px 24px 4px;
+  flex:1 1 auto;min-width:0;
   scrollbar-width:none;
 }
 .cat-quicknav::-webkit-scrollbar{display:none}

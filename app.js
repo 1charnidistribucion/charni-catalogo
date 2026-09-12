@@ -262,10 +262,17 @@ function renderCatalogo(brand){
 
 function buildQuickNav(){
   const nav=document.getElementById('quickNav');
+  const wrap=document.getElementById('quickNavWrap');
   if(!nav)return;
   const headers=[...document.querySelectorAll('.cat-seccion-titulo')];
-  if(headers.length<=1){nav.innerHTML='';nav.classList.remove('show');return;}
+  if(headers.length<=1){
+    nav.innerHTML='';
+    nav.classList.remove('show');
+    if(wrap)wrap.classList.remove('show');
+    return;
+  }
   nav.classList.add('show');
+  if(wrap)wrap.classList.add('show');
   nav.innerHTML=headers.map((h,i)=>{
     const id='sec-'+i;
     h.closest('.cat-seccion').id=id;
@@ -278,6 +285,15 @@ function scrollToSection(id){
   if(!el)return;
   const y=el.getBoundingClientRect().top+window.scrollY-150;
   window.scrollTo({top:y,behavior:'smooth'});
+}
+
+// Flechas de desplazamiento del quicknav — solo existen/se ven en desktop
+// (@media hover:hover + pointer:fine en el CSS); en touch el scroll queda
+// 100% al swipe nativo del navegador, sin ningún botón visible.
+function scrollQuickNav(dir){
+  const nav=document.getElementById('quickNav');
+  if(!nav)return;
+  nav.scrollBy({left:dir*220,behavior:'smooth'});
 }
 
 let revealPending=[];
@@ -317,6 +333,18 @@ function initScrollReveal(){
 
 function onSearchInput(value){
   searchTerm=value;
+  const compactBox=document.getElementById('searchBoxCompact');
+  if(compactBox&&compactBox.value!==value)compactBox.value=value;
+  renderCatalogo(currentBrand);
+}
+
+// El buscador de la franja compacta es un input propio (no el mismo
+// reubicado) para no tener que reparentarlo — se mantiene sincronizado
+// a mano en las dos direcciones con onSearchInput de arriba.
+function onSearchInputCompact(value){
+  searchTerm=value;
+  const mainBox=document.getElementById('searchBox');
+  if(mainBox&&mainBox.value!==value)mainBox.value=value;
   renderCatalogo(currentBrand);
 }
 
@@ -511,35 +539,27 @@ function sendWhatsApp(){
 function openCart(){document.getElementById('cartModal').classList.add('show')}
 function closeCart(){document.getElementById('cartModal').classList.remove('show')}
 
-// ── Header contextual / compacto al scrollear ───────────────────────
-// Cuando ".marcas-aliadas" sale de pantalla, el buscador, las marcas
-// (como chips chicos) y los pills de categoría se mudan dentro del
-// header (que ya es sticky) y el botón Consultas se reduce a
-// ícono+badge. Al volver arriba, todo vuelve a su lugar original.
-// Un solo IntersectionObserver decide el estado; buildQuickNav() y su
-// clase ".show" siguen mandando sobre si los pills se muestran o no —
-// esto solo cambia dónde y cómo se ven cuando ya decidieron mostrarse.
+// ── Header contextual / compacto al scrollear (v2) ──────────────────
+// Cuando ".marcas-aliadas" sale de pantalla, la franja compacta del
+// header (que ya es sticky) se hace visible y el botón Consultas se
+// reduce a ícono+badge. A diferencia de la v1, acá NO se reparenta el
+// buscador ni las marcas: la franja compacta tiene su propio buscador
+// (#searchBoxCompact) y sus propios chips (#marcasRowCompact), siempre
+// presentes en el DOM — solo cambia su opacidad/posición como conjunto.
+// Lo único que se muda es #quickNavWrap (los pills de categoría), porque
+// ese sí tiene que ser el mismo elemento en los dos lugares. Un solo
+// IntersectionObserver decide el estado; buildQuickNav() y su clase
+// ".show" siguen mandando sobre si los pills se muestran o no.
 let headerCompacto=false;
 function moveIntoCompactHeader(){
   const row=document.getElementById('headerCompactRow');
-  if(!row)return;
-  const marcasRow=document.querySelector('.marcas-row');
-  const searchBox=document.getElementById('searchBox');
-  const quickNav=document.getElementById('quickNav');
-  if(marcasRow){marcasRow.classList.add('marcas-row-compact');row.appendChild(marcasRow);}
-  if(searchBox)row.appendChild(searchBox);
-  if(quickNav)row.appendChild(quickNav);
+  const quickNavWrap=document.getElementById('quickNavWrap');
+  if(row&&quickNavWrap)row.appendChild(quickNavWrap);
 }
 function restoreFromCompactHeader(){
-  const marcasAliadas=document.querySelector('.marcas-aliadas');
-  const searchInner=document.querySelector('.search-inner');
   const mainEl=document.getElementById('catalogo-main');
-  const marcasRow=document.querySelector('.marcas-row');
-  const searchBox=document.getElementById('searchBox');
-  const quickNav=document.getElementById('quickNav');
-  if(marcasRow&&marcasAliadas){marcasRow.classList.remove('marcas-row-compact');marcasAliadas.appendChild(marcasRow);}
-  if(searchBox&&searchInner)searchInner.appendChild(searchBox);
-  if(quickNav&&mainEl&&mainEl.parentNode)mainEl.parentNode.insertBefore(quickNav,mainEl);
+  const quickNavWrap=document.getElementById('quickNavWrap');
+  if(quickNavWrap&&mainEl&&mainEl.parentNode)mainEl.parentNode.insertBefore(quickNavWrap,mainEl);
 }
 function enterHeaderCompacto(){
   if(headerCompacto)return;
