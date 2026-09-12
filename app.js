@@ -5,7 +5,7 @@ try {
   if (savedCart) cart = JSON.parse(savedCart);
 } catch (e) { }
 const heroMedia = {
-  all: 'img/heroes/hero_general.webp.webp',
+all:'img/heroes/fiambres-hero.jpg',
   donatilio: 'img/heroes/don_atilio.jpg',
   lasdinas: ['img/heroes/1RYjiNC9ZPYuGAjL14MQzXC4dryj4-P1P.jpg', 'img/heroes/1NbdE92x51--hfyCR3_b8ItHCsBxXDQ38.jpg'],
   vidal: 'img/heroes/1w0EDmpP3n-pWQCimwTothoY1RTMmqQx9.jpg'
@@ -76,7 +76,7 @@ function updateHero(brand) {
   if (brand === 'lasdinas' && heroMedia.lasdinas.length > 0) { playNextDinasImg(); imgInterval = setInterval(playNextDinasImg, 5000) }
   else if (brand === 'donatilio') { heroBg.style.backgroundImage = `url('${heroMedia.donatilio}')`; heroBg.style.opacity = '1' }
   else if (brand === 'vidal') { heroBg.style.backgroundImage = `url('${heroMedia.vidal}')`; heroBg.style.opacity = '1' }
-  else { heroBg.style.backgroundImage = "url('img/heroes/hero_general.webp.webp')"; heroBg.style.opacity = '1' }
+else{heroBg.style.backgroundImage="url('img/heroes/fiambres-hero.jpg')";heroBg.style.opacity='1'}
 }
 
 function playNextDinasImg() {

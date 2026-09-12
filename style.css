@@ -197,19 +197,12 @@ body{
 /* ── HERO ── */
 .hero{
   height:380px;
-  max-width:1400px;
-  margin:0 auto;
   position:relative;
   display:flex;
   align-items:center;justify-content:center;
   overflow:hidden;
 }
-.hero::before{
-  content:'';
-  position:absolute;top:0;left:0;width:100%;height:100%;
-  background:linear-gradient(to right,var(--fondo) 0%,transparent 12%,transparent 88%,var(--fondo) 100%);
-  z-index:2;pointer-events:none;
-}
+
 .hero-bg{
   position:absolute;top:0;left:0;
   width:100%;height:100%;
@@ -901,3 +894,27 @@ body{
 .btn-cancelar:hover{background:#DAE8CC}
 .btn-vaciar-confirm{flex:1;background:#F5D9DE;color:var(--bordo);border:none;padding:14px;border-radius:28px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;transition:all 0.22s}
 .btn-vaciar-confirm:hover{background:var(--bordo);color:#fff}
+
+
+.hero-text{
+  position:relative;
+  z-index:2;
+  text-align:center;
+  color:#fff;
+  padding:0 24px;
+  max-width:640px;
+}
+.hero-tagline{
+  font-family:'Oswald',sans-serif;
+  font-weight:700;
+  font-size:28px;
+  letter-spacing:0.3px;
+  margin-bottom:8px;
+}
+.hero-tagline em{font-style:italic;font-weight:500}
+.hero-subtitle{
+  font-size:14px;
+  font-weight:500;
+  opacity:0.92;
+  line-height:1.5;
+}
