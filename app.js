@@ -368,6 +368,16 @@ function findProductByName(name) {
   }
   return null;
 }
+function findMarcaByName(name){
+  for(const marca in brandSections){
+    const secciones=brandSections[marca];
+    for(const sec of secciones){
+      const secIds=Array.isArray(sec.id)?sec.id:[sec.id];
+      if(secIds.some(id=>products[id]&&products[id].some(p=>p.name===name)))return marca;
+    }
+  }
+  return null;
+}
 
 function handleAddClick(btn, prod, formaNombre) {
   const p = findProductByName(prod);
@@ -527,9 +537,19 @@ function confirmVaciar(){
 }
 function sendWhatsApp(){
   if(cart.length===0)return;
+  const ordenMarcas=Object.keys(brandSections);
+  const grupos={};
+  ordenMarcas.forEach(m=>grupos[m]=[]);
+  const otros=[];
+  cart.forEach(i=>{
+    const marca=findMarcaByName(i.name);
+    if(marca&&grupos[marca])grupos[marca].push(i);
+    else otros.push(i);
+  });
   let msg='Hola! Quiero consultar por estos productos:\n\n';
-  cart.forEach((i,idx)=>{
-    const n=idx+1;
+  let n=0;
+  const agregarLinea=(i)=>{
+    n++;
     const forma=i.formaNombre||null;
     const p=findProductByName(i.name);
     const trivial=formaEsTrivial(p,forma);
@@ -544,8 +564,19 @@ function sendWhatsApp(){
     }else{
       msg+=`${n}. ${i.name} x ${i.qty}\n`;
     }
+  };
+  ordenMarcas.forEach(marca=>{
+    if(grupos[marca].length===0)return;
+    msg+=`*${brandNames[marca]}*\n`;
+    grupos[marca].forEach(agregarLinea);
+    msg+='\n';
   });
-  msg+='\n¿Me confirmás precio y disponibilidad?';
+  if(otros.length){
+    msg+=`*Otros*\n`;
+    otros.forEach(agregarLinea);
+    msg+='\n';
+  }
+  msg+='¿Me confirmás precio y disponibilidad?';
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank');
 }
 function openCart() { document.getElementById('cartModal').classList.add('show') }
