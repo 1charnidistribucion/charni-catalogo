@@ -214,7 +214,7 @@ function renderCatalogo(brand) {
       secDiv.dataset.brand = marca;
       const header = document.createElement('div');
       header.className = 'cat-seccion-header';
-      header.innerHTML = `<span class="cat-seccion-titulo">${sec.title}</span><span class="cat-seccion-marca">${brandNames[marca]}</span>`;
+header.innerHTML=`<span class="cat-seccion-titulo">${sec.title}</span>`;
       secDiv.appendChild(header);
       const row = document.createElement('div');
       row.className = 'cat-row';
@@ -246,7 +246,7 @@ function renderCatalogo(brand) {
         card.dataset.formaIdx = String(defaultFormaIdx);
         card.dataset.unidadSuffix = unidadSuffix;
         card.dataset.pname = p.name;
-        card.innerHTML = `${imgHtml}<div class="cat-card-info"><div class="cat-card-name">${p.name}</div>${descHtml}${detalleHtml}${selectorHtml}<div class="cat-card-dynamic">${dynamicHtml}</div></div>`;
+card.innerHTML=`${imgHtml}<div class="cat-card-info"><div class="cat-card-marca">${brandNames[marca]}</div><div class="cat-card-name">${p.name}</div>${descHtml}${detalleHtml}${selectorHtml}<div class="cat-card-dynamic">${dynamicHtml}</div></div>`;
         row.appendChild(card);
       });
       secDiv.appendChild(row);
