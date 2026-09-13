@@ -5,7 +5,7 @@ try {
   if (savedCart) cart = JSON.parse(savedCart);
 } catch (e) { }
 const heroMedia = {
-all:'img/heroes/fiambres-hero.jpg',
+  all: 'img/heroes/fiambres-hero.jpg',
   donatilio: 'img/heroes/don_atilio.jpg',
   lasdinas: ['img/heroes/1RYjiNC9ZPYuGAjL14MQzXC4dryj4-P1P.jpg', 'img/heroes/1NbdE92x51--hfyCR3_b8ItHCsBxXDQ38.jpg'],
   vidal: 'img/heroes/1w0EDmpP3n-pWQCimwTothoY1RTMmqQx9.jpg'
@@ -76,7 +76,7 @@ function updateHero(brand) {
   if (brand === 'lasdinas' && heroMedia.lasdinas.length > 0) { playNextDinasImg(); imgInterval = setInterval(playNextDinasImg, 5000) }
   else if (brand === 'donatilio') { heroBg.style.backgroundImage = `url('${heroMedia.donatilio}')`; heroBg.style.opacity = '1' }
   else if (brand === 'vidal') { heroBg.style.backgroundImage = `url('${heroMedia.vidal}')`; heroBg.style.opacity = '1' }
-else{heroBg.style.backgroundImage="url('img/heroes/fiambres-hero.jpg')";heroBg.style.opacity='1'}
+  else { heroBg.style.backgroundImage = "url('img/heroes/fiambres-hero.jpg')"; heroBg.style.opacity = '1' }
 }
 
 function playNextDinasImg() {
@@ -133,10 +133,10 @@ function renderCardDynamic(p, forma, unidadSuffix, showPrices, pnameEscaped) {
       let btnLabel;
       if (showPrices && !p.precio) {
         btnLabel = 'Consulte por pedido';
-      } else if (forma && forma.nombre) {
-        btnLabel = `+ Agregar ${forma.nombre}`;
+      } else if (forma && forma.nombre && !formaEsTrivial(p, forma.nombre)) {
+        btnLabel = `Agregar ${forma.nombre}`;
       } else {
-        btnLabel = '+ Agregar';
+        btnLabel = 'Agregar';
       }
       html += `<button class="cat-card-btn" onclick="handleAddClick(this,'${pnameEscaped}','${formaAttr}')">${btnLabel}</button>`;
     }
@@ -214,7 +214,7 @@ function renderCatalogo(brand) {
       secDiv.dataset.brand = marca;
       const header = document.createElement('div');
       header.className = 'cat-seccion-header';
-header.innerHTML=`<span class="cat-seccion-titulo">${sec.title}</span>`;
+      header.innerHTML = `<span class="cat-seccion-titulo">${sec.title}</span>`;
       secDiv.appendChild(header);
       const row = document.createElement('div');
       row.className = 'cat-row';
@@ -246,7 +246,7 @@ header.innerHTML=`<span class="cat-seccion-titulo">${sec.title}</span>`;
         card.dataset.formaIdx = String(defaultFormaIdx);
         card.dataset.unidadSuffix = unidadSuffix;
         card.dataset.pname = p.name;
-card.innerHTML=`${imgHtml}<div class="cat-card-info"><div class="cat-card-marca">${brandNames[marca]}</div><div class="cat-card-name">${p.name}</div>${descHtml}${detalleHtml}${selectorHtml}<div class="cat-card-dynamic">${dynamicHtml}</div></div>`;
+        card.innerHTML = `${imgHtml}<div class="cat-card-info"><div class="cat-card-marca">${brandNames[marca]}</div><div class="cat-card-name">${p.name}</div>${descHtml}${detalleHtml}${selectorHtml}<div class="cat-card-dynamic">${dynamicHtml}</div></div>`;
         row.appendChild(card);
       });
       secDiv.appendChild(row);
@@ -368,12 +368,12 @@ function findProductByName(name) {
   }
   return null;
 }
-function findMarcaByName(name){
-  for(const marca in brandSections){
-    const secciones=brandSections[marca];
-    for(const sec of secciones){
-      const secIds=Array.isArray(sec.id)?sec.id:[sec.id];
-      if(secIds.some(id=>products[id]&&products[id].some(p=>p.name===name)))return marca;
+function findMarcaByName(name) {
+  for (const marca in brandSections) {
+    const secciones = brandSections[marca];
+    for (const sec of secciones) {
+      const secIds = Array.isArray(sec.id) ? sec.id : [sec.id];
+      if (secIds.some(id => products[id] && products[id].some(p => p.name === name))) return marca;
     }
   }
   return null;
@@ -522,62 +522,62 @@ function renderCart() {
 function incQty(idx) { cart[idx].qty++; updateCart() }
 function decQty(idx) { cart[idx].qty--; if (cart[idx].qty <= 0) { cart.splice(idx, 1) } updateCart() }
 function removeFromCart(idx) { cart.splice(idx, 1); updateCart() }
-function clearCart(){
-  const sub=document.getElementById('confirmVaciarSub');
-  if(sub)sub.textContent=`Se van a borrar los ${cart.length} producto${cart.length===1?'':'s'} que agregaste.`;
+function clearCart() {
+  const sub = document.getElementById('confirmVaciarSub');
+  if (sub) sub.textContent = `Se van a borrar los ${cart.length} producto${cart.length === 1 ? '' : 's'} que agregaste.`;
   document.getElementById('confirmVaciarModal').classList.add('show');
 }
-function closeConfirmVaciar(){
+function closeConfirmVaciar() {
   document.getElementById('confirmVaciarModal').classList.remove('show');
 }
-function confirmVaciar(){
-  cart=[];
+function confirmVaciar() {
+  cart = [];
   updateCart();
   closeConfirmVaciar();
 }
-function sendWhatsApp(){
-  if(cart.length===0)return;
-  const ordenMarcas=Object.keys(brandSections);
-  const grupos={};
-  ordenMarcas.forEach(m=>grupos[m]=[]);
-  const otros=[];
-  cart.forEach(i=>{
-    const marca=findMarcaByName(i.name);
-    if(marca&&grupos[marca])grupos[marca].push(i);
+function sendWhatsApp() {
+  if (cart.length === 0) return;
+  const ordenMarcas = Object.keys(brandSections);
+  const grupos = {};
+  ordenMarcas.forEach(m => grupos[m] = []);
+  const otros = [];
+  cart.forEach(i => {
+    const marca = findMarcaByName(i.name);
+    if (marca && grupos[marca]) grupos[marca].push(i);
     else otros.push(i);
   });
-  let msg='Hola! Quiero consultar por estos productos:\n\n';
-  let n=0;
-  const agregarLinea=(i)=>{
+  let msg = 'Hola! Quiero consultar por estos productos:\n\n';
+  let n = 0;
+  const agregarLinea = (i) => {
     n++;
-    const forma=i.formaNombre||null;
-    const p=findProductByName(i.name);
-    const trivial=formaEsTrivial(p,forma);
-    if(forma&&!trivial){
-      const fCantidad=i.formaCantidad||1;
-      const unidadMedida=(p&&p.unidadMedida)||'unidades';
-      if(fCantidad>1){
-        msg+=`${n}. ${i.name} — ${forma} x${fCantidad}u — ${i.qty} x ${forma} (${i.qty*fCantidad} ${unidadMedida})\n`;
-      }else{
-        msg+=`${n}. ${i.name} — ${forma} x ${i.qty}\n`;
+    const forma = i.formaNombre || null;
+    const p = findProductByName(i.name);
+    const trivial = formaEsTrivial(p, forma);
+    if (forma && !trivial) {
+      const fCantidad = i.formaCantidad || 1;
+      const unidadMedida = (p && p.unidadMedida) || 'unidades';
+      if (fCantidad > 1) {
+        msg += `${n}. ${i.name} — ${forma} x${fCantidad}u — ${i.qty} x ${forma} (${i.qty * fCantidad} ${unidadMedida})\n`;
+      } else {
+        msg += `${n}. ${i.name} — ${forma} x ${i.qty}\n`;
       }
-    }else{
-      msg+=`${n}. ${i.name} x ${i.qty}\n`;
+    } else {
+      msg += `${n}. ${i.name} x ${i.qty}\n`;
     }
   };
-  ordenMarcas.forEach(marca=>{
-    if(grupos[marca].length===0)return;
-    msg+=`*${brandNames[marca]}*\n`;
+  ordenMarcas.forEach(marca => {
+    if (grupos[marca].length === 0) return;
+    msg += `*${brandNames[marca]}*\n`;
     grupos[marca].forEach(agregarLinea);
-    msg+='\n';
+    msg += '\n';
   });
-  if(otros.length){
-    msg+=`*Otros*\n`;
+  if (otros.length) {
+    msg += `*Otros*\n`;
     otros.forEach(agregarLinea);
-    msg+='\n';
+    msg += '\n';
   }
-  msg+='¿Me confirmás precio y disponibilidad?';
-  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`,'_blank');
+  msg += '¿Me confirmás precio y disponibilidad?';
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 function openCart() { document.getElementById('cartModal').classList.add('show') }
 function closeCart() { document.getElementById('cartModal').classList.remove('show') }

@@ -3,7 +3,8 @@
 *{margin:0;padding:0;box-sizing:border-box}
 
 :root{
-  --fondo:#F7F4EC;
+  /* --fondo:#F7F4EC; */
+  --fondo:#ffffff;
   --fondo-alt:#ffffff;
   --card:#ffffff;
   --texto:#1c1c1c;
@@ -114,20 +115,17 @@ body{
 .header-compact-row{
   position:absolute;
   top:100%;left:0;right:0;
-  max-width:1400px;margin:0 auto;
   background:var(--fondo-alt);
   display:flex;
   align-items:center;
   gap:8px;
   flex-wrap:wrap;
-  padding:6px 16px 7px;
+  padding:6px 24px 7px;
   opacity:0;
   transform:translateY(-4px);
   pointer-events:none;
   transition:opacity 0.18s ease-out, transform 0.18s ease-out;
   box-shadow:0 6px 14px var(--sombra);
-  border-bottom-left-radius:12px;
-  border-bottom-right-radius:12px;
   z-index:999;
 }
 .header.header-compacto .header-compact-row{
@@ -144,8 +142,10 @@ body{
    expandido), es #marcasRowCompact el que se comprime/scrollea — nunca
    el buscador salta a una segunda línea tapando o descuadrando todo. */
 #compactTopRow{
-  display:flex;align-items:center;gap:8px;
+  display:flex;align-items:center;gap:10px;
   flex:1 1 auto;min-width:0;
+  justify-content:space-between;
+  padding:10px;
 }
 
 /* Chips de marca de la franja compacta: elementos propios y siempre
@@ -156,41 +156,34 @@ body{
   display:flex;gap:5px;flex-wrap:nowrap;
   overflow-x:auto;scrollbar-width:none;
   flex-shrink:0;
+      padding: 10px 0px 10px 0px;
 }
 #marcasRowCompact::-webkit-scrollbar{display:none}
 .marca-chip.compacta{
   height:26px;padding:3px 8px;border-radius:7px;
-  outline-width:2px;outline-offset:2px;
+  outline-width:1px;outline-offset:2px;
 }
 .marca-chip.compacta img{max-height:14px;max-width:50px}
 
 /* Buscador propio de la franja compacta (sincronizado con #searchBox) */
-#searchBoxCompact{flex-shrink:0;width:150px;margin:0;padding:7px 14px;font-size:12.5px}
-
+#searchBoxCompact{
+  order:-1;
+  flex:1;
+  width:100%;
+  margin:0;padding:7px 14px;font-size:12.5px;
+}
 @media(max-width:768px){
-  .header-compact-row .cat-quicknav-wrap{flex-basis:100%;order:3}
-  /* En mobile las marcas y el buscador comparten la primera fila: el
-     buscador vive como una lupa chica que, al usarse, se expande y
-     empuja/comprime la fila de marcas (que ya scrollea horizontal) en
-     vez de tapar nada o forzar un salto de línea. */
-  #marcasRowCompact{flex-shrink:1;min-width:46px}
-  #searchBoxCompact{
-    /* Colapsada: el ícono va centrado y SIN padding lateral fijo — un
-       padding a los costados no puede ser más chico que el propio
-       ícono+su aire, así que terminaba fijando un ancho mínimo mayor
-       al declarado. Sin ese padding, el ancho real es el que se pide. */
-    -webkit-appearance:none;appearance:none;
-    width:26px;
-    padding:0;
-    background:var(--fondo-alt) no-repeat center/13px 13px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23585858' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
-    cursor:pointer;
-    transition:width 0.22s ease, padding 0.22s ease;
+  #compactTopRow{
+    flex-direction:column;
+    align-items:stretch;
+    gap:8px;
   }
-  #searchBoxCompact:focus{
-    width:140px;
-    padding:7px 14px;
-    background-image:none;
-    cursor:text;
+  #searchBoxCompact{
+    width:100%;
+  }
+  #marcasRowCompact{
+    width:100%;
+    justify-content:space-between;
   }
 }
 
@@ -221,10 +214,9 @@ body{
 
 /* ── MARCAS ALIADAS ── */
 .marcas-aliadas{
-  background:#F7F4EC;
+  /* background:#F7F4EC; */
+  background-color: #f7f7f7;
   padding:22px 24px;
-  border-top:1px solid #e6e2d3;
-  border-bottom:1px solid #e6e2d3;
 }
 .marcas-aliadas-label{
   text-align:center;
@@ -239,8 +231,14 @@ body{
   margin-bottom:16px;
 }
 .marcas-row{
-  display:flex;justify-content:center;align-items:center;gap:22px;flex-wrap:wrap;
-  max-width:1400px;margin:0 auto;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:22px;
+  flex-wrap:wrap;
+      padding: 10px 0px 10px 0px;
+  max-width:1400px;
+  margin:0 auto;
 }
 .marca-chip{
   display:flex;align-items:center;justify-content:center;
@@ -249,7 +247,7 @@ body{
   border:none;
   cursor:pointer;
   transition:all 0.22s;
-  outline:3px solid transparent;
+  outline:1px solid transparent;
   outline-offset:3px;
 }
 .marca-chip.claro{background:#ffffff;box-shadow:0 1px 4px rgba(0,0,0,0.06);border:1px solid #ececec}
@@ -264,6 +262,8 @@ body{
 .marca-chip.active{
   outline-color:var(--verde);
   transform:translateY(-2px);
+  background:#ffffff;
+  box-shadow:0 1px 4px rgba(0,0,0,0.06);
 }
 
 /* ── FILTERS (el buscador ya no es sticky por sí solo: cuando hace falta
@@ -402,6 +402,14 @@ body{
 @media(max-width:768px){
   .hero{height:260px}
   .logo-text h1{font-size:15px}
+  .marcas-row{
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    justify-content:flex-start;
+    scrollbar-width:none;
+  }
+  .marcas-row::-webkit-scrollbar{display:none}
+  .marca-chip{flex-shrink:0}
 }
 
 /* ── CATÁLOGO RAPPI-STYLE ── */
@@ -431,16 +439,14 @@ body{
   letter-spacing:0.5px;
 }
 .cat-row{
-  display:flex;
-  flex-wrap:wrap;
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
   gap:12px;
 }
 .cat-card{
   background:var(--card);
-  border-radius:12px;
+  border-radius:16px;
   border:1px solid var(--borde-sutil);
-  flex-shrink:0;
-  width:190px;
   overflow:hidden;
   box-shadow:0 2px 8px var(--sombra);
   transition:all 0.2s;
@@ -455,7 +461,7 @@ body{
   }
 }
 .cat-card-img{
-  width:190px;height:290px;
+  width:100%;height:290px;
   overflow:hidden;
   background:var(--fondo);
   display:flex;align-items:center;justify-content:center;
@@ -511,12 +517,11 @@ body{
   background:var(--verde);
   color:#fff;
   border:none;
-  border-radius:8px;
+  border-radius:24px;
   padding:8px 0;
-  font-family:'Oswald',sans-serif;
-  font-size:12px;font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:0.4px;
+  font-family:'Inter',sans-serif;
+  font-size:12px;
+  font-weight:700;
   cursor:pointer;
   transition:background 0.2s;
 }
@@ -598,7 +603,7 @@ body{
   background:linear-gradient(135deg,var(--naranja),#e8632f);
   color:#fff;
   border:none;
-  border-radius:8px;
+  border-radius:24px;
   padding:6px 8px;
   font-family:'Inter',sans-serif;
   font-size:10px;font-weight:700;
@@ -704,7 +709,7 @@ body{
 
 /* ── FONDO DE SECCIÓN (paleta ya unificada arriba para todas las marcas) ── */
 .cat-seccion--cagnoli{
-  background:#F7F4EC;
+  background:#ffffff;
   padding:20px 20px 28px;
   border-radius:14px;
 }
@@ -729,8 +734,8 @@ body{
 
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
-  .cat-card{width:145px}
-  .cat-card-img{width:145px;height:210px}
+  .cat-row{grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));}
+  .cat-card-img{height:210px}
   .cat-card--cagnoli .cat-card-img,
   .cat-card--lasdinas .cat-card-img,
   .cat-card--vidal .cat-card-img{height:210px}
@@ -781,7 +786,9 @@ body{
 .cat-quicknav-wrap.show{display:flex}
 .header-compact-row .cat-quicknav-wrap{
   margin:0;padding:2px 0 0;
-  flex:1 1 220px;min-width:120px;
+  flex-basis:100%;
+  order:3;
+  min-width:120px;
 }
 .quicknav-arrow{display:none}
 @media (hover:hover) and (pointer:fine){
