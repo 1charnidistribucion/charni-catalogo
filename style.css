@@ -546,28 +546,28 @@ body{
 /* ── STEPPER +/− EN LA CARD (reemplaza el botón una vez agregado) ── */
 .cat-card-stepper{
   display:flex;align-items:center;justify-content:space-between;
-  background:var(--verde);
-  border-radius:8px;
+  background:#fff;
+  border:1px solid black;
+  border-radius:999px;
   padding:4px 6px;
-  animation:stepperPop 0.22s ease;
 }
 .cat-step-btn{
   width:24px;height:24px;flex-shrink:0;
-  border-radius:6px;
+  border-radius:50%;
   border:none;
-  background:rgba(255,255,255,0.18);
-  color:#fff;
-  font-size:15px;font-weight:700;
+  background:transparent;
+  color:var(--texto);
+  font-size:16px;font-weight:700;
   line-height:1;
   cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   transition:background 0.2s;
 }
-.cat-step-btn:hover{background:rgba(255,255,255,0.32)}
+.cat-step-btn:hover{background:#F2F1EC}
 .cat-step-value{
   flex:1;text-align:center;
-  color:#fff;
-  font-family:'Oswald',sans-serif;
+  color:var(--texto);
+  font-family:'Inter',sans-serif;
   font-size:13px;font-weight:700;
 }
 @keyframes stepperPop{
@@ -926,7 +926,7 @@ body{
 }
 
 /* ── MODAL CONFIRMAR VACIAR ── */
-.confirm-modal-content{max-width:380px;text-align:center;position:relative}
+.confirm-modal-content{max-width:380px;padding: 24px;text-align:center;position:relative}
 .confirm-modal-title{font-family:'Oswald',sans-serif;font-weight:700;font-size:20px;color:var(--texto);margin-bottom:8px}
 .confirm-modal-sub{font-size:14px;color:var(--texto-suave);margin-bottom:24px;line-height:1.5}
 .confirm-modal-actions{display:flex;gap:10px}
@@ -1006,7 +1006,7 @@ body{
 }
 
 .site-footer{
-  background:var(--gris-oscuro);
+  background:#1a1a1a;
   color:#fff;
   padding:32px 24px 20px;
   margin-top:40px;
@@ -1018,12 +1018,12 @@ body{
   gap:24px;
 }
 .footer-title{
-  font-family:'Oswald',sans-serif;
+  font-family:'Inter',sans-serif;
   font-weight:700;
   font-size:12px;
   text-transform:uppercase;
   letter-spacing:0.5px;
-  color:var(--verde);
+  color: #f7f7f7;
   margin-bottom:6px;
 }
 .footer-text{

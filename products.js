@@ -1115,7 +1115,7 @@ const products = {
       "niveles": []
     },
     {
-      "name": "Salamín Picado Fino",
+      "name": "Salamín Picado Fino ATM",
       "cat": "Envasado ATM",
       "img": "cagnoli_atmfino",
       "precio": 8553,
@@ -1147,7 +1147,7 @@ const products = {
       "niveles": []
     },
     {
-      "name": "Salamín Picado Grueso",
+      "name": "Salamín Picado Grueso ATM",
       "cat": "Envasado ATM",
       "img": "cagnoli_atmgrueso",
       "precio": 8553,
@@ -1179,7 +1179,7 @@ const products = {
       "niveles": []
     },
     {
-      "name": "Salamín Ahumado a Tres Leñas",
+      "name": "Salamín Ahumado a Tres Leñas ATM",
       "cat": "Envasado ATM",
       "img": "cagnoli_atm_ahumado",
       "precio": 8553,
@@ -1211,7 +1211,7 @@ const products = {
       "niveles": []
     },
     {
-      "name": "Salamín Picante Pimienta Cayena",
+      "name": "Salamín Picante Pimienta Cayena ATM",
       "cat": "Envasado ATM",
       "img": "cagnoli_atm_picante",
       "precio": 8553,
@@ -1243,7 +1243,7 @@ const products = {
       "niveles": []
     },
     {
-      "name": "Salamín Finas Hierbas",
+      "name": "Salamín Finas Hierbas ATM",
       "cat": "Envasado ATM",
       "img": "cagnoli_atm_finashierbas",
       "precio": 8553,
@@ -3283,7 +3283,7 @@ const products = {
       "precio": 10800,
       "precioOferta": null,
       "descuento": null,
-      "name": "Port Salut Sin Sal",
+      "name": "Port Salut Sin Sal Vidal",
       "cat": "Queso",
       "peso": "3.5kg aprox",
       "unidadMedida": "unidades",
@@ -3303,7 +3303,7 @@ const products = {
       "precio": 10800,
       "precioOferta": null,
       "descuento": null,
-      "name": "Port Salut",
+      "name": "Port Salut Vidal",
       "cat": "Queso",
       "peso": "3.5kg aprox",
       "unidadMedida": "unidades",
