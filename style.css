@@ -297,17 +297,25 @@ body{
 .modal.show{display:flex}
 .modal-content{
   background:var(--fondo-alt);
-  padding:32px;
+  padding:0;
   border-radius:20px;
   max-width:580px;width:90%;
-  max-height:80vh;overflow-y:auto;
+  max-height:80vh;
   box-shadow:0 20px 60px rgba(0,0,0,0.18);
   border:1px solid var(--borde-sutil);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
 }
 .modal-header{
   display:flex;justify-content:space-between;align-items:center;
-  margin-bottom:22px;padding-bottom:16px;
+  padding:24px 32px 16px;
   border-bottom:1px solid var(--borde-sutil);
+  flex-shrink:0;
+}
+.modal-body{
+  padding:16px 32px 32px;
+  overflow-y:auto;
 }
 .modal-header h3{
   font-family:'Oswald',sans-serif;
@@ -350,8 +358,12 @@ body{
   background:none;
   color:var(--bordo);
   border:1.5px solid var(--bordo);
-  padding:5px 13px;border-radius:18px;
+  width:28px;height:28px;
+  padding:0;
+  border-radius:50%;
   cursor:pointer;font-size:12px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
   transition:all 0.2s;
 }
 .cart-item-remove:hover{background:var(--bordo);color:#fff}
@@ -362,7 +374,7 @@ body{
 .cart-actions{margin-top:18px;display:flex;gap:10px}
 .btn-send{
   background:#25D366;color:#fff;
-  padding:14px;border:none;border-radius:28px;
+  padding:14px;border:none;border-radius:999px;
   cursor:pointer;
   font-family:'Oswald',sans-serif;
   text-transform:uppercase;letter-spacing:0.4px;
@@ -375,7 +387,7 @@ body{
   background:var(--fondo);
   color:var(--bordo);
   border:1.5px solid var(--bordo);
-  padding:14px 22px;border-radius:28px;
+  padding:14px 22px;border-radius:999px;
   cursor:pointer;
   font-family:'Inter',sans-serif;
   font-weight:600;transition:all 0.22s;
@@ -402,6 +414,7 @@ body{
 @media(max-width:768px){
   .hero{height:260px}
   .logo-text h1{font-size:15px}
+  .btn-send{font-size:12px;letter-spacing:0.2px;padding:13px 8px}
   .marcas-row{
     flex-wrap:nowrap;
     overflow-x:auto;
@@ -1038,3 +1051,27 @@ body.has-cart-footer .site-footer{
   font-weight:600;
 }
 .footer-wa-link:hover{text-decoration:underline}
+.cart-item-marca{
+  font-size:9px;
+  font-weight:700;
+  color:var(--verde);
+  text-transform:uppercase;
+  letter-spacing:0.4px;
+  margin-bottom:2px;
+}
+
+.cart-load-more{
+  width:100%;
+  background:#F2F1EC;
+  border:1px dashed #DCDAD1;
+  color:var(--verde-oscuro);
+  padding:12px;
+  border-radius:10px;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:13px;
+  cursor:pointer;
+  margin-bottom:9px;
+  transition:all 0.2s;
+}
+.cart-load-more:hover{background:#e5e3da}

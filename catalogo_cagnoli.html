@@ -95,15 +95,17 @@
 <div class="modal" id="cartModal">
 <div class="modal-content">
 <div class="modal-header">
-<h3>🛒 Mi Consulta</h3>
+<h3>Mi Consulta</h3>
 <button class="close-btn" onclick="closeCart()">&times;</button>
 </div>
+<div class="modal-body">
 <div class="cart-notice">📩 Esto no confirma tu pedido: al enviarlo por WhatsApp, iniciás el contacto directo con tu vendedor para coordinar precio y disponibilidad.</div>
 <div id="cartItems"></div>
 <div id="cartSubtotal"></div>
 <div class="cart-actions" id="cartActions" style="display:none">
 <button class="btn-send" onclick="sendWhatsApp()">📱 Enviar por WhatsApp</button>
 <button class="btn-clear" onclick="clearCart()">🗑️ Vaciar</button>
+</div>
 </div>
 </div>
 </div>

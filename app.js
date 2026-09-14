@@ -1,5 +1,6 @@
 const WA = window.WA_PHONE || '5492213188614';
 let cart = [];
+let cartVisibleCount = 5;
 try {
   const savedCart = localStorage.getItem('charni_cart');
   if (savedCart) cart = JSON.parse(savedCart);
@@ -545,15 +546,22 @@ function renderCart() {
     if (subtotalEl) subtotalEl.innerHTML = '';
     return;
   }
-  container.innerHTML = cart.map((item, idx) => {
+  const visibleCart = cart.slice(0, cartVisibleCount);
+  container.innerHTML = visibleCart.map((item, idx) => {
     const forma = item.formaNombre || null;
     const fCantidad = item.formaCantidad || 1;
     const p = findProductByName(item.name);
     const trivial = formaEsTrivial(p, forma);
+    const marca = findMarcaByName(item.name);
+    const marcaHtml = marca ? `<div class="cart-item-marca">${brandNames[marca]}</div>` : '';
     const nameLine = (forma && !trivial) ? `${item.name} <span class="cart-item-forma">— ${forma}</span>` : item.name;
     const qtyLabel = (forma && !trivial && fCantidad > 1) ? `${item.qty} x ${forma} (${item.qty * fCantidad}u)` : `${item.qty}`;
-    return `<div class="cart-item"><div class="cart-item-info"><div class="cart-item-name">${nameLine}</div><div class="cart-item-qty-controls"><button class="qty-btn" onclick="decQty(${idx})" aria-label="Restar unidad">−</button><span class="qty-value">${qtyLabel}</span><button class="qty-btn" onclick="incQty(${idx})" aria-label="Sumar unidad">+</button></div></div><button class="cart-item-remove" onclick="removeFromCart(${idx})">✕</button></div>`;
+    return `<div class="cart-item"><div class="cart-item-info">${marcaHtml}<div class="cart-item-name">${nameLine}</div><div class="cart-item-qty-controls"><button class="qty-btn" onclick="decQty(${idx})" aria-label="Restar unidad">−</button><span class="qty-value">${qtyLabel}</span><button class="qty-btn" onclick="incQty(${idx})" aria-label="Sumar unidad">+</button></div></div><button class="cart-item-remove" onclick="removeFromCart(${idx})">✕</button></div>`;
   }).join('');
+  if (cart.length > cartVisibleCount) {
+    const restantes = cart.length - cartVisibleCount;
+    container.innerHTML += `<button class="cart-load-more" onclick="loadMoreCartItems()">Cargar ${Math.min(5, restantes)} más (quedan ${restantes})</button>`;
+  }
   actions.style.display = 'flex';
   if (subtotalEl) {
     if (window.SHOW_PRICES === true) {
@@ -582,6 +590,10 @@ function renderCart() {
       subtotalEl.innerHTML = '';
     }
   }
+}
+function loadMoreCartItems(){
+  cartVisibleCount += 5;
+  renderCart();
 }
 function incQty(idx) { cart[idx].qty++; updateCart() }
 function decQty(idx) { cart[idx].qty--; if (cart[idx].qty <= 0) { cart.splice(idx, 1) } updateCart() }
@@ -644,7 +656,11 @@ function sendWhatsApp() {
   saveLastOrder();
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, '_blank');
 }
-function openCart() { document.getElementById('cartModal').classList.add('show') }
+function openCart() {
+  cartVisibleCount = 5;
+  renderCart();
+  document.getElementById('cartModal').classList.add('show');
+}
 function closeCart() { document.getElementById('cartModal').classList.remove('show') }
 
 // ── Header contextual / compacto al scrollear (v2) ──────────────────
