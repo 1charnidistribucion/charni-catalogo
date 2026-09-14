@@ -178,6 +178,8 @@ body{
     align-items:stretch;
     gap:8px;
   }
+   .cat-step-value{font-size:11px;white-space:nowrap}
+  .cat-card-stepper{padding:4px 4px}
   #searchBoxCompact{
     width:100%;
   }
@@ -1075,3 +1077,18 @@ body.has-cart-footer .site-footer{
   transition:all 0.2s;
 }
 .cart-load-more:hover{background:#e5e3da}
+.marca-chip-todas{
+  font-family:'Oswald',sans-serif;
+  font-weight:700;
+  font-size:12px;
+  line-height:1.2;
+  text-align:center;
+  color:var(--texto);
+  text-transform:uppercase;
+  letter-spacing:0.3px;
+  white-space:normal;
+}
+.marca-chip.compacta.marca-chip-todas{
+  font-size:10px;
+  white-space:nowrap;
+}
