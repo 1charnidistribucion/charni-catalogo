@@ -465,11 +465,24 @@ function addToCart(prod, formaNombre, formaCantidad) {
 function saveCart() {
   try { localStorage.setItem('charni_cart', JSON.stringify(cart)); } catch (e) { }
 }
-function updateCart() {
+function updateCart(){
   saveCart();
-  document.getElementById('cartCount').textContent = cart.reduce((sum, i) => sum + i.qty * (i.formaCantidad || 1), 0);
   renderCart();
   refreshCardButtons();
+  const floatBtn=document.querySelector('.whatsapp-float');
+  const footerBar=document.getElementById('cartFooterBar');
+  if(cart.length===0){
+    if(floatBtn)floatBtn.style.display='flex';
+    if(footerBar)footerBar.style.display='none';
+  }else{
+    if(floatBtn)floatBtn.style.display='none';
+    if(footerBar){
+      footerBar.style.display='flex';
+      document.getElementById('cartFooterCount').textContent=cart.length;
+      const pluralEl=document.getElementById('cartFooterPlural');
+      if(pluralEl)pluralEl.textContent=cart.length===1?'':'s';
+    }
+  }
 }
 function renderCart() {
   const container = document.getElementById('cartItems');
