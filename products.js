@@ -734,7 +734,7 @@ const products = {
   ],
   "salamines": [
     {
-      "name": "Salamín P Fino",
+      "name": "Salamín Picado Fino",
       "cat": "Salamín",
       "img": "cagnoli_salaminfino",
       "precio": 56508,
@@ -758,7 +758,7 @@ const products = {
       "niveles": []
     },
     {
-      "name": "Salamín P Fino Grueso",
+      "name": "Salamín Picado Grueso",
       "cat": "Salamín",
       "img": "cagnoli_salamingrueso",
       "precio": 56508,
