@@ -401,6 +401,10 @@ function formatFechaCorta(iso){
   const d=new Date(iso);
   return `${d.getDate()}/${d.getMonth()+1}`;
 }
+function formatWA(phone){
+  if(!phone||phone.length<6)return phone;
+  return `+${phone.slice(0,2)} ${phone.slice(2,3)} ${phone.slice(3,6)} ${phone.slice(6)}`;
+}
 
 function checkLastOrderBanner(){
   const banner=document.getElementById('lastOrderBanner');
@@ -515,9 +519,10 @@ function updateCart(){
   refreshCardButtons();
   const floatBtn=document.querySelector('.whatsapp-float');
   const footerBar=document.getElementById('cartFooterBar');
-  if(cart.length===0){
+ if(cart.length===0){
     if(floatBtn)floatBtn.style.display='flex';
     if(footerBar)footerBar.style.display='none';
+    document.body.classList.remove('has-cart-footer');
   }else{
     if(floatBtn)floatBtn.style.display='none';
     if(footerBar){
@@ -526,6 +531,7 @@ function updateCart(){
       const pluralEl=document.getElementById('cartFooterPlural');
       if(pluralEl)pluralEl.textContent=cart.length===1?'':'s';
     }
+    document.body.classList.add('has-cart-footer');
   }
   checkLastOrderBanner();
 }
@@ -694,6 +700,13 @@ function initHeaderCompactObserver() {
     primeraObservacion = false;
   }, { threshold: 0 });
   obs.observe(marcasAliadas);
+}
+
+const footerWaLink=document.getElementById('footerWaLink');
+const footerWaText=document.getElementById('footerWaText');
+if(footerWaLink&&footerWaText){
+  footerWaLink.href=`https://wa.me/${WA}`;
+  footerWaText.textContent=formatWA(WA);
 }
 
 renderCatalogo('all');
