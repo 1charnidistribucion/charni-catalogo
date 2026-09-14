@@ -3,7 +3,8 @@
 *{margin:0;padding:0;box-sizing:border-box}
 
 :root{
-  --fondo:#F7F4EC;
+  /* --fondo:#F7F4EC; */
+  --fondo:#ffffff;
   --fondo-alt:#ffffff;
   --card:#ffffff;
   --texto:#1c1c1c;
@@ -114,20 +115,17 @@ body{
 .header-compact-row{
   position:absolute;
   top:100%;left:0;right:0;
-  max-width:1400px;margin:0 auto;
   background:var(--fondo-alt);
   display:flex;
   align-items:center;
   gap:8px;
   flex-wrap:wrap;
-  padding:6px 16px 7px;
+  padding:6px 24px 7px;
   opacity:0;
   transform:translateY(-4px);
   pointer-events:none;
   transition:opacity 0.18s ease-out, transform 0.18s ease-out;
   box-shadow:0 6px 14px var(--sombra);
-  border-bottom-left-radius:12px;
-  border-bottom-right-radius:12px;
   z-index:999;
 }
 .header.header-compacto .header-compact-row{
@@ -144,8 +142,10 @@ body{
    expandido), es #marcasRowCompact el que se comprime/scrollea — nunca
    el buscador salta a una segunda línea tapando o descuadrando todo. */
 #compactTopRow{
-  display:flex;align-items:center;gap:8px;
+  display:flex;align-items:center;gap:10px;
   flex:1 1 auto;min-width:0;
+  justify-content:space-between;
+  padding:10px;
 }
 
 /* Chips de marca de la franja compacta: elementos propios y siempre
@@ -156,60 +156,48 @@ body{
   display:flex;gap:5px;flex-wrap:nowrap;
   overflow-x:auto;scrollbar-width:none;
   flex-shrink:0;
+      padding: 10px 0px 10px 0px;
 }
 #marcasRowCompact::-webkit-scrollbar{display:none}
 .marca-chip.compacta{
   height:26px;padding:3px 8px;border-radius:7px;
-  outline-width:2px;outline-offset:2px;
+  outline-width:1px;outline-offset:2px;
 }
 .marca-chip.compacta img{max-height:14px;max-width:50px}
 
 /* Buscador propio de la franja compacta (sincronizado con #searchBox) */
-#searchBoxCompact{flex-shrink:0;width:150px;margin:0;padding:7px 14px;font-size:12.5px}
-
+#searchBoxCompact{
+  order:-1;
+  flex:1;
+  width:100%;
+  margin:0;padding:7px 14px;font-size:12.5px;
+}
 @media(max-width:768px){
-  .header-compact-row .cat-quicknav-wrap{flex-basis:100%;order:3}
-  /* En mobile las marcas y el buscador comparten la primera fila: el
-     buscador vive como una lupa chica que, al usarse, se expande y
-     empuja/comprime la fila de marcas (que ya scrollea horizontal) en
-     vez de tapar nada o forzar un salto de línea. */
-  #marcasRowCompact{flex-shrink:1;min-width:46px}
-  #searchBoxCompact{
-    /* Colapsada: el ícono va centrado y SIN padding lateral fijo — un
-       padding a los costados no puede ser más chico que el propio
-       ícono+su aire, así que terminaba fijando un ancho mínimo mayor
-       al declarado. Sin ese padding, el ancho real es el que se pide. */
-    -webkit-appearance:none;appearance:none;
-    width:26px;
-    padding:0;
-    background:var(--fondo-alt) no-repeat center/13px 13px url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23585858' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
-    cursor:pointer;
-    transition:width 0.22s ease, padding 0.22s ease;
+  #compactTopRow{
+    flex-direction:column;
+    align-items:stretch;
+    gap:8px;
   }
-  #searchBoxCompact:focus{
-    width:140px;
-    padding:7px 14px;
-    background-image:none;
-    cursor:text;
+   .cat-step-value{font-size:11px;white-space:nowrap}
+  .cat-card-stepper{padding:4px 4px}
+  #searchBoxCompact{
+    width:100%;
+  }
+  #marcasRowCompact{
+    width:100%;
+    justify-content:space-between;
   }
 }
 
 /* ── HERO ── */
 .hero{
   height:380px;
-  max-width:1400px;
-  margin:0 auto;
   position:relative;
   display:flex;
   align-items:center;justify-content:center;
   overflow:hidden;
 }
-.hero::before{
-  content:'';
-  position:absolute;top:0;left:0;width:100%;height:100%;
-  background:linear-gradient(to right,var(--fondo) 0%,transparent 12%,transparent 88%,var(--fondo) 100%);
-  z-index:2;pointer-events:none;
-}
+
 .hero-bg{
   position:absolute;top:0;left:0;
   width:100%;height:100%;
@@ -228,10 +216,9 @@ body{
 
 /* ── MARCAS ALIADAS ── */
 .marcas-aliadas{
-  background:#F7F4EC;
+  /* background:#F7F4EC; */
+  background-color: #f7f7f7;
   padding:22px 24px;
-  border-top:1px solid #e6e2d3;
-  border-bottom:1px solid #e6e2d3;
 }
 .marcas-aliadas-label{
   text-align:center;
@@ -246,8 +233,14 @@ body{
   margin-bottom:16px;
 }
 .marcas-row{
-  display:flex;justify-content:center;align-items:center;gap:22px;flex-wrap:wrap;
-  max-width:1400px;margin:0 auto;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:22px;
+  flex-wrap:wrap;
+      padding: 10px 0px 10px 0px;
+  max-width:1400px;
+  margin:0 auto;
 }
 .marca-chip{
   display:flex;align-items:center;justify-content:center;
@@ -256,7 +249,7 @@ body{
   border:none;
   cursor:pointer;
   transition:all 0.22s;
-  outline:3px solid transparent;
+  outline:1px solid transparent;
   outline-offset:3px;
 }
 .marca-chip.claro{background:#ffffff;box-shadow:0 1px 4px rgba(0,0,0,0.06);border:1px solid #ececec}
@@ -271,6 +264,8 @@ body{
 .marca-chip.active{
   outline-color:var(--verde);
   transform:translateY(-2px);
+  background:#ffffff;
+  box-shadow:0 1px 4px rgba(0,0,0,0.06);
 }
 
 /* ── FILTERS (el buscador ya no es sticky por sí solo: cuando hace falta
@@ -286,7 +281,7 @@ body{
 .container{
   max-width:1400px;
   margin:0 auto;
-  padding:0 24px 80px;
+  padding:0 16px 80px;
 }
 
 /* ── UTILITY ── */
@@ -304,17 +299,25 @@ body{
 .modal.show{display:flex}
 .modal-content{
   background:var(--fondo-alt);
-  padding:32px;
+  padding:0;
   border-radius:20px;
   max-width:580px;width:90%;
-  max-height:80vh;overflow-y:auto;
+  max-height:80vh;
   box-shadow:0 20px 60px rgba(0,0,0,0.18);
   border:1px solid var(--borde-sutil);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
 }
 .modal-header{
   display:flex;justify-content:space-between;align-items:center;
-  margin-bottom:22px;padding-bottom:16px;
+  padding:24px 32px 16px;
   border-bottom:1px solid var(--borde-sutil);
+  flex-shrink:0;
+}
+.modal-body{
+  padding:16px 32px 32px;
+  overflow-y:auto;
 }
 .modal-header h3{
   font-family:'Oswald',sans-serif;
@@ -357,8 +360,12 @@ body{
   background:none;
   color:var(--bordo);
   border:1.5px solid var(--bordo);
-  padding:5px 13px;border-radius:18px;
+  width:28px;height:28px;
+  padding:0;
+  border-radius:50%;
   cursor:pointer;font-size:12px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
   transition:all 0.2s;
 }
 .cart-item-remove:hover{background:var(--bordo);color:#fff}
@@ -369,7 +376,7 @@ body{
 .cart-actions{margin-top:18px;display:flex;gap:10px}
 .btn-send{
   background:#25D366;color:#fff;
-  padding:14px;border:none;border-radius:28px;
+  padding:14px;border:none;border-radius:999px;
   cursor:pointer;
   font-family:'Oswald',sans-serif;
   text-transform:uppercase;letter-spacing:0.4px;
@@ -382,7 +389,7 @@ body{
   background:var(--fondo);
   color:var(--bordo);
   border:1.5px solid var(--bordo);
-  padding:14px 22px;border-radius:28px;
+  padding:14px 22px;border-radius:999px;
   cursor:pointer;
   font-family:'Inter',sans-serif;
   font-weight:600;transition:all 0.22s;
@@ -409,6 +416,15 @@ body{
 @media(max-width:768px){
   .hero{height:260px}
   .logo-text h1{font-size:15px}
+  .btn-send{font-size:12px;letter-spacing:0.2px;padding:13px 8px}
+  .marcas-row{
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    justify-content:flex-start;
+    scrollbar-width:none;
+  }
+  .marcas-row::-webkit-scrollbar{display:none}
+  .marca-chip{flex-shrink:0}
 }
 
 /* ── CATÁLOGO RAPPI-STYLE ── */
@@ -438,27 +454,29 @@ body{
   letter-spacing:0.5px;
 }
 .cat-row{
-  display:flex;
-  flex-wrap:wrap;
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
   gap:12px;
 }
 .cat-card{
   background:var(--card);
-  border-radius:12px;
+  border-radius:16px;
   border:1px solid var(--borde-sutil);
-  flex-shrink:0;
-  width:190px;
   overflow:hidden;
   box-shadow:0 2px 8px var(--sombra);
   transition:all 0.2s;
+  display:flex;
+  flex-direction:column;
 }
-.cat-card:hover{
-  transform:translateY(-2px);
-  box-shadow:0 6px 18px var(--sombra-hover);
-  border-color:var(--verde);
+@media (hover: hover) and (pointer: fine){
+  .cat-card:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 18px var(--sombra-hover);
+    border-color:var(--verde);
+  }
 }
 .cat-card-img{
-  width:190px;height:290px;
+  width:100%;height:290px;
   overflow:hidden;
   background:var(--fondo);
   display:flex;align-items:center;justify-content:center;
@@ -479,7 +497,9 @@ body{
   object-fit:cover;
   transition:transform 0.3s;
 }
-.cat-card:hover .cat-card-img img{transform:scale(1.05)}
+@media (hover: hover) and (pointer: fine){
+  .cat-card:hover .cat-card-img img{transform:scale(1.05)}
+}
 .cat-card-img-empty{
   background:var(--fondo);
   color:var(--texto-muy-suave);
@@ -487,6 +507,9 @@ body{
 }
 .cat-card-info{
   padding:8px 10px 10px;
+  display:flex;
+  flex-direction:column;
+  flex:1;
 }
 .cat-card-name{
   font-family:'Inter',sans-serif;
@@ -496,47 +519,57 @@ body{
   margin-bottom:8px;
   min-height:32px;
 }
+.cat-card-marca{
+  font-size:10px;
+  font-weight:700;
+  color:var(--verde);
+  text-transform:uppercase;
+  letter-spacing:0.4px;
+  margin-bottom:3px;
+}
 .cat-card-btn{
   width:100%;
   background:var(--verde);
   color:#fff;
   border:none;
-  border-radius:8px;
+  border-radius:24px;
   padding:8px 0;
-  font-family:'Oswald',sans-serif;
-  font-size:12px;font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:0.4px;
+  font-family:'Inter',sans-serif;
+  font-size:12px;
+  font-weight:700;
   cursor:pointer;
   transition:background 0.2s;
+}
+.cat-card-dynamic{
+  margin-top:auto;
 }
 .cat-card-btn:hover{background:var(--verde-oscuro)}
 
 /* ── STEPPER +/− EN LA CARD (reemplaza el botón una vez agregado) ── */
 .cat-card-stepper{
   display:flex;align-items:center;justify-content:space-between;
-  background:var(--verde);
-  border-radius:8px;
+  background:#fff;
+  border:1px solid black;
+  border-radius:999px;
   padding:4px 6px;
-  animation:stepperPop 0.22s ease;
 }
 .cat-step-btn{
   width:24px;height:24px;flex-shrink:0;
-  border-radius:6px;
+  border-radius:50%;
   border:none;
-  background:rgba(255,255,255,0.18);
-  color:#fff;
-  font-size:15px;font-weight:700;
+  background:transparent;
+  color:var(--texto);
+  font-size:16px;font-weight:700;
   line-height:1;
   cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   transition:background 0.2s;
 }
-.cat-step-btn:hover{background:rgba(255,255,255,0.32)}
+.cat-step-btn:hover{background:#F2F1EC}
 .cat-step-value{
   flex:1;text-align:center;
-  color:#fff;
-  font-family:'Oswald',sans-serif;
+  color:var(--texto);
+  font-family:'Inter',sans-serif;
   font-size:13px;font-weight:700;
 }
 @keyframes stepperPop{
@@ -585,7 +618,7 @@ body{
   background:linear-gradient(135deg,var(--naranja),#e8632f);
   color:#fff;
   border:none;
-  border-radius:8px;
+  border-radius:24px;
   padding:6px 8px;
   font-family:'Inter',sans-serif;
   font-size:10px;font-weight:700;
@@ -691,7 +724,7 @@ body{
 
 /* ── FONDO DE SECCIÓN (paleta ya unificada arriba para todas las marcas) ── */
 .cat-seccion--cagnoli{
-  background:#F7F4EC;
+  background:#ffffff;
   padding:20px 20px 28px;
   border-radius:14px;
 }
@@ -716,8 +749,8 @@ body{
 
 /* ── RESPONSIVE ── */
 @media(max-width:768px){
-  .cat-card{width:145px}
-  .cat-card-img{width:145px;height:210px}
+  .cat-row{grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));}
+  .cat-card-img{height:210px}
   .cat-card--cagnoli .cat-card-img,
   .cat-card--lasdinas .cat-card-img,
   .cat-card--vidal .cat-card-img{height:210px}
@@ -768,7 +801,9 @@ body{
 .cat-quicknav-wrap.show{display:flex}
 .header-compact-row .cat-quicknav-wrap{
   margin:0;padding:2px 0 0;
-  flex:1 1 220px;min-width:120px;
+  flex-basis:100%;
+  order:3;
+  min-width:120px;
 }
 .quicknav-arrow{display:none}
 @media (hover:hover) and (pointer:fine){
@@ -890,4 +925,170 @@ body{
 .cart-subtotal-note{
   font-size:11px;font-weight:500;font-style:italic;
   color:var(--texto-muy-suave);
+}
+
+/* ── MODAL CONFIRMAR VACIAR ── */
+.confirm-modal-content{max-width:380px;padding: 24px;text-align:center;position:relative}
+.confirm-modal-title{font-family:'Oswald',sans-serif;font-weight:700;font-size:20px;color:var(--texto);margin-bottom:8px}
+.confirm-modal-sub{font-size:14px;color:var(--texto-suave);margin-bottom:24px;line-height:1.5}
+.confirm-modal-actions{display:flex;gap:10px}
+.btn-cancelar{flex:1;background:#E8F0E0;color:var(--verde-oscuro);border:none;padding:14px;border-radius:28px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;transition:all 0.22s}
+.btn-cancelar:hover{background:#DAE8CC}
+.btn-vaciar-confirm{flex:1;background:#F5D9DE;color:var(--bordo);border:none;padding:14px;border-radius:28px;cursor:pointer;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;transition:all 0.22s}
+.btn-vaciar-confirm:hover{background:var(--bordo);color:#fff}
+
+
+.hero-text{
+  position:relative;
+  z-index:2;
+  text-align:center;
+  color:#fff;
+  padding:0 24px;
+  max-width:640px;
+}
+.hero-tagline{
+  font-family:'Oswald',sans-serif;
+  font-weight:700;
+  font-size:28px;
+  letter-spacing:0.3px;
+  margin-bottom:8px;
+}
+.hero-tagline em{font-style:italic;font-weight:500}
+.hero-subtitle{
+  font-size:14px;
+  font-weight:500;
+  opacity:0.92;
+  line-height:1.5;
+}
+
+.cart-footer-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--verde-oscuro);
+  color:#fff;
+  padding:16px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  z-index:1500;
+  box-shadow:0 -4px 20px rgba(0,0,0,0.18);
+}
+.cart-footer-info{display:flex;flex-direction:column;line-height:1.3}
+.cart-footer-count{font-size:20px;font-weight:800;margin-right:4px}
+.cart-footer-label{font-size:13px;opacity:0.85}
+.cart-footer-btn{
+  background:var(--verde);
+  color:#fff;
+  border:none;
+  padding:10px 22px;
+  border-radius:24px;
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  font-size:13px;
+  cursor:pointer;
+}
+.last-order-banner{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--fondo-alt);
+  border-bottom:1px solid var(--borde-sutil);
+  padding:12px 24px;
+  gap:12px;
+}
+.last-order-info{display:flex;flex-direction:column;line-height:1.3}
+.last-order-title{font-size:13px;font-weight:700;color:var(--texto)}
+.last-order-sub{font-size:12px;color:var(--texto-suave)}
+.last-order-btn{
+  background:var(--verde);
+  color:#fff;
+  border:none;
+  padding:8px 18px;
+  border-radius:20px;
+  font-weight:700;
+  font-family:'Inter',sans-serif;
+  font-size:12.5px;
+  cursor:pointer;
+  flex-shrink:0;
+}
+
+.site-footer{
+  background:#1a1a1a;
+  color:#fff;
+  padding:32px 24px 20px;
+  margin-top:40px;
+}
+.footer-inner{
+  max-width:1400px;margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+  gap:24px;
+}
+.footer-title{
+  font-family:'Inter',sans-serif;
+  font-weight:700;
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  color: #f7f7f7;
+  margin-bottom:6px;
+}
+.footer-text{
+  font-size:13px;
+  color:rgba(255,255,255,0.85);
+  line-height:1.5;
+}
+.footer-updated{
+  max-width:1400px;margin:24px auto 0;
+  padding-top:16px;
+  border-top:1px solid rgba(255,255,255,0.12);
+  font-size:11px;
+  color:rgba(255,255,255,0.5);
+  text-align:center;
+}
+body.has-cart-footer .site-footer{
+  padding-bottom:96px;
+}
+
+.footer-wa-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:13px;
+  color:#25D366;
+  text-decoration:none;
+  font-weight:600;
+}
+.footer-wa-link:hover{text-decoration:underline}
+.cart-item-marca{
+  font-size:9px;
+  font-weight:700;
+  color:var(--verde);
+  text-transform:uppercase;
+  letter-spacing:0.4px;
+  margin-bottom:2px;
+}
+
+.cart-load-more{
+  width:100%;
+  background:#F2F1EC;
+  border:1px dashed #DCDAD1;
+  color:var(--verde-oscuro);
+  padding:12px;
+  border-radius:10px;
+  font-family:'Inter',sans-serif;
+  font-weight:600;
+  font-size:13px;
+  cursor:pointer;
+  margin-bottom:9px;
+  transition:all 0.2s;
+}
+.cart-load-more:hover{background:#e5e3da}
+.marca-chip-todas{
+  font-family:'Oswald',sans-serif;
+  font-weight:700;
+  font-size:12px;
+  line-height:1.2;
+  text-align:center;
+  color:var(--texto);
+  text-transform:uppercase;
+  letter-spacing:0.3px;
+  white-space:normal;
+}
+.marca-chip.compacta.marca-chip-todas{
+  font-size:10px;
+  white-space:nowrap;
 }
