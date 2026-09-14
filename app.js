@@ -379,6 +379,50 @@ function findMarcaByName(name) {
   return null;
 }
 
+const LAST_ORDER_KEY='charni_last_order';
+
+function saveLastOrder(){
+  try{
+    localStorage.setItem(LAST_ORDER_KEY, JSON.stringify({items:cart, date:new Date().toISOString()}));
+  }catch(e){}
+}
+
+function loadLastOrder(){
+  try{
+    const raw=localStorage.getItem(LAST_ORDER_KEY);
+    if(!raw)return null;
+    return JSON.parse(raw);
+  }catch(e){
+    return null;
+  }
+}
+
+function formatFechaCorta(iso){
+  const d=new Date(iso);
+  return `${d.getDate()}/${d.getMonth()+1}`;
+}
+
+function checkLastOrderBanner(){
+  const banner=document.getElementById('lastOrderBanner');
+  if(!banner)return;
+  const last=loadLastOrder();
+  if(last && last.items && last.items.length>0 && cart.length===0){
+    document.getElementById('lastOrderInfo').textContent=`${formatFechaCorta(last.date)} · ${last.items.length} producto${last.items.length===1?'':'s'}`;
+    banner.style.display='flex';
+  }else{
+    banner.style.display='none';
+  }
+}
+
+function repetirUltimaConsulta(){
+  const last=loadLastOrder();
+  if(!last||!last.items||last.items.length===0)return;
+  cart=JSON.parse(JSON.stringify(last.items));
+  updateCart();
+  checkLastOrderBanner();
+  openCart();
+}
+
 function handleAddClick(btn, prod, formaNombre) {
   const p = findProductByName(prod);
   let formaCantidad = 1;
@@ -483,6 +527,7 @@ function updateCart(){
       if(pluralEl)pluralEl.textContent=cart.length===1?'':'s';
     }
   }
+  checkLastOrderBanner();
 }
 function renderCart() {
   const container = document.getElementById('cartItems');
@@ -589,7 +634,8 @@ function sendWhatsApp() {
     otros.forEach(agregarLinea);
     msg += '\n';
   }
-  msg += '¿Me confirmás precio y disponibilidad?';
+ msg += '¿Me confirmás precio y disponibilidad?';
+  saveLastOrder();
   window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, '_blank');
 }
 function openCart() { document.getElementById('cartModal').classList.add('show') }
