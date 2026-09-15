@@ -745,7 +745,7 @@ const products = {
       "ext": "webp",
       "codigo": "1",
       "sinTacc": true,
-      "unidadMedida": "unidades",
+      "unidadMedida": "hilos",
       "formas": [
         {
           "cantidad": 1,
@@ -769,7 +769,7 @@ const products = {
       "ext": "webp",
       "codigo": "2",
       "sinTacc": true,
-      "unidadMedida": "unidades",
+      "unidadMedida": "hilos",
       "formas": [
         {
           "cantidad": 1,
@@ -792,7 +792,7 @@ const products = {
       "ext": "webp",
       "codigo": "8",
       "sinTacc": true,
-      "unidadMedida": "unidades",
+      "unidadMedida": "hilos",
       "formas": [
         {
           "cantidad": 1,
@@ -816,7 +816,7 @@ const products = {
       "unidades": "4u x tira / gancho x 7 hilos",
       "codigo": "3",
       "sinTacc": true,
-      "unidadMedida": "unidades",
+      "unidadMedida": "hilos",
       "formas": [
         {
           "cantidad": 1,
